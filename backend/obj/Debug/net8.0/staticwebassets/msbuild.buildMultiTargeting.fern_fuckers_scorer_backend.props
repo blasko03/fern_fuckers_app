@@ -1,0 +1,3 @@
+﻿<Project>
+  <Import Project="../build/fern_fuckers_scorer_backend.props" />
+</Project>

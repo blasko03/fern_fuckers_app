@@ -1,0 +1,6 @@
+@fern_fuckers_scorer_backend_HostAddress = http://localhost:5176
+
+GET {{fern_fuckers_scorer_backend_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
