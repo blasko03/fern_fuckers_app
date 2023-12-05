@@ -1,26 +1,26 @@
+'use client'
 import { type ReactElement } from 'react'
 
 export default function Home (): ReactElement {
+/*  const source = new EventSource('http://localhost:5093/api/championships/events')
+
+  source.onmessage = function (event) {
+    console.log('onmessage: ' + event.data)
+  }
+
+  source.onopen = function (event) {
+    console.log('onopen')
+  }
+
+  source.onerror = function (event) {
+    console.log('onerror')
+  } */
+
   return (
     <main>
-      <table style={{ width: '100%' }}>
-        <thead>
-          <th>Ime</th>
-          <th>Točka</th>
-          <th>Leg</th>
-          <th>Leg</th>
-          <th>Točka</th>
-          <th>Ime</th>
-        </thead>
-        <tbody>
-          <td><select><option>aaaaaaaa</option></select></td>
-          <td></td>
-          <td><input value="" type="number" /></td>
-          <td><input value="" type="number" /></td>
-          <td></td>
-          <td><select><option>aaaaaaaa</option></select></td>
-        </tbody>
-      </table>
+      <div><a href="/championships">Campionati</a></div>
+      <div><a href="/teams">Team</a></div>
+      <div><a href="/players">Players</a></div>
     </main>
   )
 }
