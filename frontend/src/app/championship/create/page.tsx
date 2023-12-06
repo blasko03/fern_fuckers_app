@@ -1,46 +1,44 @@
 'use client'
-import { useState, type ReactElement, type ChangeEventHandler } from 'react'
+import Checkbox from '@/components/form/checkbox'
+import Form from '@/components/form/form'
+import Text from '@/components/form/text'
+import { useState, type ReactElement } from 'react'
 
 interface Team {
-  name?: string
-  players: string[]
+  name: string
+  members: string[]
 }
+
+const teams = ['team1', 'team2', 'team3']
 
 export default function Home (): ReactElement {
   const handleSubmit = (event: any): void => {
-    console.log(event.target.value)
-    event.preventDefault()
+    console.log(formState)
   }
-
-  const checkobxSelect: ChangeEventHandler<HTMLInputElement> = (event) => {
-    console.log(event.target.defaultValue)
-    setFormState(f => ({ ...f, players: f.players }))
-  }
-
-  const [formState, setFormState] = useState<Team>({ players: [] })
-
+  const [formState, setFormState] = useState<Team>({ members: [], name: '' })
   return (
     <main>
-      <form onSubmit={handleSubmit}>
+      <Form onSubmit={handleSubmit}>
         <div>
             Championship name
         </div>
         <div>
-           <input type='text' value={formState.name} />
+           <Text state={formState} setState={setFormState} name='name' />
         </div>
 
         <div>
             Members
         </div>
         <div>
-           <div><input type='checkbox' name='teams[]' value='team1' onChange={checkobxSelect} /> Team1</div>
-           <div><input type='checkbox' name='teams[]' value='team2' /> Team2</div>
-           <div><input type='checkbox' name='teams[]' value='team3' /> Team3</div>
+          { teams.map(x =>
+           <div key={x}>
+            <Checkbox state={formState} setState={setFormState} value={x} name='members' /> {x}</div>
+          )}
         </div>
         <div>
            <button>Crea</button>
         </div>
-      </form>
+      </Form>
     </main>
   )
 }

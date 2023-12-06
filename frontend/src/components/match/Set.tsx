@@ -1,6 +1,6 @@
 'use client'
 import { useState, type ReactElement } from 'react'
-import Select from '../inputs/select'
+import Select from '../form/select'
 
 interface Props {
   homeTeam: Team
