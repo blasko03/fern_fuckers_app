@@ -1,0 +1,6 @@
+@fern_fuckers_app_backend_HostAddress = http://localhost:5093
+
+GET {{fern_fuckers_app_backend_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
