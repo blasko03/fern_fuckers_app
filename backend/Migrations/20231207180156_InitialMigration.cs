@@ -1,9 +1,8 @@
-﻿using System;
-using Microsoft.EntityFrameworkCore.Migrations;
+﻿using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace fern_fuckers_app_backend.Migrations
+namespace FernFuckersAppBackend.Migrations
 {
     /// <inheritdoc />
     public partial class InitialMigration : Migration
