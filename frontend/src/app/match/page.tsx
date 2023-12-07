@@ -22,10 +22,10 @@ function whoWins (p1: number, p2: number): number {
 export default function Home (): ReactElement {
   return (
     <main>
-      <Set numberOfPlayers={1} homeTeam={ homeTeam } guestsTeam={ guestsTeam } scoring={wins3Legs} />
-      <Set numberOfPlayers={1} homeTeam={ homeTeam } guestsTeam={ guestsTeam } scoring={wins3Legs} />
-      <Set numberOfPlayers={2} homeTeam={ homeTeam } guestsTeam={ guestsTeam } scoring={whoWins} />
-      <Set numberOfPlayers={2} homeTeam={ homeTeam } guestsTeam={ guestsTeam } scoring={whoWins} />
+      <Set numberOfPlayers={1} homeTeam={ homeTeam } guestsTeam={ guestsTeam } scoring={ wins3Legs } />
+      <Set numberOfPlayers={1} homeTeam={ homeTeam } guestsTeam={ guestsTeam } scoring={ wins3Legs } />
+      <Set numberOfPlayers={2} homeTeam={ homeTeam } guestsTeam={ guestsTeam } scoring={ whoWins } />
+      <Set numberOfPlayers={2} homeTeam={ homeTeam } guestsTeam={ guestsTeam } scoring={ whoWins } />
     </main>
   )
 }

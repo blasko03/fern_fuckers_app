@@ -7,9 +7,15 @@ namespace fern_fuckers_app_backend.Controllers;
 public class ChampionshipsController : ControllerBase
 {
     [HttpGet]
-    public string Get()
+    public string[] Get(ApplicationDbContext context)
     {
-        return "aaaaaa";
+        return ["CAmpionato1", "CAmpionato2", context.Championships.Count().ToString()];
+    }
+
+    [HttpPost]
+    public string[] Create()
+    {
+        return [];
     }
 
     [HttpGet("events")]
