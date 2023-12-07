@@ -27,6 +27,7 @@
     "eslint-plugin-promise": "^6.0.0",
     "eslint-plugin-react": "^7.33.2",
     "eslint-webpack-plugin": "^4.0.1",
-    "typescript": "*"
+    "typescript": "*",
+    "sass": "^1.69.5"
   }
 }

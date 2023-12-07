@@ -1,0 +1,39 @@
+body {
+    background-color: #a6b9dd;
+    color: #001530;
+}
+
+.number_keyboard {
+    display: flex;
+    flex-wrap: wrap;
+    position: fixed;
+    bottom: 0px;
+    left: 0;
+    right: 0;
+    div {
+        display: flex;
+        flex: 0 0 33.333333%;
+        text-align: center;
+        height: 7vh;
+        font-size: 4vh;
+        border: 1px solid black;
+        box-sizing: border-box;
+        justify-content: center;
+        align-items: center;
+        overflow: hidden;
+    }
+}
+
+.box{
+    border-radius: 25px;
+    background: #a6b9dd;
+    box-shadow:  41px 41px 82px #8d9dbc,
+                 -41px -41px 82px #bfd5fe;
+    padding: 30px;
+    margin: 30px;
+    color: #011f45;
+    display: block;
+    text-decoration: none;
+    font-size: 30px;
+
+}

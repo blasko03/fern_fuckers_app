@@ -18,9 +18,9 @@ export default function Home (): ReactElement {
 
   return (
     <main>
-      <div><a href="/championships">Campionati</a></div>
-      <div><a href="/teams">Team</a></div>
-      <div><a href="/players">Players</a></div>
+      <a className='box' href="/championships">Campionati</a>
+      <a className='box' href="/teams">Team</a>
+      <a className='box' href="/players">Players</a>
     </main>
   )
 }
