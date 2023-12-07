@@ -5,8 +5,7 @@ namespace FernFuckersAppBackend.Models;
 [Table("Championship")]
 public class Championship
 {
-    public int ChampionshipId { get; set; }
-
+    public Guid Id { get; set; }
     [Required]
     public required string Name { get; set; }
 }

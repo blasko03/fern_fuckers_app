@@ -1,5 +1,6 @@
 ﻿using FernFuckersAppBackend.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace FernFuckersAppBackend.Controllers;
 
@@ -8,9 +9,11 @@ namespace FernFuckersAppBackend.Controllers;
 public class ChampionshipsController : ControllerBase
 {
     [HttpGet]
-    public string[] Get(ApplicationDbContext context)
+    public async Task<List<Championship>> Get(ApplicationDbContext context)
     {
-        return ["CAmpionato1", "CAmpionato2", context.Championships.Count().ToString()];
+        //context.Championships.Add(new Championship{Name = "Champ1"});
+        await context.SaveChangesAsync();
+        return await context.Championships.ToListAsync();
     }
 
     [HttpPost]
@@ -28,7 +31,6 @@ public class ChampionshipsController : ControllerBase
         for (var i = 0; true; ++i)
         {
             await response.WriteAsync($"data: Controller {i} at {DateTime.Now}\r\r");
-
             await response.Body.FlushAsync();
             await Task.Delay(5 * 1000);
         }
