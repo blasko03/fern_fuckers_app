@@ -1,6 +1,7 @@
+﻿using FernFuckersAppBackend.Models;
 using Microsoft.AspNetCore.Mvc;
 
-namespace fern_fuckers_app_backend.Controllers;
+namespace FernFuckersAppBackend.Controllers;
 
 [Route("api/championships")]
 [ApiController]
@@ -24,7 +25,7 @@ public class ChampionshipsController : ControllerBase
         var response = Response;
         response.Headers.Append("Content-Type", "text/event-stream");
 
-        for(var i = 0; true; ++i)
+        for (var i = 0; true; ++i)
         {
             await response.WriteAsync($"data: Controller {i} at {DateTime.Now}\r\r");
 

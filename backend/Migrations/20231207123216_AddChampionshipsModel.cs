@@ -3,7 +3,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
 
-namespace fern_fuckers_app_backend.Migrations
+namespace FernFuckersAppBackend.Migrations
 {
     /// <inheritdoc />
     public partial class AddChampionshipsModel : Migration

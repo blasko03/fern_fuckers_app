@@ -1,6 +1,6 @@
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 
-namespace fern_fuckers_app_backend.Controllers;
+namespace FernFuckersAppBackend.Controllers;
 
 [Route("api/match")]
 [ApiController]
@@ -11,7 +11,7 @@ public class MatchController : ControllerBase
     {
         return ["returns scores"];
     }
-    
+
     [HttpPut]
     public string[] SetPlayers()
     {
