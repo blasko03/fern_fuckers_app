@@ -1,3 +1,0 @@
-﻿<Project>
-  <Import Project="../buildMultiTargeting/fern_fuckers_scorer_backend.props" />
-</Project>
