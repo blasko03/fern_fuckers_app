@@ -1,4 +1,8 @@
-﻿using FernFuckersAppBackend.Models;
+﻿using FernFuckersAppBackend.Controllers.Params;
+using FernFuckersAppBackend.Controllers.Responses;
+using FernFuckersAppBackend.Models;
+using FernFuckersAppBackend.Services;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -6,20 +10,20 @@ namespace FernFuckersAppBackend.Controllers;
 
 [Route("api/championships")]
 [ApiController]
+
 public class ChampionshipsController : ControllerBase
 {
     [HttpGet]
-    public async Task<List<Championship>> Get(ApplicationDbContext context)
+    public async Task<List<ChampionshipResponse>> Get(ApplicationDbContext context)
     {
-        //context.Championships.Add(new Championship{Name = "Champ1"});
-        await context.SaveChangesAsync();
-        return await context.Championships.ToListAsync();
+        var teams = context.Teams;
+        return await context.Championships.Include(e => e.Teams).Select(x => (ChampionshipResponse)x).ToListAsync();
     }
 
     [HttpPost]
-    public string[] Create()
+    public async Task<Results<BadRequest, Ok<ChampionshipResponse>>> Create([FromBody] ChampionshipParams championship, ApplicationDbContext context)
     {
-        return [];
+        return await ServiceCaller<ChampionshipResponse, ChampionshipParams>.Call(championship, context, CreateChampionshipService.Call);
     }
 
     [HttpGet("events")]

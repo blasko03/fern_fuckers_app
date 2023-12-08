@@ -3,6 +3,7 @@ using System;
 using FernFuckersAppBackend.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace FernFuckersAppBackend.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20231207225620_AddTeamsToChampionships")]
+    partial class AddTeamsToChampionships
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -21,21 +24,6 @@ namespace FernFuckersAppBackend.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
-
-            modelBuilder.Entity("ChampionshipTeam", b =>
-                {
-                    b.Property<Guid>("ChampionshipsId")
-                        .HasColumnType("uuid");
-
-                    b.Property<Guid>("TeamsId")
-                        .HasColumnType("uuid");
-
-                    b.HasKey("ChampionshipsId", "TeamsId");
-
-                    b.HasIndex("TeamsId");
-
-                    b.ToTable("ChampionshipTeam");
-                });
 
             modelBuilder.Entity("FernFuckersAppBackend.Models.Championship", b =>
                 {
@@ -77,11 +65,16 @@ namespace FernFuckersAppBackend.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
+                    b.Property<Guid?>("ChampionshipId")
+                        .HasColumnType("uuid");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("text");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("ChampionshipId");
 
                     b.ToTable("Team");
                 });
@@ -101,19 +94,11 @@ namespace FernFuckersAppBackend.Migrations
                     b.ToTable("PlayerTeam");
                 });
 
-            modelBuilder.Entity("ChampionshipTeam", b =>
+            modelBuilder.Entity("FernFuckersAppBackend.Models.Team", b =>
                 {
                     b.HasOne("FernFuckersAppBackend.Models.Championship", null)
-                        .WithMany()
-                        .HasForeignKey("ChampionshipsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("FernFuckersAppBackend.Models.Team", null)
-                        .WithMany()
-                        .HasForeignKey("TeamsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .WithMany("Teams")
+                        .HasForeignKey("ChampionshipId");
                 });
 
             modelBuilder.Entity("PlayerTeam", b =>
@@ -129,6 +114,11 @@ namespace FernFuckersAppBackend.Migrations
                         .HasForeignKey("TeamsId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("FernFuckersAppBackend.Models.Championship", b =>
+                {
+                    b.Navigation("Teams");
                 });
 #pragma warning restore 612, 618
         }
