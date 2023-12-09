@@ -20,8 +20,8 @@ public class PlayersController : ControllerBase
 
     [HttpPost]
 
-    public async Task<Results<BadRequest, Ok<PlayerResponse>>> Create([FromBody] PlayerParams championship, ApplicationDbContext context)
+    public async Task<Results<BadRequest, Ok<PlayerResponse>>> Create([FromBody] PlayerParams player, ApplicationDbContext context)
     {
-        return await ServiceCaller.Call<PlayerResponse, PlayerParams>(championship, context, CreatePlayerService.Call);
+        return await ServiceCaller.Call<PlayerResponse, PlayerParams>(player, context, CreatePlayerService.Call);
     }
 }

@@ -3,6 +3,7 @@ using System;
 using FernFuckersAppBackend.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace FernFuckersAppBackend.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20231209142454_AddMatchTeam")]
+    partial class AddMatchTeam
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -52,25 +55,6 @@ namespace FernFuckersAppBackend.Migrations
                     b.ToTable("Championship");
                 });
 
-            modelBuilder.Entity("FernFuckersAppBackend.Models.Leg", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
-
-                    b.Property<Guid>("SetId")
-                        .HasColumnType("uuid");
-
-                    b.Property<Guid>("TeamId")
-                        .HasColumnType("uuid");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("SetId");
-
-                    b.ToTable("Leg");
-                });
-
             modelBuilder.Entity("FernFuckersAppBackend.Models.Match", b =>
                 {
                     b.Property<Guid>("Id")
@@ -92,34 +76,13 @@ namespace FernFuckersAppBackend.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<Guid?>("SetId")
-                        .HasColumnType("uuid");
-
                     b.Property<string>("Surname")
                         .IsRequired()
                         .HasColumnType("text");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("SetId");
-
                     b.ToTable("Player");
-                });
-
-            modelBuilder.Entity("FernFuckersAppBackend.Models.Set", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
-
-                    b.Property<Guid>("MatchId")
-                        .HasColumnType("uuid");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("MatchId");
-
-                    b.ToTable("Set");
                 });
 
             modelBuilder.Entity("FernFuckersAppBackend.Models.Team", b =>
@@ -182,31 +145,6 @@ namespace FernFuckersAppBackend.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("FernFuckersAppBackend.Models.Leg", b =>
-                {
-                    b.HasOne("FernFuckersAppBackend.Models.Set", null)
-                        .WithMany("Legs")
-                        .HasForeignKey("SetId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("FernFuckersAppBackend.Models.Player", b =>
-                {
-                    b.HasOne("FernFuckersAppBackend.Models.Set", null)
-                        .WithMany("Players")
-                        .HasForeignKey("SetId");
-                });
-
-            modelBuilder.Entity("FernFuckersAppBackend.Models.Set", b =>
-                {
-                    b.HasOne("FernFuckersAppBackend.Models.Match", null)
-                        .WithMany("Sets")
-                        .HasForeignKey("MatchId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
             modelBuilder.Entity("MatchTeam", b =>
                 {
                     b.HasOne("FernFuckersAppBackend.Models.Match", null)
@@ -235,18 +173,6 @@ namespace FernFuckersAppBackend.Migrations
                         .HasForeignKey("TeamsId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("FernFuckersAppBackend.Models.Match", b =>
-                {
-                    b.Navigation("Sets");
-                });
-
-            modelBuilder.Entity("FernFuckersAppBackend.Models.Set", b =>
-                {
-                    b.Navigation("Legs");
-
-                    b.Navigation("Players");
                 });
 #pragma warning restore 612, 618
         }

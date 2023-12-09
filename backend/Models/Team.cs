@@ -9,5 +9,6 @@ public class Team
     [Required]
     public required string Name { get; set; }
     public List<Player> Players { get; } = [];
+    public List<Match> Matches { get; } = [];
     public List<Championship> Championships { get; set; } = [];
 }

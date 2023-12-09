@@ -12,7 +12,7 @@ public class ServiceCaller
         var operation = await service(context, param);
         if (operation.IsSuccess())
         {
-            return TypedResults.Ok(((Success<ResponseType>)await service(context, param)).GetResult());
+            return TypedResults.Ok(((Success<ResponseType>)operation).GetResult());
         }
 
         return TypedResults.BadRequest();

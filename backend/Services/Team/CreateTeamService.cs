@@ -20,15 +20,16 @@ public class CreateTeamService
         return (TeamResponse)c;
     }
 
-    private static async Task<List<string>> ValidateData(ApplicationDbContext context, TeamParams championship)
+    private static async Task<List<string>> ValidateData(ApplicationDbContext context, TeamParams team)
     {
         List<string> errors = [];
-        if (championship.Name.Length < 5)
+        if (team.Name.Length < 5)
         {
             errors.Add("Name too short");
         }
 
-        if (await context.Teams.Where(team => championship.Players.Distinct().Contains(team.Id)).CountAsync() < 2)
+        Console.WriteLine(await context.Players.Where(player => team.Players.Distinct().Contains(player.Id)).CountAsync());
+        if (await context.Players.Where(player => team.Players.Distinct().Contains(player.Id)).CountAsync() < 2)
         {
             errors.Add("Not enought players");
         }
