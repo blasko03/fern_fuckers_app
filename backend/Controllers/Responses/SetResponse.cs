@@ -1,4 +1,4 @@
-
+﻿
 using FernFuckersAppBackend.Models;
 
 namespace FernFuckersAppBackend.Controllers.Responses;

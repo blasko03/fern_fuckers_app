@@ -5,7 +5,9 @@ using FernFuckersAppBackend.Models;
 namespace FernFuckersAppBackend.Services;
 public class WonLegService
 {
-    public static async Task<IServiceResult> Call(ApplicationDbContext context, WonLegParams player)
+#pragma warning disable IDE0060 // Remove unused parameter
+    public static async Task<IServiceResult> Call(ApplicationDbContext context, WonLegParams wonLeg)
+#pragma warning restore IDE0060 // Remove unused parameter
     {
         return await ValidateAndSave.Call(() => Task.Run(() => ValidateData()), () => SaveData(context));
     }

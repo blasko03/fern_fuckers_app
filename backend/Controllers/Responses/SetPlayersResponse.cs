@@ -1,4 +1,5 @@
-namespace FernFuckersAppBackend.Controllers.Responses;
-public class SetPlayersResponse {
+﻿namespace FernFuckersAppBackend.Controllers.Responses;
+public class SetPlayersResponse
+{
 
 }
