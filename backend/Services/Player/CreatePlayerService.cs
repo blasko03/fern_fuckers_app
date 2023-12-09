@@ -1,4 +1,4 @@
-using FernFuckersAppBackend.Controllers.Params;
+﻿using FernFuckersAppBackend.Controllers.Params;
 using FernFuckersAppBackend.Controllers.Responses;
 using FernFuckersAppBackend.Models;
 
@@ -9,7 +9,7 @@ public class CreatePlayerService
     public static async Task<IServiceResult> Call(ApplicationDbContext context, PlayerParams player)
     {
         return await ValidateAndSave.Call(context, player, ValidateData, SaveData);
-        
+
     }
     private static async Task<PlayerResponse> SaveData(ApplicationDbContext context, PlayerParams player)
     {
@@ -18,9 +18,7 @@ public class CreatePlayerService
         return (PlayerResponse)c;
     }
 
-#pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously
-    private async static Task<List<string>> ValidateData(ApplicationDbContext context, PlayerParams player)
-#pragma warning restore CS1998 // Async method lacks 'await' operators and will run synchronously
+    private static async Task<List<string>> ValidateData(ApplicationDbContext context, PlayerParams player)
     {
         List<string> errors = [];
         if (player.Name.Length < 5)

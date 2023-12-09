@@ -1,4 +1,4 @@
-using FernFuckersAppBackend.Controllers.Params;
+﻿using FernFuckersAppBackend.Controllers.Params;
 using FernFuckersAppBackend.Controllers.Responses;
 using FernFuckersAppBackend.Models;
 using Microsoft.EntityFrameworkCore;
@@ -10,7 +10,7 @@ public class CreateTeamService
     public static async Task<IServiceResult> Call(ApplicationDbContext context, TeamParams team)
     {
         return await ValidateAndSave.Call(context, team, ValidateData, SaveData);
-        
+
     }
     private static async Task<TeamResponse> SaveData(ApplicationDbContext context, TeamParams team)
     {

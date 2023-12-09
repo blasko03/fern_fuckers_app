@@ -2,9 +2,9 @@
 
 namespace FernFuckersAppBackend.Controllers;
 
-[Route("api/leg")]
+[Route("api/play")]
 [ApiController]
-public class PlasController : ControllerBase
+public class PlayController : ControllerBase
 {
 
     [HttpPost]

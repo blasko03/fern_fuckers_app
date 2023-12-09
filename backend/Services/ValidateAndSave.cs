@@ -1,10 +1,10 @@
-using FernFuckersAppBackend.Models;
+﻿using FernFuckersAppBackend.Models;
 
 namespace FernFuckersAppBackend.Services;
 
 public class ValidateAndSave
 {
-    public static async Task<IServiceResult> Call<ResponseType, ParamsType>(ApplicationDbContext context, ParamsType param, Func<ApplicationDbContext, ParamsType, Task<List<string>>> validate, Func<ApplicationDbContext, ParamsType, Task<ResponseType>> save) 
+    public static async Task<IServiceResult> Call<ResponseType, ParamsType>(ApplicationDbContext context, ParamsType param, Func<ApplicationDbContext, ParamsType, Task<List<string>>> validate, Func<ApplicationDbContext, ParamsType, Task<ResponseType>> save)
     {
         var errors = await validate(context, param);
         if (errors.Count != 0)
