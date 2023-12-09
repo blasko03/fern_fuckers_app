@@ -9,4 +9,5 @@ public class Championship
     [Required]
     public required string Name { get; set; }
     public List<Team> Teams { get; set; } = [];
+    public List<Match> Matches { get; set; } = [];
 }

@@ -1,4 +1,9 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using FernFuckersAppBackend.Controllers.Params;
+using FernFuckersAppBackend.Controllers.Responses;
+using FernFuckersAppBackend.Models;
+using FernFuckersAppBackend.Services;
+using Microsoft.AspNetCore.Http.HttpResults;
+using Microsoft.AspNetCore.Mvc;
 
 namespace FernFuckersAppBackend.Controllers;
 
@@ -12,9 +17,9 @@ public class LegsController : ControllerBase
         return ["returns scores"];
     }
 
-    [HttpPut]
-    public string[] SetLeg()
+    [HttpPost]
+    public async Task<Results<BadRequest, Ok<WonLegResponse>>> WonLeg([FromBody] WonLegParams param, ApplicationDbContext context)
     {
-        return [];
+        return await ServiceCaller.Call<WonLegResponse, WonLegParams>(param, context, WonLegService.Call);
     }
 }

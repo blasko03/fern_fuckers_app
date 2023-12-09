@@ -3,6 +3,7 @@ using System;
 using FernFuckersAppBackend.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace FernFuckersAppBackend.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20231209173221_AddSetOptions")]
+    partial class AddSetOptions
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -151,25 +154,6 @@ namespace FernFuckersAppBackend.Migrations
                     b.ToTable("Team");
                 });
 
-            modelBuilder.Entity("FernFuckersAppBackend.Models.Throw", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
-
-                    b.Property<Guid>("LegId")
-                        .HasColumnType("uuid");
-
-                    b.Property<int>("Score")
-                        .HasColumnType("integer");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("LegId");
-
-                    b.ToTable("Throw");
-                });
-
             modelBuilder.Entity("MatchTeam", b =>
                 {
                     b.Property<Guid>("MatchesId")
@@ -249,15 +233,6 @@ namespace FernFuckersAppBackend.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("FernFuckersAppBackend.Models.Throw", b =>
-                {
-                    b.HasOne("FernFuckersAppBackend.Models.Leg", null)
-                        .WithMany("Throws")
-                        .HasForeignKey("LegId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
             modelBuilder.Entity("MatchTeam", b =>
                 {
                     b.HasOne("FernFuckersAppBackend.Models.Match", null)
@@ -291,11 +266,6 @@ namespace FernFuckersAppBackend.Migrations
             modelBuilder.Entity("FernFuckersAppBackend.Models.Championship", b =>
                 {
                     b.Navigation("Matches");
-                });
-
-            modelBuilder.Entity("FernFuckersAppBackend.Models.Leg", b =>
-                {
-                    b.Navigation("Throws");
                 });
 
             modelBuilder.Entity("FernFuckersAppBackend.Models.Match", b =>

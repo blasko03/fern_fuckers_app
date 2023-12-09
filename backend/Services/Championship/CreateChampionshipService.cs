@@ -16,6 +16,22 @@ public class CreateChampionshipService
     {
         var c = (await context.Championships.AddAsync((Championship)championship)).Entity;
         c.Teams.AddRange(context.Teams.Where(team => championship.Teams.Contains(team.Id)).ToList());
+
+        var matches = c.Teams.Take(c.Teams.Count - 1).Select(team1 =>
+        {
+            return c.Teams.Where(team2 => team1.Id != team2.Id).Select(team2 =>
+            {
+                var match = new Match { };
+                match.Teams.AddRange([team1, team2]);
+                match.Sets.Add(new Set { NumberLegs = 5, NumberPlayers = 1, WhoWins = SetWinningRule.WHO_WINS_FIRST });
+                match.Sets.Add(new Set { NumberLegs = 5, NumberPlayers = 1, WhoWins = SetWinningRule.WHO_WINS_FIRST });
+                match.Sets.Add(new Set { NumberLegs = 2, NumberPlayers = 2, WhoWins = SetWinningRule.ALL_LEGS });
+                match.Sets.Add(new Set { NumberLegs = 2, NumberPlayers = 2, WhoWins = SetWinningRule.ALL_LEGS });
+                return match;
+            });
+        }).SelectMany(x => x).ToList();
+
+        c.Matches.AddRange(matches);
         await context.SaveChangesAsync();
         return (ChampionshipResponse)c;
     }

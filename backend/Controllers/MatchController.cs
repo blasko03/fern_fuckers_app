@@ -11,10 +11,4 @@ public class MatchController : ControllerBase
     {
         return ["returns scores"];
     }
-
-    [HttpPut]
-    public string[] SetPlayers()
-    {
-        return [];
-    }
 }
