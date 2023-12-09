@@ -8,7 +8,7 @@ public class ChampionshipResponse
     public Guid Id { get; set; }
     public required string Name { get; set; }
 
-    public List<TeamResponse>? Teams { get; set; } = [];
+    public List<TeamResponse> Teams { get; set; } = [];
 
     public static explicit operator ChampionshipResponse(Championship championship)
     {

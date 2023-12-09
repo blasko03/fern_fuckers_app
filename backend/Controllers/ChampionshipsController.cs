@@ -23,7 +23,7 @@ public class ChampionshipsController : ControllerBase
     [HttpPost]
     public async Task<Results<BadRequest, Ok<ChampionshipResponse>>> Create([FromBody] ChampionshipParams championship, ApplicationDbContext context)
     {
-        return await ServiceCaller<ChampionshipResponse, ChampionshipParams>.Call(championship, context, CreateChampionshipService.Call);
+        return await ServiceCaller.Call<ChampionshipResponse, ChampionshipParams>(championship, context, CreateChampionshipService.Call);
     }
 
     [HttpGet("events")]

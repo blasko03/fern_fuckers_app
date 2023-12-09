@@ -1,4 +1,10 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using FernFuckersAppBackend.Controllers.Params;
+using FernFuckersAppBackend.Controllers.Responses;
+using FernFuckersAppBackend.Models;
+using FernFuckersAppBackend.Services;
+using Microsoft.AspNetCore.Http.HttpResults;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace FernFuckersAppBackend.Controllers;
 
@@ -7,14 +13,14 @@ namespace FernFuckersAppBackend.Controllers;
 public class TeamsController : ControllerBase
 {
     [HttpGet]
-    public string[] Get()
+    public async Task<List<TeamResponse>> Get(ApplicationDbContext context)
     {
-        return ["Team1", "Team2"];
+        return await context.Teams.Include(e => e.Players).Select(x => (TeamResponse)x).ToListAsync();
     }
 
     [HttpPost]
-    public string[] Create()
+    public async Task<Results<BadRequest, Ok<TeamResponse>>> Create([FromBody] TeamParams championship, ApplicationDbContext context)
     {
-        return [];
+        return await ServiceCaller.Call<TeamResponse, TeamParams>(championship, context, CreateTeamService.Call);
     }
 }
