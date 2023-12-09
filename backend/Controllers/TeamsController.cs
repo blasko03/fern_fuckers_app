@@ -19,8 +19,8 @@ public class TeamsController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<Results<BadRequest, Ok<TeamResponse>>> Create([FromBody] TeamParams championship, ApplicationDbContext context)
+    public async Task<Results<BadRequest, Ok<TeamResponse>>> Create([FromBody] TeamParams team, ApplicationDbContext context)
     {
-        return await ServiceCaller.Call<TeamResponse, TeamParams>(championship, context, CreateTeamService.Call);
+        return await ServiceCaller.Call<TeamResponse>(() => CreateTeamService.Call(context, team));
     }
 }

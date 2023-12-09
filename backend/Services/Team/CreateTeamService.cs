@@ -9,7 +9,7 @@ public class CreateTeamService
 {
     public static async Task<IServiceResult> Call(ApplicationDbContext context, TeamParams team)
     {
-        return await ValidateAndSave.Call(context, team, ValidateData, SaveData);
+        return await ValidateAndSave.Call(() => ValidateData(context, team), () => SaveData(context, team));
 
     }
     private static async Task<TeamResponse> SaveData(ApplicationDbContext context, TeamParams team)

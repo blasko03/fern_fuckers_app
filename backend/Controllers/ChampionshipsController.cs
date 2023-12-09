@@ -17,15 +17,22 @@ public class ChampionshipsController : ControllerBase
     public async Task<List<ChampionshipResponse>> Get(ApplicationDbContext context)
     {
         var teams = context.Teams;
-        return await context.Championships.Include(e => e.Teams).Select(x => (ChampionshipResponse)x).ToListAsync();
+        return await context.Championships.Include(e => e.Teams)
+                                          .ThenInclude(team => team.Players)
+                                          .Include(e => e.Matches)
+                                          .ThenInclude(match => match.Teams)
+                                          .Include(e => e.Matches)
+                                          .ThenInclude(match => match.Sets)
+                                          .ThenInclude(set => set.Players)
+                                          .Select(x => (ChampionshipResponse)x).ToListAsync();
     }
 
     [HttpPost]
     public async Task<Results<BadRequest, Ok<ChampionshipResponse>>> Create([FromBody] ChampionshipParams championship, ApplicationDbContext context)
     {
-        return await ServiceCaller.Call<ChampionshipResponse, ChampionshipParams>(championship, context, CreateChampionshipService.Call);
+        return await ServiceCaller.Call<ChampionshipResponse>(() => CreateChampionshipService.Call(context, championship));
     }
-
+    /*
     [HttpGet("events")]
     public async Task Events()
     {
@@ -39,4 +46,5 @@ public class ChampionshipsController : ControllerBase
             await Task.Delay(5 * 1000);
         }
     }
+    */
 }

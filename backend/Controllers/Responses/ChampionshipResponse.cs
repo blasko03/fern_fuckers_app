@@ -9,6 +9,7 @@ public class ChampionshipResponse
     public required string Name { get; set; }
 
     public List<TeamResponse> Teams { get; set; } = [];
+    public List<MatchResponse> Matches { get; set; } = [];
 
     public static explicit operator ChampionshipResponse(Championship championship)
     {
@@ -17,6 +18,7 @@ public class ChampionshipResponse
         {
             Id = championship.Id,
             Name = championship.Name,
+            Matches = championship.Matches.Select(x => (MatchResponse)x).ToList(),
             Teams = championship.Teams.Select(x => (TeamResponse)x).ToList()
         };
     }

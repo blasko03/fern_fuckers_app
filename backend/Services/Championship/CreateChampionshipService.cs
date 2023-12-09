@@ -9,7 +9,7 @@ public class CreateChampionshipService
 {
     public static async Task<IServiceResult> Call(ApplicationDbContext context, ChampionshipParams championship)
     {
-        return await ValidateAndSave.Call(context, championship, ValidateData, SaveData);
+        return await ValidateAndSave.Call(() => ValidateData(context, championship), () => SaveData(context, championship));
 
     }
     private static async Task<ChampionshipResponse> SaveData(ApplicationDbContext context, ChampionshipParams championship)

@@ -22,6 +22,6 @@ public class PlayersController : ControllerBase
 
     public async Task<Results<BadRequest, Ok<PlayerResponse>>> Create([FromBody] PlayerParams player, ApplicationDbContext context)
     {
-        return await ServiceCaller.Call<PlayerResponse, PlayerParams>(player, context, CreatePlayerService.Call);
+        return await ServiceCaller.Call<PlayerResponse>(() => CreatePlayerService.Call(context, player));
     }
 }

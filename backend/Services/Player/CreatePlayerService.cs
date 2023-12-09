@@ -8,7 +8,7 @@ public class CreatePlayerService
 {
     public static async Task<IServiceResult> Call(ApplicationDbContext context, PlayerParams player)
     {
-        return await ValidateAndSave.Call(context, player, ValidateData, SaveData);
+        return await ValidateAndSave.Call(() => Task.Run(() => ValidateData(player)), () => SaveData(context, player));
 
     }
     private static async Task<PlayerResponse> SaveData(ApplicationDbContext context, PlayerParams player)
@@ -18,7 +18,7 @@ public class CreatePlayerService
         return (PlayerResponse)c;
     }
 
-    private static async Task<List<string>> ValidateData(ApplicationDbContext context, PlayerParams player)
+    private static List<string> ValidateData(PlayerParams player)
     {
         List<string> errors = [];
         if (player.Name.Length < 5)
