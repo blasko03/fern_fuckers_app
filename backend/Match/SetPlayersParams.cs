@@ -2,6 +2,7 @@
 
 public class SetPlayersParams
 {
-    public Guid Player { get; set; }
-    public Guid Team { get; set; }
+    public List<Guid> Players { get; set; } = [];
+    public Guid TeamId { get; set; }
+    public Guid SetId { get; set; }
 }

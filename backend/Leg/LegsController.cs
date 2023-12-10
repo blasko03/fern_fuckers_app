@@ -7,13 +7,13 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace FernFuckersAppBackend.Controllers;
 
-[Route("api/leg")]
+[Route("api/legs")]
 [ApiController]
 public class LegsController : ControllerBase
 {
 
-    [HttpPost]
-    public async Task<Results<BadRequest, Ok<WonLegResponse>>> WonLeg([FromBody] WonLegParams param, ApplicationDbContext context)
+    [HttpPost("{id}/wonLeg")]
+    public async Task<Results<BadRequest, Ok<WonLegResponse>>> WonLeg([FromBody] WonLegParams param, Guid id, ApplicationDbContext context)
     {
         return await ServiceCaller.Call<WonLegResponse>(() => WonLegService.Call(context, param));
     }

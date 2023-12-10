@@ -11,7 +11,7 @@ namespace FernFuckersAppBackend.Controllers;
 [ApiController]
 public class MatchController : ControllerBase
 {
-    [HttpPut("{id}")]
+    [HttpPatch("{id}")]
     public async Task<Results<BadRequest, Ok<SetPlayersResponse>>> SetPlayers([FromBody] List<SetPlayersParams> matchPlayers, Guid id, ApplicationDbContext context)
     {
         return await ServiceCaller.Call<SetPlayersResponse>(() => SetPlayersService.Call(context, matchPlayers, id));

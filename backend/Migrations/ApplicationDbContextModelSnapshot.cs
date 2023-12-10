@@ -34,7 +34,7 @@ namespace FernFuckersAppBackend.Migrations
 
                     b.HasIndex("TeamsId");
 
-                    b.ToTable("ChampionshipTeam");
+                    b.ToTable("ChampionshipTeam", (string)null);
                 });
 
             modelBuilder.Entity("FernFuckersAppBackend.Models.Championship", b =>
@@ -49,7 +49,7 @@ namespace FernFuckersAppBackend.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Championship");
+                    b.ToTable("Championship", (string)null);
                 });
 
             modelBuilder.Entity("FernFuckersAppBackend.Models.Leg", b =>
@@ -68,7 +68,7 @@ namespace FernFuckersAppBackend.Migrations
 
                     b.HasIndex("SetId");
 
-                    b.ToTable("Leg");
+                    b.ToTable("Leg", (string)null);
                 });
 
             modelBuilder.Entity("FernFuckersAppBackend.Models.Match", b =>
@@ -84,7 +84,7 @@ namespace FernFuckersAppBackend.Migrations
 
                     b.HasIndex("ChampionshipId");
 
-                    b.ToTable("Match");
+                    b.ToTable("Match", (string)null);
                 });
 
             modelBuilder.Entity("FernFuckersAppBackend.Models.Player", b =>
@@ -108,7 +108,7 @@ namespace FernFuckersAppBackend.Migrations
 
                     b.HasIndex("SetId");
 
-                    b.ToTable("Player");
+                    b.ToTable("Player", (string)null);
                 });
 
             modelBuilder.Entity("FernFuckersAppBackend.Models.Set", b =>
@@ -133,7 +133,7 @@ namespace FernFuckersAppBackend.Migrations
 
                     b.HasIndex("MatchId");
 
-                    b.ToTable("Set");
+                    b.ToTable("Set", (string)null);
                 });
 
             modelBuilder.Entity("FernFuckersAppBackend.Models.Team", b =>
@@ -148,7 +148,7 @@ namespace FernFuckersAppBackend.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Team");
+                    b.ToTable("Team", (string)null);
                 });
 
             modelBuilder.Entity("FernFuckersAppBackend.Models.Throw", b =>
@@ -167,7 +167,7 @@ namespace FernFuckersAppBackend.Migrations
 
                     b.HasIndex("LegId");
 
-                    b.ToTable("Throw");
+                    b.ToTable("Throw", (string)null);
                 });
 
             modelBuilder.Entity("MatchTeam", b =>
@@ -182,7 +182,7 @@ namespace FernFuckersAppBackend.Migrations
 
                     b.HasIndex("TeamsId");
 
-                    b.ToTable("MatchTeam");
+                    b.ToTable("MatchTeam", (string)null);
                 });
 
             modelBuilder.Entity("PlayerTeam", b =>
@@ -197,7 +197,7 @@ namespace FernFuckersAppBackend.Migrations
 
                     b.HasIndex("TeamsId");
 
-                    b.ToTable("PlayerTeam");
+                    b.ToTable("PlayerTeam", (string)null);
                 });
 
             modelBuilder.Entity("ChampionshipTeam", b =>
