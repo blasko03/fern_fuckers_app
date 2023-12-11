@@ -5,15 +5,14 @@ using FernFuckersAppBackend.Models;
 namespace FernFuckersAppBackend.Services;
 public class WonLegService
 {
-#pragma warning disable IDE0060 // Remove unused parameter
-    public static async Task<IServiceResult> Call(ApplicationDbContext context, WonLegParams wonLeg)
-#pragma warning restore IDE0060 // Remove unused parameter
+    public static async Task<IServiceResult> Call(ApplicationDbContext context, Guid id, WonLegParams wonLeg)
     {
-        return await ValidateAndSave.Call(() => Task.Run(() => ValidateData()), () => SaveData(context));
+        return await ValidateAndSave.Call(() => Task.Run(() => ValidateData()), () => SaveData(context, id, wonLeg));
     }
-    private static async Task<WonLegResponse> SaveData(ApplicationDbContext context)
+    private static async Task<WonLegResponse> SaveData(ApplicationDbContext context, Guid id, WonLegParams wonLeg)
     {
-        context.Sets.First().Legs.Add(new Leg { });
+        var Sets = await context.Sets.FindAsync(id);
+        Sets!.Legs.Add(new Leg { TeamId = wonLeg.TeamId });
         await context.SaveChangesAsync();
         return new WonLegResponse();
     }

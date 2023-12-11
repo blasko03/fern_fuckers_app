@@ -5,17 +5,18 @@ import { type Team } from '@/interfaces/Team'
 import { type Player } from '@/interfaces/Player'
 
 interface Props {
+  id: string
   teams: Team[]
   numberOfPlayers: number
   scoring: (p1: number, p2: number) => number
 }
 
-export default function Set ({ teams, numberOfPlayers, scoring }: Props): ReactElement {
-  const wonLeg = async (id: string): Promise<void> => {
-    await fetch(`http://localhost:5093/api/legs/${id}/wonLeg`, {
+export default function Set ({ id, teams, numberOfPlayers, scoring }: Props): ReactElement {
+  const wonLeg = async (teamId: string): Promise<void> => {
+    await fetch(`http://localhost:5093/api/sets/${id}/wonLeg`, {
       method: 'POST',
       body: JSON.stringify({
-        teamId: '3fa85f64-5717-4562-b3fc-2c963f66afa6'
+        teamId
       }),
       headers: {
         'Content-type': 'application/json; charset=UTF-8'
@@ -38,7 +39,7 @@ export default function Set ({ teams, numberOfPlayers, scoring }: Props): ReactE
           {teams.map(team => <tr key={team.id}>
             <td><PlayersSelection players={teams[0].players} numberOfPlayers={numberOfPlayers} /></td>
             <td>{scoring(homePoints, homePoints)}</td>
-            <td><button>-</button><button onClick={() => { void wonLeg('3fa85f64-5717-4562-b3fc-2c963f66afa6') }}>+</button></td>
+            <td><button>-</button><button onClick={() => { void wonLeg(team.id) }}>+</button></td>
             <td><a href='/leg'>Jgri</a></td>
           </tr>)}
         </tbody>
@@ -62,7 +63,6 @@ function PlayersSelection ({ players, numberOfPlayers }: { players: Player[], nu
         'Content-type': 'application/json; charset=UTF-8'
       }
     })
-    console.log('aaaaaaaaaaaaaaa')
   }
 
   return <>

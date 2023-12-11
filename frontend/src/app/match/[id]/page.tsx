@@ -34,7 +34,7 @@ export default function Home ({ params: { id } }: Props): ReactElement {
   console.log(match)
   return (
     <main>
-      {match?.sets.map(set => <Set key={set.id} numberOfPlayers={set.numberPlayers} teams={match.teams} scoring={ wins3Legs } />)}
+      {match?.sets.map(set => <Set key={set.id} id={set.id} numberOfPlayers={set.numberPlayers} teams={match.teams} scoring={ wins3Legs } />)}
     </main>
   )
 }

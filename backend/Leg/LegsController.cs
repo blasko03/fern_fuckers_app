@@ -7,18 +7,18 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace FernFuckersAppBackend.Controllers;
 
-[Route("api/legs")]
+[Route("api")]
 [ApiController]
 public class LegsController : ControllerBase
 {
-    [HttpPost("{id}/wonLeg")]
+    [HttpPost("sets/{id}/wonLeg")]
     public async Task<Results<BadRequest, Ok<WonLegResponse>>> WonLeg([FromBody] WonLegParams param, Guid id, ApplicationDbContext context)
     {
         Console.WriteLine(id);
-        return await ServiceCaller.Call<WonLegResponse>(() => WonLegService.Call(context, param));
+        return await ServiceCaller.Call<WonLegResponse>(() => WonLegService.Call(context, id, param));
     }
 
-    [HttpDelete("{id}")]
+    [HttpDelete("legs/{id}")]
     public Results<BadRequest, Ok<string>> Delete(Guid id)
     {
         Console.WriteLine(id);

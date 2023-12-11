@@ -21,6 +21,8 @@ public class MatchController : ControllerBase
                                           .ThenInclude(set => set.Players)
                                           .Include(match => match.Sets)
                                           .ThenInclude(set => set.Players)
+                                          .Include(match => match.Sets)
+                                          .ThenInclude(set => set.Legs)
                                           .Select(x => (MatchResponse)x)
                                           .FirstAsync();
     }
