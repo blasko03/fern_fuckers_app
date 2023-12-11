@@ -11,8 +11,8 @@ public class WonLegService
     }
     private static async Task<WonLegResponse> SaveData(ApplicationDbContext context, Guid id, WonLegParams wonLeg)
     {
-        var Sets = await context.Sets.FindAsync(id);
-        Sets!.Legs.Add(new Leg { TeamId = wonLeg.TeamId });
+        var sets = await context.Sets.FindAsync(id);
+        sets!.Legs.Add(new Leg { TeamId = wonLeg.TeamId });
         await context.SaveChangesAsync();
         return new WonLegResponse();
     }

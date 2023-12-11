@@ -27,9 +27,10 @@ public class SetResponse
     }
 }
 
-public class LegsResponse {
-    public required Guid Id {get; set;}
-    public required Guid TeamId {get; set;}
+public class LegsResponse
+{
+    public required Guid Id { get; set; }
+    public required Guid TeamId { get; set; }
 
     public static explicit operator LegsResponse(Leg leg)
     {
