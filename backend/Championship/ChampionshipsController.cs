@@ -21,9 +21,6 @@ public class ChampionshipsController : ControllerBase
                                           .ThenInclude(team => team.Players)
                                           .Include(e => e.Matches)
                                           .ThenInclude(match => match.Teams)
-                                          .Include(e => e.Matches)
-                                          .ThenInclude(match => match.Sets)
-                                          .ThenInclude(set => set.Players)
                                           .Select(x => (ChampionshipResponse)x).ToListAsync();
     }
 
@@ -32,19 +29,4 @@ public class ChampionshipsController : ControllerBase
     {
         return await ServiceCaller.Call<ChampionshipResponse>(() => CreateChampionshipService.Call(context, championship));
     }
-    /*
-    [HttpGet("events")]
-    public async Task Events()
-    {
-        var response = Response;
-        response.Headers.Append("Content-Type", "text/event-stream");
-
-        for (var i = 0; true; ++i)
-        {
-            await response.WriteAsync($"data: Controller {i} at {DateTime.Now}\r\r");
-            await response.Body.FlushAsync();
-            await Task.Delay(5 * 1000);
-        }
-    }
-    */
 }

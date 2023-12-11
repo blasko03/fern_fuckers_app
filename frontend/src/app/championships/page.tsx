@@ -1,12 +1,7 @@
 'use client'
 import { serverData } from '@/utils/server_data'
-import { type UUID } from 'crypto'
 import { useEffect, type ReactElement, useState } from 'react'
-
-interface Championship {
-  id: UUID
-  name: string
-}
+import { type Championship } from '../../interfaces/Championship'
 
 export default function Home (): ReactElement {
   const [championships, setChampionships] = useState<Championship[]>()
