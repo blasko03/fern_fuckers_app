@@ -1,4 +1,6 @@
+export const SERVER_ADDRESS: string = 'http://192.168.1.58:5002'
+
 export async function serverData<T> (url: string): Promise<T> {
-  const response = await fetch(`http://localhost:5093/${url}`)
+  const response = await fetch(`${SERVER_ADDRESS}/${url}`)
   return await response.json()
 }

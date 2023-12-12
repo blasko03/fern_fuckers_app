@@ -1,3 +1,4 @@
+import { type Leg } from './Leg'
 import { type Player } from './Player'
 
 export interface Set {
@@ -6,4 +7,5 @@ export interface Set {
   numberLegs: number
   numberPlayers: number
   whoWins: string
+  playedLegs: Leg[]
 }

@@ -3,6 +3,7 @@ import { useState, type ReactElement } from 'react'
 import Select from '../form/select'
 import { type Team } from '@/interfaces/Team'
 import { type Player } from '@/interfaces/Player'
+import { SERVER_ADDRESS } from '@/utils/server_data'
 
 interface Props {
   id: string
@@ -13,7 +14,7 @@ interface Props {
 
 export default function Set ({ id, teams, numberOfPlayers, scoring }: Props): ReactElement {
   const wonLeg = async (teamId: string): Promise<void> => {
-    await fetch(`http://localhost:5093/api/sets/${id}/wonLeg`, {
+    await fetch(`${SERVER_ADDRESS}/api/sets/${id}/wonLeg`, {
       method: 'POST',
       body: JSON.stringify({
         teamId
@@ -50,7 +51,7 @@ export default function Set ({ id, teams, numberOfPlayers, scoring }: Props): Re
 
 function PlayersSelection ({ players, numberOfPlayers }: { players: Player[], numberOfPlayers: number }): ReactElement {
   const setPlayers = async (id: string): Promise<void> => {
-    await fetch(`http://localhost:5093/api/match/${id}/setPlayers`, {
+    await fetch(`${SERVER_ADDRESS}/api/match/${id}/setPlayers`, {
       method: 'PATCH',
       body: JSON.stringify([{
         players: [

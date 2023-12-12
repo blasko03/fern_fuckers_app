@@ -5,7 +5,6 @@ namespace FernFuckersAppBackend.Controllers;
 
 public class ServiceCaller
 {
-
     public static async Task<Results<BadRequest, Ok<ResponseType>>> Call<ResponseType>(Func<Task<IServiceResult>> service)
     {
         var operation = await service();
