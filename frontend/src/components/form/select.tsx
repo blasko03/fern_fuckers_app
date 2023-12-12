@@ -7,14 +7,14 @@ interface Option {
 
 interface Props {
   options: Option[]
-  onChange: () => any
+  onChange: any
 }
 
 export default function Select ({ options, onChange }: Props): ReactElement {
   return (
         <select onChange={onChange}>
             <option>Seleziona</option>
-            { options.map(x => <option key={x.name}>{x.title}</option>) }
+            { options.map(x => <option key={x.name} value={x.name}>{x.title}</option>) }
         </select>
   )
 }

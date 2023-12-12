@@ -69,7 +69,7 @@ export default function Home ({ params: { id } }: Props): ReactElement {
   return (
     <main>
       {match?.sets.flatMap(set => set.playedLegs).length}
-      {match?.sets.map(set => <Set key={set.id} id={set.id} playedLegs={set.playedLegs} numberOfPlayers={set.numberPlayers} teams={match.teams} scoring={ wins3Legs } />)}
+      {match?.sets.map(set => <Set key={set.id} id={set.id} matchId={match.id} playedLegs={set.playedLegs} numberOfPlayers={set.numberPlayers} teams={match.teams} scoring={ wins3Legs } />)}
     </main>
   )
 }
