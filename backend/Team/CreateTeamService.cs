@@ -28,7 +28,6 @@ public class CreateTeamService
             errors.Add("Name too short");
         }
 
-        Console.WriteLine(await context.Players.Where(player => team.Players.Distinct().Contains(player.Id)).CountAsync());
         if (await context.Players.Where(player => team.Players.Distinct().Contains(player.Id)).CountAsync() < 2)
         {
             errors.Add("Not enought players");

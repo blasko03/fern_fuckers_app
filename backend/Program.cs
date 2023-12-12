@@ -10,7 +10,7 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddDbContext<ApplicationDbContext>(
+builder.Services.AddDbContextPool<ApplicationDbContext>(
         options => options.UseNpgsql(@"Host=localhost;Username=postgres;Password=postgres;Database=postgres"));
 var app = builder.Build();
 

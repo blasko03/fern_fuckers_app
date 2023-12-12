@@ -22,7 +22,7 @@ public class MatchController : ControllerBase
                                           .Include(match => match.Teams)
                                           .ThenInclude(set => set.Players)
                                           .Include(match => match.Sets)
-                                          .ThenInclude(set => set.Players)
+                                          // .ThenInclude(set => set.Players)
                                           .Include(match => match.Sets)
                                           .ThenInclude(set => set.Legs)
                                           .Select(x => (MatchResponse)x)
@@ -32,13 +32,12 @@ public class MatchController : ControllerBase
     [HttpPatch("{id}/setPlayers")]
     public async Task<Results<BadRequest, Ok<SetPlayersResponse>>> SetPlayers([FromBody] List<SetPlayersParams> matchPlayers, Guid id, ApplicationDbContext context)
     {
-        return await ServiceCaller.Call<SetPlayersResponse>(() => SetPlayersService.Call(context, matchPlayers.First(), id));
+        return await ServiceCaller.Call<SetPlayersResponse>(() => SetPlayersService.Call(context, matchPlayers, id));
     }
 
     [HttpGet("{id}/matchEvents")]
     public async Task Events(ApplicationDbContext context, [FromQuery] DateTime lastEvent, Guid id)
     {
-        Console.WriteLine("new connection");
         var response = Response;
         response.Headers.Append("Content-Type", "text/event-stream");
         var lastQuery = lastEvent;

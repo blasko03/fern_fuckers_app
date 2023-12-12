@@ -6,11 +6,20 @@ public class Set
 {
     public Guid Id { get; set; }
     public Guid MatchId { get; set; }
+    public Match? Match { get; set; }
     public required int NumberPlayers { get; set; }
     public required int NumberLegs { get; set; }
     public required SetWinningRule WhoWins { get; set; }
-    public List<Player> Players { get; set; } = [];
+    public List<SetMatchTeam> SetMatchTeam { get; set; } = [];
     public List<Leg> Legs { get; set; } = [];
+}
+
+public class SetMatchTeam
+{
+    public Guid Id { get; set; }
+    public required Player Player { get; set; }
+    public required Team Team { get; set; }
+    public required Set Set { get; set; }
 }
 
 public enum SetWinningRule

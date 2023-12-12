@@ -12,7 +12,6 @@ export class EventSourceListner {
     this.onMessageAction = onMessageAction
     this.lastEvent = lastEvent
     this.connectToEventSource()
-    console.log('created')
   }
 
   updateLastEvent (lastEvent: string): void {
@@ -30,7 +29,6 @@ export class EventSourceListner {
     if (this.lastEvent !== this.lastRequestedEvent) {
       this.eventSource?.close()
       this.connectToEventSource()
-      console.log('created new source')
     }
   }
 
