@@ -1,6 +1,6 @@
 'use client'
 import { type Championship } from '@/interfaces/Championship'
-import { serverData } from '@/utils/server_data'
+import { serverData } from '@/utils/serverData'
 import { useState, type ReactElement, useEffect } from 'react'
 
 interface Props {

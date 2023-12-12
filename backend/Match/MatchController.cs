@@ -47,12 +47,13 @@ public class MatchController : ControllerBase
             var legs = await context.Legs.Where(leg => leg.CreatedDate > lastQuery)
                                          .Where(leg => leg.Set!.MatchId == id)
                                          .ToListAsync();
-            if(legs.Count() > 0) {
+            if (legs.Count > 0)
+            {
                 lastQuery = legs.Max(x => x.CreatedDate);
                 await response.WriteAsync($"data: {JsonSerializer.Serialize(legs.Select(leg => (WonLegResponse)leg), CamelCaseJsonSerializer.Options())}\r\r");
                 await response.Body.FlushAsync();
             }
-            
+
             await response.WriteAsync($"data: \r\r");
             await response.Body.FlushAsync();
             await Task.Delay(5000, HttpContext.RequestAborted);

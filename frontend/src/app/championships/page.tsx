@@ -1,5 +1,5 @@
 'use client'
-import { serverData } from '@/utils/server_data'
+import { serverData } from '@/utils/serverData'
 import { useEffect, type ReactElement, useState } from 'react'
 import { type Championship } from '../../interfaces/Championship'
 

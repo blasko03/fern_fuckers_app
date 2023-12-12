@@ -3,16 +3,18 @@ import { useState, type ReactElement } from 'react'
 import Select from '../form/select'
 import { type Team } from '@/interfaces/Team'
 import { type Player } from '@/interfaces/Player'
-import { SERVER_ADDRESS } from '@/utils/server_data'
+import { SERVER_ADDRESS } from '@/utils/serverData'
+import { type Leg } from '@/interfaces/Leg'
 
 interface Props {
   id: string
   teams: Team[]
   numberOfPlayers: number
   scoring: (p1: number, p2: number) => number
+  playedLegs: Leg[]
 }
 
-export default function Set ({ id, teams, numberOfPlayers, scoring }: Props): ReactElement {
+export default function Set ({ id, teams, numberOfPlayers, scoring, playedLegs }: Props): ReactElement {
   const wonLeg = async (teamId: string): Promise<void> => {
     await fetch(`${SERVER_ADDRESS}/api/sets/${id}/wonLeg`, {
       method: 'POST',
@@ -40,7 +42,7 @@ export default function Set ({ id, teams, numberOfPlayers, scoring }: Props): Re
           {teams.map(team => <tr key={team.id}>
             <td><PlayersSelection players={teams[0].players} numberOfPlayers={numberOfPlayers} /></td>
             <td>{scoring(homePoints, homePoints)}</td>
-            <td><button>-</button><button onClick={() => { void wonLeg(team.id) }}>+</button></td>
+            <td>{playedLegs.filter(leg => leg.teamId === team.id).length} <button>-</button><button onClick={() => { void wonLeg(team.id) }}>+</button></td>
             <td><a href='/leg'>Jgri</a></td>
           </tr>)}
         </tbody>

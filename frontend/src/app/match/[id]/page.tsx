@@ -2,8 +2,10 @@
 import { useState, type ReactElement, useEffect, useRef } from 'react'
 import Set from '../../../components/match/Set'
 import { type Match } from '@/interfaces/Match'
-import { SERVER_ADDRESS, serverData } from '@/utils/server_data'
+import { serverData } from '@/utils/serverData'
 import { type Leg } from '@/interfaces/Leg'
+import { filteredData } from '@/utils/array'
+import { EventSourceListner } from '@/utils/EventSourceListner'
 
 interface Props {
   params: {
@@ -27,62 +29,47 @@ function whoWins (p1: number, p2: number): number {
 
 export default function Home ({ params: { id } }: Props): ReactElement {
   const [match, setMatch] = useState<Match>()
-  const [legEvents, setLegEvents] = useState<Leg[]>([])
-  const [isConnected, setIsConnected] = useState<boolean>(false)
+  const matchEventSource = useRef<EventSourceListner>()
   const getData = async (): Promise<void> => {
     const matchRes = await serverData<Match>(`api/match/${id}`)
     setMatch(matchRes)
-    setLegEvents(matchRes.sets.flatMap(set => set.playedLegs))
   }
-  /*
-  useEffect(() => {
-    setLastEvent(match?.sets.flatMap(set => set.playedLegs).map(x => x.createdDate).sort().reverse()[0])
-  }, [match])
-*/
+  function addEventsToMatch (events: Leg[]): void {
+    setMatch(match => {
+      if (match !== undefined) {
+        return {
+          ...match,
+          sets: match.sets.map(set => ({
+            ...set,
+            playedLegs: filteredData([...set.playedLegs, ...events.filter(e => e.setId === set.id)])
+          }))
+        }
+      }
+    })
+  }
 
   useEffect(() => {
     getData().catch(error => { console.log(error) })
   }, [])
+
   useEffect(() => {
-    if (match !== undefined && !isConnected) {
-      const lastEvent = legEvents.map(x => x.createdDate).sort().reverse()[0]
-      console.log('changed')
-      const source = new EventSource(`${SERVER_ADDRESS}/api/match/${id}/matchEvents?lastEvent=${lastEvent}`)
-      const onMessage = (event: MessageEvent<any>): void => {
-        console.log('aaaa')
-        const data = event.data
-        console.log(data)
-        if (data !== '') {
-          setLegEvents(e => [...e, ...JSON.parse(event.data)])
-        }
-      }
-      source.onmessage = onMessage
-
-      source.onerror = (error: any) => {
-        if (isConnected) {
-          console.log(error)
-          console.log(lastEvent)
-          setIsConnected(false)
-          source.removeEventListener('onmessage', onMessage)
-          source.removeEventListener('onerror', onMessage)
-          source.close()
-        }
-      }
-      source.onopen = () => {
-        setIsConnected(true)
-      }
-      /* return function cleanupListener () {
-        source.removeEventListener('onmessage', onMessage)
-        source.close()
-      } */
+    if (match != null && matchEventSource.current === undefined) {
+      matchEventSource.current = new EventSourceListner(id,
+        match.sets.flatMap(set => set.playedLegs).map(x => x.createdDate).sort().reverse()[0],
+        addEventsToMatch)
     }
-  }, [isConnected, match])
+  }, [match])
 
-  console.log(legEvents)
+  useEffect(() => {
+    if (match != null && matchEventSource.current !== undefined) {
+      matchEventSource.current?.updateLastEvent(match.sets.flatMap(set => set.playedLegs).map(x => x.createdDate).sort().reverse()[0])
+    }
+  }, [match])
+
   return (
     <main>
-      {legEvents.length}
-      {match?.sets.map(set => <Set key={set.id} id={set.id} numberOfPlayers={set.numberPlayers} teams={match.teams} scoring={ wins3Legs } />)}
+      {match?.sets.flatMap(set => set.playedLegs).length}
+      {match?.sets.map(set => <Set key={set.id} id={set.id} playedLegs={set.playedLegs} numberOfPlayers={set.numberPlayers} teams={match.teams} scoring={ wins3Legs } />)}
     </main>
   )
 }
