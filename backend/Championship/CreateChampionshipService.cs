@@ -15,11 +15,12 @@ public class CreateChampionshipService
     private static async Task<ChampionshipResponse> SaveData(ApplicationDbContext context, ChampionshipParams championship)
     {
         var c = (await context.Championships.AddAsync((Championship)championship)).Entity;
-        c.Teams.AddRange(context.Teams.Where(team => championship.Teams.Contains(team.Id)).ToList());
+        var teams = await context.Teams.Where(team => championship.Teams.Contains(team.Id)).ToListAsync();
+        c.Teams.AddRange(teams);
 
-        var matches = c.Teams.Take(c.Teams.Count - 1).Select(team1 =>
+        var matches = teams.Select(team1 =>
         {
-            return c.Teams.Where(team2 => team1.Id != team2.Id).Select(team2 =>
+            return teams.Where(team2 => team1.Id != team2.Id).Select(team2 =>
             {
                 var match = new Match { };
                 match.Teams.AddRange([team1, team2]);
