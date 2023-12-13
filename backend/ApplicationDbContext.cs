@@ -9,5 +9,5 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
     public DbSet<Match> Matches { get; set; }
     public DbSet<Set> Sets { get; set; }
     public DbSet<Leg> Legs { get; set; }
-    public DbSet<SetMatchTeam> SetMatchTeam { get; set; }
+    public DbSet<SetPlayers> SetPlayers { get; set; }
 }

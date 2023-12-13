@@ -1,11 +1,15 @@
 import { type Leg } from './Leg'
-import { type Player } from './Player'
 
 export interface Set {
   id: string
-  players: Player[]
+  players: SetPlayers[]
   numberLegs: number
   numberPlayers: number
   whoWins: string
   playedLegs: Leg[]
+}
+
+export interface SetPlayers {
+  teamId: string
+  playerId: string | undefined
 }

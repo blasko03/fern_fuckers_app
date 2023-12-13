@@ -26,16 +26,16 @@ public class SetPlayersService
     {
         var set = await context.Sets.Where(set => set.Id == legPlayers.SetId)
                                     .Where(set => set.MatchId == id)
-                                    .Include(set => set.SetMatchTeam)
+                                    .Include(set => set.SetPlayers)
                                     .FirstAsync();
         var team = await context.Teams.Include(team => team.Players)
                                       .Where(team => team.Id == legPlayers.TeamId)
                                       .FirstAsync();
         var setTeamPlayers = team.Players.Where(player => legPlayers.Players
                                   .Contains(player.Id))
-                                  .Select(player => new SetMatchTeam { Set = set, Player = player, Team = team! });
-        set!.SetMatchTeam.RemoveAll(x => x.Team == team);
-        set!.SetMatchTeam.AddRange(setTeamPlayers);
+                                  .Select(player => new SetPlayers { Set = set, Player = player, Team = team! });
+        set!.SetPlayers.RemoveAll(x => x.Team == team);
+        set!.SetPlayers.AddRange(setTeamPlayers);
         await context.SaveChangesAsync();
         return new SetPlayersResponse { };
     }

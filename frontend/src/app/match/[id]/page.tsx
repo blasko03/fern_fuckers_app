@@ -30,7 +30,7 @@ function whoWins (p1: number, p2: number): number {
 export default function Home ({ params: { id } }: Props): ReactElement {
   const [match, setMatch] = useState<Match>()
   const matchEventSource = useRef<EventSourceListner>()
-  const getData = async (): Promise<void> => {
+  const getData = async (id: string): Promise<void> => {
     const matchRes = await serverRequest<Match>(`/api/match/${id}`)
     setMatch(matchRes)
   }
@@ -48,13 +48,29 @@ export default function Home ({ params: { id } }: Props): ReactElement {
     })
   }
 
+  type PlayerOrUndefined = string | undefined
+
+  function updateSetPlayers (teamId: string, players: PlayerOrUndefined[]): void {
+    setMatch(match => {
+      if (match !== undefined) {
+        return {
+          ...match,
+          sets: match.sets.map(set => ({
+            ...set,
+            players: [...set.players.filter(p => p).filter(x => x.teamId !== teamId), ...players.map(p => ({ playerId: p, teamId }))]
+          }))
+        }
+      }
+    })
+  }
+
   useEffect(() => {
-    getData().catch(error => { console.log(error) })
-  }, [])
+    getData(id).catch(error => { console.log(error) })
+  }, [id])
 
   useEffect(() => {
     if (match != null && matchEventSource.current === undefined) {
-      matchEventSource.current = new EventSourceListner(id,
+      matchEventSource.current = new EventSourceListner(match.id,
         match.sets.flatMap(set => set.playedLegs).map(x => x.createdDate).sort().reverse()[0],
         addEventsToMatch)
     }
@@ -69,7 +85,12 @@ export default function Home ({ params: { id } }: Props): ReactElement {
   return (
     <main>
       {match?.sets.flatMap(set => set.playedLegs).length}
-      {match?.sets.map(set => <Set key={set.id} id={set.id} matchId={match.id} playedLegs={set.playedLegs} numberOfPlayers={set.numberPlayers} teams={match.teams} scoring={ wins3Legs } />)}
+      {match?.sets.map(set => <Set key={set.id}
+                                   updateSetPlayers={updateSetPlayers}
+                                   set={set}
+                                   matchId={match.id}
+                                   teams={match.teams}
+                                   scoring={ wins3Legs } />)}
     </main>
   )
 }

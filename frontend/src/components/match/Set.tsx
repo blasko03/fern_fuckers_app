@@ -1,30 +1,23 @@
 'use client'
-import { useState, type ReactElement, type ChangeEvent } from 'react'
-import Select from '../form/select'
+import { useState, type ReactElement } from 'react'
 import { type Team } from '@/interfaces/Team'
-import { SERVER_ADDRESS } from '@/utils/serverData'
-import { type Leg } from '@/interfaces/Leg'
+import { FETCH_METHODS, serverRequest } from '@/utils/serverData'
+import { type Set } from '@/interfaces/Set'
+import { PlayersSelection } from './PlayerSelection'
+
+type PlayerOrUndefined = string | undefined
 
 interface Props {
-  id: string
+  set: Set
   matchId: string
   teams: Team[]
-  numberOfPlayers: number
   scoring: (p1: number, p2: number) => number
-  playedLegs: Leg[]
+  updateSetPlayers: (teamId: string, players: PlayerOrUndefined[]) => void
 }
 
-export default function Set ({ id, matchId, teams, numberOfPlayers, scoring, playedLegs }: Props): ReactElement {
+export default function SetComponent ({ set: { id, numberPlayers, playedLegs, players }, matchId, teams, scoring, updateSetPlayers }: Props): ReactElement {
   const wonLeg = async (teamId: string): Promise<void> => {
-    await fetch(`${SERVER_ADDRESS}/api/sets/${id}/wonLeg`, {
-      method: 'POST',
-      body: JSON.stringify({
-        teamId
-      }),
-      headers: {
-        'Content-type': 'application/json; charset=UTF-8'
-      }
-    })
+    await serverRequest<unknown>(`/api/sets/${id}/wonLeg`, FETCH_METHODS.POST, { teamId })
   }
 
   const [homePoints] = useState(0)
@@ -40,7 +33,12 @@ export default function Set ({ id, matchId, teams, numberOfPlayers, scoring, pla
         </thead>
         <tbody>
           {teams.map(team => <tr key={team.id}>
-            <td><PlayersSelection team={team} numberOfPlayers={numberOfPlayers} setId={id} matchId={matchId} /></td>
+            <td><PlayersSelection team={team}
+                                  numberOfPlayers={numberPlayers}
+                                  setId={id}
+                                  matchId={matchId}
+                                  updateSetPlayers={updateSetPlayers}
+                                  players={players.filter(p => p.teamId === team.id).map(x => x.playerId)}/></td>
             <td>{scoring(homePoints, homePoints)}</td>
             <td>{playedLegs.filter(leg => leg.teamId === team.id).length} <button>-</button><button onClick={() => { void wonLeg(team.id) }}>+</button></td>
             <td><a href='/leg'>Jgri</a></td>
@@ -49,35 +47,4 @@ export default function Set ({ id, matchId, teams, numberOfPlayers, scoring, pla
       </table>
     </main>
   )
-}
-type PlayerOrUndefined = string | undefined
-
-function PlayersSelection ({ team, numberOfPlayers, setId, matchId }: { team: Team, numberOfPlayers: number, setId: string, matchId: string }): ReactElement {
-  const [selecedPlayers, setSelecedPlayers] = useState<PlayerOrUndefined[]>([...Array(numberOfPlayers)].map(x => undefined))
-  const savePlayers = async (id: string, index: number): Promise<void> => {
-    const players = selecedPlayers.map((item, i) => index === i ? id : item)
-    setSelecedPlayers(players)
-    console.log(players)
-    await fetch(`${SERVER_ADDRESS}/api/match/${matchId}/setPlayers`, {
-      method: 'PATCH',
-      body: JSON.stringify([{
-        players: players.filter(x => x !== null),
-        teamId: team.id,
-        setId
-      }]),
-      headers: {
-        'Content-type': 'application/json; charset=UTF-8'
-      }
-    })
-  }
-
-  const onChange = async (event: ChangeEvent<HTMLSelectElement>, index: number): Promise<void> => {
-    savePlayers(event.target.value, index).catch(x => x)
-  }
-
-  return <>
-    {Array.from(Array(numberOfPlayers).keys()).map((a, index) => <div key={index}>
-        <Select options={team.players.map(p => ({ name: p.id, title: p.name }))} onChange={async (event: any) => { await onChange(event, index) }} />
-      </div>)}
-  </>
 }
