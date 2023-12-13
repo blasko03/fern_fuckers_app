@@ -22,7 +22,7 @@ public class MatchController : ControllerBase
                                           .Include(match => match.Teams)
                                           .ThenInclude(set => set.Players)
                                           .Include(match => match.Sets)
-                                          // .ThenInclude(set => set.Players)
+                                          .ThenInclude(set => set.SetMatchTeam)
                                           .Include(match => match.Sets)
                                           .ThenInclude(set => set.Legs)
                                           .Select(x => (MatchResponse)x)
