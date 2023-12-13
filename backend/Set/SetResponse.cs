@@ -18,7 +18,7 @@ public class SetResponse
         return new SetResponse
         {
             Id = set.Id,
-            Players = set.SetPlayers.Select(x => (SetPlayersResponse) x).ToList(),
+            Players = set.SetPlayers.Select(x => (SetPlayersResponse)x).ToList(),
             NumberPlayers = set.NumberPlayers,
             NumberLegs = set.NumberLegs,
             WhoWins = set.WhoWins.ToString(),
