@@ -36,7 +36,7 @@ public class MatchController : ControllerBase
     }
 
     [HttpGet("{id}/matchEvents")]
-    public async Task Events(ApplicationDbContext context, [FromQuery] DateTime lastEvent, Guid id)
+    public async Task Events(ApplicationDbContext context, [FromQuery] DateTime? lastEvent, Guid id)
     {
         var response = Response;
         response.Headers.Append("Content-Type", "text/event-stream");

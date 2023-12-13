@@ -1,6 +1,20 @@
-export const SERVER_ADDRESS: string = 'http://192.168.1.58:5002'
+export const SERVER_ADDRESS: string = 'http://localhost:5002'
 
-export async function serverData<T> (url: string): Promise<T> {
-  const response = await fetch(`${SERVER_ADDRESS}/${url}`)
+export enum FETCH_METHODS {
+  GET = 'GET',
+  POST = 'POST',
+  PUT = 'PUT',
+  PATCH = 'PATCH',
+  DELETE = 'DELETE'
+}
+
+export async function serverRequest<T> (url: string, method: FETCH_METHODS = FETCH_METHODS.GET, body?: unknown): Promise<T> {
+  const response = await fetch(`${SERVER_ADDRESS}${url}`, {
+    method,
+    body: body === undefined ? undefined : JSON.stringify(body),
+    headers: {
+      'Content-type': 'application/json; charset=UTF-8'
+    }
+  })
   return await response.json()
 }

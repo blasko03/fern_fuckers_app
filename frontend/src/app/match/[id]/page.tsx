@@ -2,7 +2,7 @@
 import { useState, type ReactElement, useEffect, useRef } from 'react'
 import Set from '../../../components/match/Set'
 import { type Match } from '@/interfaces/Match'
-import { serverData } from '@/utils/serverData'
+import { serverRequest } from '@/utils/serverData'
 import { type Leg } from '@/interfaces/Leg'
 import { filteredData } from '@/utils/array'
 import { EventSourceListner } from '@/utils/EventSourceListner'
@@ -31,7 +31,7 @@ export default function Home ({ params: { id } }: Props): ReactElement {
   const [match, setMatch] = useState<Match>()
   const matchEventSource = useRef<EventSourceListner>()
   const getData = async (): Promise<void> => {
-    const matchRes = await serverData<Match>(`api/match/${id}`)
+    const matchRes = await serverRequest<Match>(`/api/match/${id}`)
     setMatch(matchRes)
   }
   function addEventsToMatch (events: Leg[]): void {

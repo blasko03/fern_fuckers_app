@@ -2,20 +2,20 @@
 import Checkbox from '@/components/form/checkbox'
 import Form from '@/components/form/form'
 import TextField from '@/components/form/text_field'
-import { type Player } from '@/interfaces/Player'
+import { type Championship } from '@/interfaces/Championship'
 import { type Team } from '@/interfaces/Team'
 import { FETCH_METHODS, serverRequest } from '@/utils/serverData'
 import { useState, type ReactElement, useEffect } from 'react'
 
-interface TeamParas extends Partial<Team> {
+interface ChampionshipParas extends Partial<Championship> {
   id?: string
 }
 
 export default function Home (): ReactElement {
-  const [formState, setFormState] = useState<TeamParas>({ name: undefined, players: [] })
-  const [players, setPlayers] = useState<Player[]>([])
+  const [formState, setFormState] = useState<ChampionshipParas>({ name: undefined, teams: [] })
+  const [teams, setTeams] = useState<Team[]>([])
   const getData = async (): Promise<void> => {
-    setPlayers(await serverRequest<Player[]>('/api/players'))
+    setTeams(await serverRequest<Team[]>('/api/teams'))
   }
 
   useEffect(() => {
@@ -24,7 +24,7 @@ export default function Home (): ReactElement {
 
   const handleSubmit = async (event: any): Promise<void> => {
     console.log(formState)
-    await serverRequest('/api/teams', FETCH_METHODS.POST, formState)
+    await serverRequest('/api/championships', FETCH_METHODS.POST, formState)
   }
 
   return (
@@ -37,8 +37,8 @@ export default function Home (): ReactElement {
            <TextField state={formState} setState={setFormState} name='name' />
         </div>
         <div className="box">
-          {players.map(player => <div key={player.id}>
-            <Checkbox value={player.id} state={formState} setState={setFormState} name={'players'} /> {player.name}
+          {teams.map(team => <div key={team.id}>
+            <Checkbox value={team.id} state={formState} setState={setFormState} name={'teams'} /> {team.name}
           </div>)}
         </div>
         <div>

@@ -1,6 +1,6 @@
 'use client'
 import { type Championship } from '@/interfaces/Championship'
-import { serverData } from '@/utils/serverData'
+import { serverRequest } from '@/utils/serverData'
 import { useState, type ReactElement, useEffect } from 'react'
 
 interface Props {
@@ -12,7 +12,7 @@ interface Props {
 export default function Home ({ params: { id } }: Props): ReactElement {
   const [championship, setChampionship] = useState<Championship>()
   const getData = async (): Promise<void> => {
-    setChampionship(((await serverData<Championship[]>('api/championships'))).filter(x => x.id === id)[0])
+    setChampionship(((await serverRequest<Championship[]>('/api/championships'))).filter(x => x.id === id)[0])
   }
   useEffect(() => {
     getData().catch(error => { console.log(error) })

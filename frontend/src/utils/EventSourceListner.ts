@@ -33,7 +33,9 @@ export class EventSourceListner {
   }
 
   connectToEventSource = (): void => {
-    this.eventSource = new EventSource(`${SERVER_ADDRESS}/api/match/${this.id}/matchEvents?lastEvent=${this.lastEvent}`)
+    const params: any = { lastEvent: this.lastEvent }
+    const paramsString = Object.keys(params).map((x: string) => params[x] !== undefined ? `${x}=${params[x]}` : undefined).join('&')
+    this.eventSource = new EventSource(`${SERVER_ADDRESS}/api/match/${this.id}/matchEvents?${paramsString}`)
     this.eventSource.onmessage = this.onMessage
     this.eventSource.onerror = this.onError
     this.lastRequestedEvent = this.lastEvent
