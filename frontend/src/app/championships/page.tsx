@@ -1,12 +1,12 @@
 'use client'
-import { serverData } from '@/utils/serverData'
+import { serverRequest } from '@/utils/serverData'
 import { useEffect, type ReactElement, useState } from 'react'
 import { type Championship } from '../../interfaces/Championship'
 
 export default function Home (): ReactElement {
   const [championships, setChampionships] = useState<Championship[]>()
   const getData = async (): Promise<void> => {
-    setChampionships(await serverData<Championship[]>('api/championships'))
+    setChampionships(await serverRequest<Championship[]>('/api/championships'))
   }
 
   useEffect(() => {
@@ -15,10 +15,10 @@ export default function Home (): ReactElement {
   return (
     <main>
       {championships?.map(championship => <div key={championship.id}>
-            <a href={`/championship/${championship.id}`}>{championship.name}</a>
+            <a href={`/championships/${championship.id}`}>{championship.name}</a>
         </div>)}
         <div>
-            <a href='/championship/create'>Crea</a>
+            <a href='/championships/create'>Crea</a>
         </div>
     </main>
   )

@@ -17,5 +17,5 @@ export default function Checkbox ({ state, setState, value, name }: Props): Reac
                 name={name}
                 value={value}
                 onChange={(event) => { onChange({ event, valueUpdate: checkboxType, setState }) }}
-                checked={state.members.includes(value)} />
+                checked={state[name].includes(value)} />
 }

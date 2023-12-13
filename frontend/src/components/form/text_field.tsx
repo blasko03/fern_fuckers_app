@@ -17,6 +17,6 @@ function textType (target: HTMLInputElement): string {
 export default function TextField ({ state, setState, name, type = INPUT_FIELS_TYPES.TEXT }: Props): ReactElement {
   return <input type={type}
                 name={name}
-                value={state.name}
+                value={state[name] !== undefined ? state[name] : ''}
                 onChange={(event) => { onChange({ event, valueUpdate: textType, setState }) }} />
 }
