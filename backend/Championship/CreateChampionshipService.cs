@@ -18,9 +18,9 @@ public class CreateChampionshipService
         var teams = await context.Teams.Where(team => championship.Teams.Contains(team.Id)).ToListAsync();
         c.Teams.AddRange(teams);
 
-        var matches = teams.Select(team1 =>
+        var matches = teams.Select((team1, i) =>
         {
-            return teams.Where(team2 => team1.Id != team2.Id).Select(team2 =>
+            return teams.Skip(i + 1).Where(team2 => team1.Id != team2.Id).Select(team2 =>
             {
                 var match = new Match { };
                 match.Teams.AddRange([team1, team2]);
