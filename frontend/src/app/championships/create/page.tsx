@@ -7,12 +7,12 @@ import { type Team } from '@/interfaces/Team'
 import { FETCH_METHODS, serverRequest } from '@/utils/serverData'
 import { useState, type ReactElement, useEffect } from 'react'
 
-interface ChampionshipParas extends Partial<Championship> {
+interface ChampionshipParams extends Partial<Championship> {
   id?: string
 }
 
 export default function Home (): ReactElement {
-  const [formState, setFormState] = useState<ChampionshipParas>({ name: undefined, teams: [] })
+  const [formState, setFormState] = useState<ChampionshipParams>({ name: undefined, teams: [] })
   const [teams, setTeams] = useState<Team[]>([])
   const getData = async (): Promise<void> => {
     setTeams(await serverRequest<Team[]>('/api/teams'))
@@ -23,7 +23,6 @@ export default function Home (): ReactElement {
   }, [])
 
   const handleSubmit = async (event: any): Promise<void> => {
-    console.log(formState)
     await serverRequest('/api/championships', FETCH_METHODS.POST, formState)
   }
 
