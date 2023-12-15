@@ -38,24 +38,65 @@ public class MatchController : ControllerBase
     [HttpGet("{id}/matchEvents")]
     public async Task Events(ApplicationDbContext context, [FromQuery] DateTime? lastEvent, Guid id)
     {
-        var response = Response;
-        response.Headers.Append("Content-Type", "text/event-stream");
-        var lastQuery = lastEvent;
-        while (true)
+        Response.Headers.Append("Content-Type", "text/event-stream");
+        var legs = await context.Legs.Where(leg => leg.CreatedDate > lastEvent)
+                                     .Where(leg => leg.Set!.MatchId == id)
+                                     .ToListAsync();
+        if (legs.Count > 0)
         {
-            var legs = await context.Legs.Where(leg => leg.CreatedDate > lastQuery)
-                                         .Where(leg => leg.Set!.MatchId == id)
-                                         .ToListAsync();
-            if (legs.Count > 0)
-            {
-                lastQuery = legs.Max(x => x.CreatedDate);
-                await response.WriteAsync($"data: {JsonSerializer.Serialize(legs.Select(leg => (WonLegResponse)leg), CamelCaseJsonSerializer.Options())}\r\r");
-                await response.Body.FlushAsync();
-            }
+            await Response.WriteAsync($"data: {JsonSerializer.Serialize(legs.Select(leg => (WonLegResponse)leg), CamelCaseJsonSerializer.Options())}\r\r");
+            await Response.Body.FlushAsync();
+        }
 
-            await response.WriteAsync($"data: \r\r");
-            await response.Body.FlushAsync();
-            await Task.Delay(5000, HttpContext.RequestAborted);
+        var listner = new MatchEvents();
+        while(true)
+        {
+            var events = await listner.WaitMessages();
+            Console.WriteLine($"New messages {events.Count}");
+            Console.WriteLine(JsonSerializer.Serialize(events, CamelCaseJsonSerializer.Options()));
+            await Response.WriteAsync($"data: {JsonSerializer.Serialize(events, CamelCaseJsonSerializer.Options())}\r\r");
+            await Response.Body.FlushAsync();
         }
     }
+}
+
+public class MatchEvents 
+{
+    private static readonly List<WonLegResponse> s_messages = [];
+    private static readonly List<Task> s_listners = [];
+    private int _lastMessage = 0;
+
+    public static void AddElement(WonLegResponse message)
+    {
+        s_messages.Add(message);
+        foreach(var l in s_listners)
+        {
+            l.Start();
+        }
+        s_listners.RemoveAll(x => true);
+    }
+
+    public async Task<List<WonLegResponse>> WaitMessages()
+    {
+        var t = new Task<List<WonLegResponse>>(GetMessage);
+        s_listners.Add(t);
+        await t;
+        var messages = s_messages.Skip(_lastMessage);
+        _lastMessage = _lastMessage + messages.Count();
+        Console.WriteLine(_lastMessage);
+        return messages.ToList();
+    }
+
+    public static List<WonLegResponse> GetMessage()
+    {
+        return s_messages;
+    }
+/*
+    public static readonly object CounterLock = new object();
+
+...
+lock ( CounterLock )
+{
+    Counter++;
+}*/
 }

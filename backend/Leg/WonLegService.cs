@@ -1,4 +1,5 @@
-﻿using FernFuckersAppBackend.Controllers.Params;
+﻿using FernFuckersAppBackend.Controllers;
+using FernFuckersAppBackend.Controllers.Params;
 using FernFuckersAppBackend.Controllers.Responses;
 using FernFuckersAppBackend.Models;
 
@@ -12,9 +13,12 @@ public class WonLegService
     private static async Task<WonLegResponse> SaveData(ApplicationDbContext context, Guid id, WonLegParams wonLeg)
     {
         var sets = await context.Sets.FindAsync(id);
-        sets!.Legs.Add(new Leg { TeamId = wonLeg.TeamId });
+        var leg = new Leg { TeamId = wonLeg.TeamId };
+        sets!.Legs.Add(leg);
         await context.SaveChangesAsync();
-        return new WonLegResponse();
+        var wl = (WonLegResponse) leg;
+        MatchEvents.AddElement(wl);
+        return wl;
     }
 
     private static List<string> ValidateData()
