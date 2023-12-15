@@ -1,6 +1,6 @@
-﻿using FernFuckersAppBackend.Controllers;
-using FernFuckersAppBackend.Controllers.Params;
+﻿using FernFuckersAppBackend.Controllers.Params;
 using FernFuckersAppBackend.Controllers.Responses;
+using FernFuckersAppBackend.Events;
 using FernFuckersAppBackend.Models;
 
 namespace FernFuckersAppBackend.Services;
@@ -16,7 +16,7 @@ public class WonLegService
         var leg = new Leg { TeamId = wonLeg.TeamId };
         sets!.Legs.Add(leg);
         await context.SaveChangesAsync();
-        var wl = (WonLegResponse) leg;
+        var wl = (WonLegResponse)leg;
         MatchEvents.AddElement(wl);
         return wl;
     }
