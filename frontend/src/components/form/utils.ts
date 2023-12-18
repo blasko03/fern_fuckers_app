@@ -1,6 +1,6 @@
 import { type ChangeEvent, type Dispatch, type SetStateAction } from 'react'
 
-type HashMap = Record<string, any>
+export type HashMap = Record<string, any>
 
 interface Params {
   event: ChangeEvent<HTMLInputElement>
@@ -15,7 +15,8 @@ export function onChange ({ event, valueUpdate, setState }: Params): void {
 }
 
 export interface FormProps {
-  state: HashMap
+  state: any
   setState: Dispatch<SetStateAction<any>>
   name: string
+  isValid?: boolean
 }
