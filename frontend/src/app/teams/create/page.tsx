@@ -1,12 +1,11 @@
 'use client'
-import Checkbox from '@/components/form/checkbox'
+import { CheckboxGroup } from '@/components/form/checkbox_group'
 import Form from '@/components/form/form'
 import TextField from '@/components/form/text_field'
-import { type HashMap } from '@/components/form/utils'
 import { type Player } from '@/interfaces/Player'
 import { type Team } from '@/interfaces/Team'
 import { FETCH_METHODS, serverRequest } from '@/utils/serverData'
-import { useState, type ReactElement, useEffect, type SetStateAction, type Dispatch } from 'react'
+import { useState, type ReactElement, useEffect } from 'react'
 
 interface TeamParas extends Partial<Team> {
   id?: string
@@ -38,6 +37,7 @@ export default function Home (): ReactElement {
            <TextField state={formState} setState={setFormState} name='name' />
         </div>
         <div className="box">
+          Select players
           <CheckboxGroup elements={players.map(p => ({ id: p.id, value: p.name }))} name='players' state={formState} setState={setFormState} />
         </div>
         <div>
@@ -46,37 +46,4 @@ export default function Home (): ReactElement {
       </Form>
     </main>
   )
-}
-
-interface CheckboxType {
-  id: string
-  value: string
-}
-
-interface Props {
-  elements: CheckboxType[]
-  state: HashMap
-  setState: Dispatch<SetStateAction<HashMap>>
-  name: string
-}
-
-function updateSelectectd<T> (elements: T[], id: T): T[] {
-  if (elements.includes(id)) {
-    return elements.filter(x => x !== id)
-  }
-
-  return [...elements, id]
-}
-
-function CheckboxGroup ({ elements, state, setState, name }: Props): ReactElement {
-  console.log(state[name])
-  return <div className='check_box_group'>
-    {
-      elements.map(element => <div key={element.id}
-                                   className={(state[name] as string).includes(element.id) ? 'checked' : 'unchecked'}
-                                   onClick={(event) => { setState(x => ({ ...x, ...{ [name]: updateSelectectd(x[name], element.id) } })) }}>
-        <Checkbox value={element.id} state={state} setState={setState} name={name} /> {element.value}
-      </div>)
-    }
-    </div>
 }

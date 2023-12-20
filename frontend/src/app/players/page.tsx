@@ -14,7 +14,9 @@ export default function Home (): ReactElement {
   }, [])
   return (
     <main>
-      { players.map(player => <div key={player.id}>{player.name} {player.surname}</div>) }
+      <div className='list'>
+        { players.map(player => <div key={player.id}>{player.name} {player.surname}</div>) }
+      </div>
       <div>
         <a href='/players/create'>Crea</a>
       </div>

@@ -46,7 +46,8 @@ input {
     width: 100%;
     box-sizing: border-box;
     &.invalid {
-        background-color: #f5a68c;
+        box-shadow: inset 0px 0px 15px -3px #f5a68c;
+
     }
 }
 
@@ -97,5 +98,12 @@ button {
     }
     div:last-child {
         border-bottom: none;
+    }
+}
+
+.linkList {
+    > a {
+        height: var(--element-height);
+        display: block;
     }
 }

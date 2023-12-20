@@ -1,5 +1,5 @@
 'use client'
-import Checkbox from '@/components/form/checkbox'
+import { CheckboxGroup } from '@/components/form/checkbox_group'
 import Form from '@/components/form/form'
 import TextField from '@/components/form/text_field'
 import { type Championship } from '@/interfaces/Championship'
@@ -36,9 +36,7 @@ export default function Home (): ReactElement {
            <TextField state={formState} setState={setFormState} name='name' />
         </div>
         <div className="box">
-          {teams.map(team => <div key={team.id}>
-            <Checkbox value={team.id} state={formState} setState={setFormState} name={'teams'} /> {team.name}
-          </div>)}
+          <CheckboxGroup elements={teams.map(p => ({ id: p.id, value: p.name }))} name='teams' state={formState} setState={setFormState} />
         </div>
         <div>
            <button className="box">Crea</button>
