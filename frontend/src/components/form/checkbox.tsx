@@ -5,8 +5,9 @@ interface Props extends FormProps<string[]> {
   value: string
 }
 
-function checkboxType<T> (checked: boolean, defaultValue: T, state: FormValue<T[]>): FormValue<T[]> {
-  const newElements = checked ? [...state.value, defaultValue] : state.value.filter(item => item !== defaultValue)
+function checkboxType<T> (checked: boolean, defaultValue: T, state?: FormValue<T[]>): FormValue<T[]> {
+  const value = state?.value ?? []
+  const newElements = checked ? [...value, defaultValue] : value.filter(item => item !== defaultValue)
   return { value: Array.from(new Set(newElements)), touched: true }
 }
 
@@ -15,5 +16,5 @@ export default function Checkbox ({ state, setState, value, name }: Props): Reac
                 name={name}
                 value={value}
                 onChange={(event) => { setState(checkboxType(event.target.checked, event.target.defaultValue, state), name) }}
-                checked={state.value?.includes(value)} />
+                checked={state?.value?.includes(value)} />
 }

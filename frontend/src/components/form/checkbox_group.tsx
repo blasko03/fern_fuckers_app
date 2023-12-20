@@ -11,21 +11,23 @@ interface Props extends FormProps<string[]> {
   elements: CheckboxType[]
   name: string
 }
-export type InputSetState<T> = (elements: FormValue<T>, value: string) => FormValue<T>
+export type InputSetState<T> = (elements: FormValue<T> | undefined, value: string) => FormValue<T>
 
 const updateSelectectd: InputSetState<string[]> = (elements, value) => {
-  if (elements.value.includes(value)) {
-    return { value: elements.value.filter(x => x !== value), touched: true }
+  const elementsValue = elements?.value ?? []
+  if (elementsValue.includes(value)) {
+    return { value: elementsValue.filter(x => x !== value), touched: true }
   }
 
-  return { value: [...elements.value, value], touched: true }
+  return { value: [...elementsValue, value], touched: true }
 }
 
 export function CheckboxGroup ({ elements, state, setState, name }: Props): ReactElement {
+  const value = state?.value ?? []
   return <div className='check_box_group'>
       {
         elements.map(element => <div key={element.id}
-                                     className={state?.value?.includes(element.id) ? 'checked' : 'unchecked'}
+                                     className={value.includes(element.id) ? 'checked' : 'unchecked'}
                                      onClick={(event) => { setState(updateSelectectd(state, element.id), name) }}>
           <Checkbox value={element.id} state={state} setState={setState} name={name} /> {element.value}
         </div>)

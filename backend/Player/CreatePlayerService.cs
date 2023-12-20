@@ -21,12 +21,12 @@ public class CreatePlayerService
     private static List<string> ValidateData(PlayerParams player)
     {
         List<string> errors = [];
-        if (player.Name.Length < 5)
+        if (player.Name.Length < 3)
         {
             errors.Add("Name too short");
         }
 
-        if (player.Surname.Length < 5)
+        if (player.Surname.Length < 3)
         {
             errors.Add("Surname too short");
         }

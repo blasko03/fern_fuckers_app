@@ -40,7 +40,7 @@ public class CreateChampionshipService
     private static async Task<List<string>> ValidateData(ApplicationDbContext context, ChampionshipParams championship)
     {
         List<string> errors = [];
-        if (championship.Name.Length < 5)
+        if (championship.Name.Length < 3)
         {
             errors.Add("Name too short");
         }

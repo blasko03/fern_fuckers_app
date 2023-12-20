@@ -17,6 +17,6 @@ export default function TextField ({ state, setState, name, type = INPUT_FIELS_T
   return <input type={type}
                 name={name}
                 className={isValid ? 'valid' : 'invalid'}
-                value={state.value ?? ''}
+                value={state?.value ?? ''}
                 onChange={(event) => { setState(textType(event.target), name) }} />
 }

@@ -23,7 +23,7 @@ public class CreateTeamService
     private static async Task<List<string>> ValidateData(ApplicationDbContext context, TeamParams team)
     {
         List<string> errors = [];
-        if (team.Name.Length < 5)
+        if (team.Name.Length < 3)
         {
             errors.Add("Name too short");
         }

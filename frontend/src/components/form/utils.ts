@@ -12,12 +12,16 @@ export interface FormValue<T> {
 }
 
 export type FormValues<T> = {
-  [Property in keyof T]: FormValue<T[Property]>;
+  [Property in keyof T]?: FormValue<T[Property]>;
 }
 
 export interface FormProps<T> {
-  state: FormValue<T>
+  state?: FormValue<T>
   setState: (newValue: FormValue<T>, name: string) => void
   name: string
   isValid?: boolean
+}
+
+export type FormValidations<T> = {
+  [Property in keyof T]: Array<string | undefined>;
 }
