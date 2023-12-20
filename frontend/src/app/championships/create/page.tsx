@@ -2,17 +2,24 @@
 import { CheckboxGroup } from '@/components/form/checkbox_group'
 import Form from '@/components/form/form'
 import TextField from '@/components/form/text_field'
+import { updateFormState, type FormValues } from '@/components/form/utils'
+import { StdLayout } from '@/components/layouts/std_layout'
 import { type Championship } from '@/interfaces/Championship'
 import { type Team } from '@/interfaces/Team'
 import { FETCH_METHODS, serverRequest } from '@/utils/serverData'
 import { useState, type ReactElement, useEffect } from 'react'
 
-interface ChampionshipParams extends Partial<Championship> {
-  id?: string
+interface ChampionshipForm extends Omit<Championship, 'id' | 'matches' | 'teams'> {
+  teams: string[]
 }
 
+type StateType = FormValues<ChampionshipForm>
+
 export default function Home (): ReactElement {
-  const [formState, setFormState] = useState<ChampionshipParams>({ name: undefined, teams: [] })
+  const [formState, setFormState] = useState<StateType>({
+    name: { value: '', touched: false },
+    teams: { value: [], touched: false }
+  })
   const [teams, setTeams] = useState<Team[]>([])
   const getData = async (): Promise<void> => {
     setTeams(await serverRequest<Team[]>('/api/teams'))
@@ -22,26 +29,30 @@ export default function Home (): ReactElement {
     getData().catch(error => { console.log(error) })
   }, [])
 
-  const handleSubmit = async (event: any): Promise<void> => {
-    await serverRequest('/api/championships', FETCH_METHODS.POST, formState)
+  const handleSubmit = async (): Promise<void> => {
+    await serverRequest('/api/championships', FETCH_METHODS.POST, Object.keys(formState).reduce((acc, x) => ({ ...acc, [x]: formState[x as keyof StateType].value }), {}))
   }
 
   return (
-    <main>
-      <Form onSubmit={ (e) => {
-        void handleSubmit(e)
+    <StdLayout title = {'Create Championship'}
+               bottom = {<button className="full-width" onClick={() => { void handleSubmit() }}>Crea</button>}>
+      <Form onSubmit={ () => {
+        void handleSubmit()
       }}>
         <div className="box">
             Name
-           <TextField state={formState} setState={setFormState} name='name' />
+           <TextField state={formState.name}
+                      setState={(newValue, name) => { updateFormState(setFormState, name, newValue) }}
+                      name='name' />
         </div>
         <div className="box">
-          <CheckboxGroup elements={teams.map(p => ({ id: p.id, value: p.name }))} name='teams' state={formState} setState={setFormState} />
-        </div>
-        <div>
-           <button className="box">Crea</button>
+          Select Teams
+          <CheckboxGroup elements={teams.map(p => ({ id: p.id, value: p.name }))}
+                         name='teams'
+                         state={formState.teams}
+                         setState={(newValue, name) => { updateFormState(setFormState, name, newValue) }} />
         </div>
       </Form>
-    </main>
+    </StdLayout>
   )
 }

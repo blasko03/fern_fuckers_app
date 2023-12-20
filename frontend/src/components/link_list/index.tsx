@@ -1,9 +1,10 @@
+import Link from 'next/link'
 import { type ReactElement } from 'react'
 
 interface Element {
   id: string
   text: string
-  link: string
+  link?: string
 }
 
 interface Props {
@@ -13,7 +14,7 @@ interface Props {
 export function LinkList ({ elements }: Props): ReactElement {
   return <div className='linkList'>
     {
-      elements.map(element => <a key={element.id} href={element.link}>{element.text}</a>)
+      elements.map(element => element.link != null ? <Link key={element.id} href={element.link}>{element.text}</Link> : <div key={element.id}>{element.text}</div>)
     }
   </div>
 }

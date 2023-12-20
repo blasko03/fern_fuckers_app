@@ -3,6 +3,8 @@ import { serverRequest } from '@/utils/serverData'
 import { useEffect, type ReactElement, useState } from 'react'
 import { type Championship } from '../../interfaces/Championship'
 import { LinkList } from '@/components/link_list'
+import { StdLayout } from '@/components/layouts/std_layout'
+import Link from 'next/link'
 
 export default function Home (): ReactElement {
   const [championships, setChampionships] = useState<Championship[]>([])
@@ -14,12 +16,9 @@ export default function Home (): ReactElement {
     getData().catch(error => { console.log(error) })
   }, [])
   return (
-    <main>
+    <StdLayout title = {'Championships'}
+               bottom = {<Link className='button full-width' href='/championships/create'>Add championship</Link>}>
       <LinkList elements = { championships.map(championship => ({ id: championship.id, text: championship.name, link: `/championships/${championship.id}` })) } />
-
-        <div>
-            <a href='/championships/create'>Crea</a>
-        </div>
-    </main>
+    </StdLayout>
   )
 }

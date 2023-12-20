@@ -2,7 +2,7 @@
     --main-color: #7D55DB;
     --main-color-invers: white;
     --border-radius: 5px;
-    --element-height: 40px;
+    --element-height: 80px;
     --button-width: 130px;
     --light-color: #bbb;
   }
@@ -34,7 +34,6 @@ body {
 }
 
 form {
-    margin: 8px;
     > div {
         margin-top: 16px;
     }
@@ -45,6 +44,7 @@ input {
     height: var(--element-height);
     width: 100%;
     box-sizing: border-box;
+    font-size: 40px;
     &.invalid {
         box-shadow: inset 0px 0px 15px -3px #f5a68c;
 
@@ -55,7 +55,7 @@ input:focus {
     outline: 1px solid var(--main-color);
 }
 
-button {
+button, .button {
     background-color: var(--main-color);
     border-radius: var(--border-radius);
     color: var(--main-color-invers);
@@ -63,6 +63,11 @@ button {
     height: var(--element-height);
     width: var(--button-width);
     box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    font-size: 32px;
 }
 
 .full-width {
@@ -72,8 +77,11 @@ button {
 .heading_secton {
     width: 100%;
     background-color: var(--main-color);
+    color: white;
     height: 20vh;
     border-radius: 0px 0px 20px 20px;
+    padding: 0px 16px;
+    box-sizing: border-box;
 }
 
 .check_box_group {
@@ -102,8 +110,13 @@ button {
 }
 
 .linkList {
-    > a {
+    > a, div {
         height: var(--element-height);
-        display: block;
+        display: flex;
+        border-bottom: 1px solid var(--main-color);
+        align-items: center;
+        text-decoration: none;
+        color: var(--main-color);
+        font-size: 32px;
     }
 }

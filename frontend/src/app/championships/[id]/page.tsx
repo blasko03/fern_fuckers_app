@@ -1,4 +1,6 @@
 'use client'
+import { StdLayout } from '@/components/layouts/std_layout'
+import { LinkList } from '@/components/link_list'
 import { type Championship } from '@/interfaces/Championship'
 import { serverRequest } from '@/utils/serverData'
 import { useState, type ReactElement, useEffect } from 'react'
@@ -20,11 +22,11 @@ export default function Home ({ params: { id } }: Props): ReactElement {
   }, [id])
 
   return (
-    <main className='box'>
-      {championship?.matches.map(match => <div key={match.id}>
-          <a href={`/match/${match.id}`}>{match.teams.map(team => team.name).join(' : ')}</a>
-        </div>
-      )}
-    </main>
+    <StdLayout title = {'Match'}>
+      { championship?.matches != null
+        ? <LinkList elements={championship?.matches.map(match => ({ id: match.id, text: match.teams.map(team => team.name).join(' : '), link: `/match/${match.id}` }))}/>
+        : <div></div>
+      }
+    </StdLayout>
   )
 }

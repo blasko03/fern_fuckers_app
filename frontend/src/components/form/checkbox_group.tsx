@@ -1,34 +1,32 @@
-import { type SetStateAction, type ReactElement, type Dispatch } from 'react'
+import { type ReactElement } from 'react'
 import Checkbox from './checkbox'
-import { type HashMap } from './utils'
+import { type FormValue, type FormProps } from './utils'
 
 interface CheckboxType {
   id: string
   value: string
 }
 
-interface Props {
+interface Props extends FormProps<string[]> {
   elements: CheckboxType[]
-  state: HashMap
-  setState: Dispatch<SetStateAction<HashMap>>
   name: string
 }
+export type InputSetState<T> = (elements: FormValue<T>, value: string) => FormValue<T>
 
-function updateSelectectd<T> (elements: T[], id: T): T[] {
-  if (elements.includes(id)) {
-    return elements.filter(x => x !== id)
+const updateSelectectd: InputSetState<string[]> = (elements, value) => {
+  if (elements.value.includes(value)) {
+    return { value: elements.value.filter(x => x !== value), touched: true }
   }
 
-  return [...elements, id]
+  return { value: [...elements.value, value], touched: true }
 }
 
 export function CheckboxGroup ({ elements, state, setState, name }: Props): ReactElement {
-  console.log(state[name])
   return <div className='check_box_group'>
       {
         elements.map(element => <div key={element.id}
-                                     className={(state[name] as string).includes(element.id) ? 'checked' : 'unchecked'}
-                                     onClick={(event) => { setState(x => ({ ...x, ...{ [name]: updateSelectectd(x[name], element.id) } })) }}>
+                                     className={state?.value?.includes(element.id) ? 'checked' : 'unchecked'}
+                                     onClick={(event) => { setState(updateSelectectd(state, element.id), name) }}>
           <Checkbox value={element.id} state={state} setState={setState} name={name} /> {element.value}
         </div>)
       }

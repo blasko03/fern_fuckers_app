@@ -1,21 +1,19 @@
 import { type ReactElement } from 'react'
-import { type FormProps, onChange } from './utils'
+import { type FormProps, type FormValue } from './utils'
 
-interface Props extends FormProps {
+interface Props extends FormProps<string[]> {
   value: string
 }
 
-function checkboxType (target: HTMLInputElement, elements: string[]): string[] {
-  const value = target.defaultValue
-  const checked = target.checked
-  const newElements = checked ? [...elements, value] : elements.filter(item => item !== value)
-  return Array.from(new Set(newElements))
+function checkboxType<T> (checked: boolean, defaultValue: T, state: FormValue<T[]>): FormValue<T[]> {
+  const newElements = checked ? [...state.value, defaultValue] : state.value.filter(item => item !== defaultValue)
+  return { value: Array.from(new Set(newElements)), touched: true }
 }
 
 export default function Checkbox ({ state, setState, value, name }: Props): ReactElement {
   return <input type='checkbox'
                 name={name}
                 value={value}
-                onChange={(event) => { onChange({ event, valueUpdate: checkboxType, setState }) }}
-                checked={state[name].includes(value)} />
+                onChange={(event) => { setState(checkboxType(event.target.checked, event.target.defaultValue, state), name) }}
+                checked={state.value?.includes(value)} />
 }

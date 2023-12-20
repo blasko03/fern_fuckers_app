@@ -1,6 +1,9 @@
 'use client'
+import { StdLayout } from '@/components/layouts/std_layout'
+import { LinkList } from '@/components/link_list'
 import { type Player } from '@/interfaces/Player'
 import { serverRequest } from '@/utils/serverData'
+import Link from 'next/link'
 import { useEffect, type ReactElement, useState } from 'react'
 
 export default function Home (): ReactElement {
@@ -13,13 +16,9 @@ export default function Home (): ReactElement {
     getData().catch(error => { console.log(error) })
   }, [])
   return (
-    <main>
-      <div className='list'>
-        { players.map(player => <div key={player.id}>{player.name} {player.surname}</div>) }
-      </div>
-      <div>
-        <a href='/players/create'>Crea</a>
-      </div>
-    </main>
+    <StdLayout title = {'Players'}
+               bottom = {<Link className='button full-width' href='/players/create'>Add players</Link>}>
+      <LinkList elements={players.map(player => ({ id: player.id, text: `${player.name} ${player.surname}` }))}/>
+    </StdLayout>
   )
 }

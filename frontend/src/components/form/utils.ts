@@ -1,22 +1,23 @@
-import { type ChangeEvent, type Dispatch, type SetStateAction } from 'react'
+import { type Dispatch, type SetStateAction } from 'react'
 
 export type HashMap = Record<string, any>
 
-interface Params {
-  event: ChangeEvent<HTMLInputElement>
-  valueUpdate: (target: HTMLInputElement, elements: any) => any
-  setState: Dispatch<SetStateAction<HashMap>>
+export function updateFormState<T1, T2> (setState: Dispatch<SetStateAction<FormValues<T1>>>, name: string, newValue: FormValue<T2>): void {
+  setState(f => ({ ...f, [name]: newValue }))
 }
 
-export function onChange ({ event, valueUpdate, setState }: Params): void {
-  const name: keyof HashMap = event.target.name
-
-  setState(f => ({ ...f, [name]: valueUpdate(event.target, f[name] as string) }))
+export interface FormValue<T> {
+  value: T
+  touched: boolean
 }
 
-export interface FormProps {
-  state: any
-  setState: Dispatch<SetStateAction<any>>
+export type FormValues<T> = {
+  [Property in keyof T]: FormValue<T[Property]>;
+}
+
+export interface FormProps<T> {
+  state: FormValue<T>
+  setState: (newValue: FormValue<T>, name: string) => void
   name: string
   isValid?: boolean
 }
