@@ -1,4 +1,4 @@
-export const SERVER_ADDRESS: string = 'http://192.168.1.31:5002'
+export const SERVER_ADDRESS: string = 'http://localhost:5002'
 
 export enum FETCH_METHODS {
   GET = 'GET',

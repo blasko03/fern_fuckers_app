@@ -2,28 +2,41 @@
 import { type ReactElement } from 'react'
 import { type Team } from '@/interfaces/Team'
 import { FETCH_METHODS, serverRequest } from '@/utils/serverData'
-import { WHO_WINS, type Set } from '@/interfaces/Set'
+import { type WHO_WINS, type Set } from '@/interfaces/Set'
 import { PlayersSelection } from './PlayerSelection'
 import { type Leg } from '@/interfaces/Leg'
 
 type PlayerOrUndefined = string | undefined
 
+export type ScoringRules = {
+  [Property in keyof typeof WHO_WINS]: (params: { countMaxScore: number, maxScore: number, teams: string[], playedLegs: Leg[], scores: Record<string, number>, teamId: string }) => number;
+}
+
+const scoringRules: ScoringRules = {
+  ALL_LEGS: ({ countMaxScore, maxScore, teams, playedLegs, scores, teamId }) => {
+    if (countMaxScore === teams.length && playedLegs.length >= 2) {
+      return 1
+    }
+    if (countMaxScore === 1 && scores[teamId] === maxScore && scores[teamId] >= 2) {
+      return 1
+    }
+    return 0
+  },
+  WHO_WINS_FIRST: ({ countMaxScore, scores, teamId, maxScore }) => {
+    if (countMaxScore === 1 && scores[teamId] === maxScore && scores[teamId] >= 3) {
+      return 1
+    }
+
+    return 0
+  }
+}
+
 function getPoints (teamId: string, playedLegs: Leg[], teams: string[], whoWins: WHO_WINS): number {
-  const scores = playedLegs.reduce((acc: any, leg) => ({ ...acc, [leg.teamId]: ((acc[leg.teamId] ?? 0) + 1) }), {})
+  const scores = playedLegs.reduce((acc: Record<string, number>, leg) => ({ ...acc, [leg.teamId]: ((acc[leg.teamId] ?? 0) + 1) }), {})
   const maxScore = Object.keys(scores).reduce((a, v) => Math.max(a, scores[v]), -Infinity)
   const countMaxScore = Object.keys(scores).reduce((a, v) => (scores[v] === maxScore ? a + 1 : a), 0)
 
-  if (WHO_WINS.ALL_LEGS === whoWins && countMaxScore === teams.length && playedLegs.length >= 2) {
-    return 1
-  }
-  if (WHO_WINS.ALL_LEGS === whoWins && countMaxScore === 1 && scores[teamId] === maxScore && scores[teamId] >= 2) {
-    return 1
-  }
-  if (countMaxScore === 1 && scores[teamId] === maxScore && scores[teamId] >= 3) {
-    return 1
-  }
-
-  return 0
+  return scoringRules[whoWins]({ countMaxScore, maxScore, teams, playedLegs, scores, teamId })
 }
 
 const whoWinsDescription = {
