@@ -1,5 +1,6 @@
 :root {
     --main-color: #7D55DB;
+    --main-color-light: #b89cff;
     --main-color-invers: white;
     --border-radius: 5px;
     --element-height: 80px;
@@ -10,6 +11,10 @@
 body {
     color: #001530;
     margin: 0;
+}
+
+h1 > small {
+    font-size: 16px;
 }
 
 .number_keyboard {
@@ -38,7 +43,7 @@ form {
         margin-top: 16px;
     }
 }
-input {
+input, select {
     border: 1px solid var(--light-color);
     border-radius: var(--border-radius);
     height: var(--element-height);
@@ -68,6 +73,7 @@ button, .button {
     justify-content: center;
     text-decoration: none;
     font-size: 32px;
+    cursor: pointer;
 }
 
 .full-width {
@@ -119,4 +125,43 @@ button, .button {
         color: var(--main-color);
         font-size: 32px;
     }
+}
+
+.matchSet {
+    background-color: var(--main-color-light);
+    margin-bottom: 40px;
+    > div {
+        border-bottom: 1px solid var(--light-color);
+        .information {
+            display: flex;
+            padding: 16px;
+            align-items: center;
+            gap: 24px;
+            > * {
+                flex-basis:  auto;
+            }
+            button {
+                border-radius: 100%;
+                width: 80px;
+                height: 80px;
+                box-sizing: border-box;
+                padding: 0;
+            }
+            .wonLegsBox {
+                background-color: var(--light-color);
+                border-radius: var(--border-radius);
+                > h5 {
+                    margin: 8px;
+                }
+                > .numberOfLegs{
+                    font-size: 32px;
+                    background-color: var(--main-color);
+                    border-radius: var(--border-radius);
+                    color: #ff2929;
+                }
+                text-align: center;
+            }
+        }
+    }
+    border-radius: var(--border-radius);
 }

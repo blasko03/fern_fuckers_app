@@ -1,6 +1,7 @@
 'use client'
 import { useState, type ReactElement, useEffect, useRef } from 'react'
 import Set from '../../../components/match/Set'
+import { type Set as MatchSet, type SetPlayers } from '@/interfaces/Set'
 import { type Match } from '@/interfaces/Match'
 import { serverRequest } from '@/utils/serverData'
 import { type Leg } from '@/interfaces/Leg'
@@ -12,20 +13,6 @@ interface Props {
     id: string
   }
 }
-function wins3Legs (p1: number, p2: number): number {
-  if (p1 < 3 && p2 < 3) {
-    return 0
-  }
-  return p1 > p2 ? 1 : 0
-}
-/*
-function whoWins (p1: number, p2: number): number {
-  if (p1 === 0 && p2 === 0) {
-    return 0
-  }
-  return p1 >= p2 ? 1 : 0
-}
-*/
 
 export default function Home ({ params: { id } }: Props): ReactElement {
   const [match, setMatch] = useState<Match>()
@@ -50,14 +37,21 @@ export default function Home ({ params: { id } }: Props): ReactElement {
 
   type PlayerOrUndefined = string | undefined
 
-  function updateSetPlayers (teamId: string, players: PlayerOrUndefined[]): void {
+  function newPlayers ({ setId, set, players, teamId }: { setId: string, set: MatchSet, players: PlayerOrUndefined[], teamId: string }): SetPlayers[] {
+    if (setId === set.id) {
+      return [...set.players.filter(p => p).filter(x => x.teamId !== teamId), ...players.map(p => ({ playerId: p, teamId }))]
+    }
+    return set.players
+  }
+
+  function updateSetPlayers (setId: string, teamId: string, players: PlayerOrUndefined[]): void {
     setMatch(match => {
       if (match !== undefined) {
         return {
           ...match,
           sets: match.sets.map(set => ({
             ...set,
-            players: [...set.players.filter(p => p).filter(x => x.teamId !== teamId), ...players.map(p => ({ playerId: p, teamId }))]
+            players: newPlayers({ setId, set, players, teamId })
           }))
         }
       }
@@ -84,13 +78,12 @@ export default function Home ({ params: { id } }: Props): ReactElement {
 
   return (
     <main>
-      {match?.sets.flatMap(set => set.playedLegs).length}
-      {match?.sets.map(set => <Set key={set.id}
-                                   updateSetPlayers={updateSetPlayers}
-                                   set={set}
-                                   matchId={match.id}
-                                   teams={match.teams}
-                                   scoring={ wins3Legs } />)}
+      {match?.sets.map((set, index) => <Set key={set.id}
+                                            updateSetPlayers={updateSetPlayers}
+                                            set={set}
+                                            matchId={match.id}
+                                            teams={match.teams}
+                                            matchNumber={index + 1} />)}
     </main>
   )
 }

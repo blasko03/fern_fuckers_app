@@ -49,7 +49,7 @@ export default function TeamsForm (): ReactElement {
         </div>
         <div>
           Select Teams
-          <CheckboxGroup elements={players.map(p => ({ id: p.id, value: p.name }))}
+          <CheckboxGroup elements={players.map(p => ({ id: p.id, value: `${p.name} ${p.surname}` }))}
                          { ...field<string[]>('players')} />
         </div>
       </Form>
