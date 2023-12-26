@@ -24,6 +24,12 @@ public class ChampionshipsController : ControllerBase
                                           .Select(x => (ChampionshipResponse)x).ToListAsync();
     }
 
+    [HttpGet("{id}/stats")]
+    public async Task<TeamPointsResponse[]> GetStats(ApplicationDbContext context, Guid id)
+    {
+        return await GetChampionshipStats.CallAsync(context, id);
+    }
+
     [HttpPost]
     public async Task<Results<BadRequest, Ok<ChampionshipResponse>>> Create([FromBody] ChampionshipParams championship, ApplicationDbContext context)
     {
