@@ -9,13 +9,11 @@ public class ChampionshipStats
 {
     public TeamPoints[] TeamRanking { get; set; } = [];
 }
-
 public class TeamPoints
 {
     public required Guid TeamId { get; set; }
     public required int Points { get; set; }
 }
-
 public class TeamPointsResponse
 {
     public required TeamResponse Team { get; set; }
@@ -41,63 +39,95 @@ public class GetChampionshipStats
 
     private static TeamPointsResponse[] CalculateChampionshipPoints(Championship championship)
     {
-        var matchesPoints = championship.Matches
-                                        .SelectMany(match => CalculateMatchPoints(match))
-                                        .Aggregate(new TeamPointsDict(), (acc, match) =>
-                                        {
-                                            acc[match.TeamId] = acc.GetValueOrDefault(match.TeamId, 0) + match.Points;
-                                            return acc;
-                                        });
-        var teams = championship!.Teams;
+        var matchesPoints = AggregateByTeam(championship.Matches.SelectMany(CalculateMatchPoints));
+
         return
         [
-            .. teams.Select(team => new TeamPointsResponse { Team = (TeamResponse)team, Points = matchesPoints.GetValueOrDefault(team.Id, 0) })
-                                .OrderByDescending(x => x.Points)
-,
+            .. championship!.Teams.Select(team => new TeamPointsResponse
+            {
+                Team = (TeamResponse)team,
+                Points = matchesPoints.GetValueOrDefault(team.Id, 0)
+            }).OrderByDescending(x => x.Points)
         ];
     }
 
     private static TeamPoints[] CalculateMatchPoints(Match match)
     {
         var setsPoints = match.Sets.Select(CalculateSetPoints);
-        var setsPointsTotal = setsPoints.SelectMany(x => x)
-                                        .Aggregate(new TeamPointsDict(), (acc, set) =>
-                                        {
-                                            acc[set.TeamId] = acc.GetValueOrDefault(set.TeamId, 0) + set.Points;
-                                            return acc;
-                                        });
-        var concludedSets = setsPoints.Where(set => set!.MaxBy(team => team.Points)!.Points > 0).ToArray();
+        var concluded = setsPoints.Where(set => set!.MaxBy(team => team.Points)!.Points > 0).ToArray();
+        var setsPointsTotal = AggregateByTeam(setsPoints.SelectMany(x => x));
         var maxScore = setsPointsTotal.DefaultIfEmpty().MaxBy(x => x.Value);
         var winners = setsPointsTotal.Where(scores => scores.Value == maxScore.Value).ToArray();
         var teams = match!.Teams;
-        if (winners.Length == teams.Count && concludedSets.Length == match.Sets.Count)
+        return teams.Select(team => new TeamPoints
         {
-            return teams.Select(team => new TeamPoints { TeamId = team.Id, Points = 1 }).ToArray();
+            TeamId = team.Id,
+            Points = MatchPoints(winners.Length, concluded.Length, match.Sets.Count, teams.Count, maxScore.Value, setsPointsTotal.GetValueOrDefault(team.Id, 0))
+        }).ToArray();
+    }
+
+    private static int MatchPoints(int nWinners, int nConcludedSets, int nSets, int nTeams, int maxScore, int score)
+    {
+        if (maxScore > score)
+        {
+            return 0;
         }
 
-        if (winners.Length == 1 && concludedSets.Length == match.Sets.Count)
+        if (nConcludedSets != nSets)
         {
-            return teams.Select(team => new TeamPoints { TeamId = team.Id, Points = maxScore.Value == setsPointsTotal.GetValueOrDefault(team.Id, 0) ? 2 : 0 }).ToArray();
+            return 0;
         }
 
-        return teams.Select(team => new TeamPoints { TeamId = team.Id, Points = 0 }).ToArray();
+        if (nWinners == nTeams)
+        {
+            return 1;
+        }
+
+        if (nWinners == 1)
+        {
+            return 2;
+        }
+
+        return 0;
     }
 
     private static TeamPoints[] CalculateSetPoints(Set set)
     {
-        var legsPoints = set.Legs.Aggregate(new TeamPointsDict(), (acc, leg) =>
-        {
-            acc[leg.TeamId] = acc.GetValueOrDefault(leg.TeamId, 0) + 1;
-            return acc;
-        });
+        var legsPoints = AggregateByTeam(set.Legs.Select(leg => new TeamPoints { TeamId = leg.TeamId, Points = 1 }));
         var maxScore = legsPoints.DefaultIfEmpty().MaxBy(x => x.Value);
-        var teams = set!.Match!.Teams;
 
-        if ((set.WhoWins == SetWinningRule.WHO_WINS_FIRST && maxScore.Value >= set.NumberLegs / 2 + 1) || (set.WhoWins == SetWinningRule.ALL_LEGS && set.Legs.Count >= set.NumberLegs))
+        return set!.Match!.Teams.Select(team => new TeamPoints
         {
-            return teams.Select(team => new TeamPoints { TeamId = team.Id, Points = legsPoints.GetValueOrDefault(team.Id, 0) == maxScore.Value ? 1 : 0 }).ToArray();
+            TeamId = team.Id,
+            Points = SetPoints(set.WhoWins, maxScore.Value, set.Legs.Count, set.NumberLegs, legsPoints.GetValueOrDefault(team.Id, 0))
+        }).ToArray();
+    }
+    private static int SetPoints(SetWinningRule whoWins, int maxScore, int playedLegs, int minLegs, int score)
+    {
+        if (maxScore > score)
+        {
+            return 0;
         }
 
-        return teams.Select(team => new TeamPoints { TeamId = team.Id, Points = 0 }).ToArray();
+        if (whoWins == SetWinningRule.WHO_WINS_FIRST && maxScore >= minLegs / 2 + 1)
+        {
+            return 1;
+        }
+
+        if (whoWins == SetWinningRule.ALL_LEGS && playedLegs >= minLegs)
+        {
+            return 1;
+        }
+
+        return 0;
+    }
+
+    private static TeamPointsDict AggregateByTeam(IEnumerable<TeamPoints> teamPoints)
+    {
+        return teamPoints.Aggregate(new TeamPointsDict(), (acc, res) =>
+        {
+            acc[res.TeamId] = acc.GetValueOrDefault(res.TeamId, 0) + res.Points;
+            return acc;
+        });
     }
 }
