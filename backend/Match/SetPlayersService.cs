@@ -32,8 +32,8 @@ public class SetPlayersService
                                       .Where(team => team.Id == legPlayers.TeamId)
                                       .FirstAsync();
         var setTeamPlayers = team.Players.Where(player => legPlayers.Players
-                                  .Contains(player.Id))
-                                  .Select(player => new SetPlayers { Set = set, Player = player, Team = team! });
+                                         .Contains(player.Id))
+                                         .Select(player => new SetPlayers { Set = set, Player = player, Team = team! });
         set!.SetPlayers.RemoveAll(x => x.Team == team);
         set!.SetPlayers.AddRange(setTeamPlayers);
         await context.SaveChangesAsync();
@@ -42,9 +42,37 @@ public class SetPlayersService
 
     private static async Task<List<string>> ValidateData(ApplicationDbContext context, List<SetPlayersParams> matchPlayers, Guid id)
     {
-        var match = await context.Matches.FindAsync(id);
-        Console.WriteLine(match!.Sets.Count(s => matchPlayers.Select(mp => mp.SetId).Contains(s.Id)) == matchPlayers.Select(mp => mp.SetId).Count());
-        //matchPlayers.Select(async tp => await context.Teams.Include(t => t.Players).AnyAsync(team => team.Id == tp.TeamId && tp.Players.Contains(team.Players.))));
-        return [];
+        var match = await context.Matches.Include(x => x.Sets).Include(x => x.Teams).ThenInclude(t => t.Players).Where(match => match.Id == id).FirstAsync();
+        return matchPlayers.SelectMany(mp => ValidateSetPlayers(match, mp)).ToList();
+    }
+
+    private static List<string> ValidateSetPlayers(Match match, SetPlayersParams setPlayers) {
+        List<string> errors = [];
+        var team = match.Teams.Where(team => team.Id == setPlayers.TeamId).FirstOrDefault();
+        var set = match.Sets.Where(set => set.Id == setPlayers.SetId).FirstOrDefault();
+
+        if (set == null)
+        {
+            errors.Add("wrong setId");
+            return errors;
+        }
+
+        if (team == null)
+        {
+            errors.Add("wrong teamId");
+            return errors;
+        }
+
+        if (team!.Players.Count(p => setPlayers.Players.Contains(p.Id)) != setPlayers.Players.Count)
+        {
+            errors.Add("Players not matching teamId");
+        }
+
+        if (setPlayers.Players.Count > set!.NumberPlayers)
+        {
+            errors.Add("To many players");
+        }
+
+        return errors;
     }
 }
