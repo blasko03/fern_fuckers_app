@@ -15,7 +15,7 @@ interface Props {
 export default function Home ({ params: { id } }: Props): ReactElement {
   const [championship, setChampionship] = useState<Championship>()
   const getData = async (id: string): Promise<void> => {
-    setChampionship(((await serverRequest<Championship[]>('/api/championships'))).filter(x => x.id === id)[0])
+    setChampionship(((await serverRequest<Championship>(`/api/championships/${id}`))))
   }
 
   useEffect(() => {

@@ -17,11 +17,19 @@ public class ChampionshipsController : ControllerBase
     public async Task<List<ChampionshipResponse>> Get(ApplicationDbContext context)
     {
         var teams = context.Teams;
-        return await context.Championships.Include(e => e.Teams)
-                                          .ThenInclude(team => team.Players)
-                                          .Include(e => e.Matches)
-                                          .ThenInclude(match => match.Teams)
-                                          .Select(x => (ChampionshipResponse)x).ToListAsync();
+        return await context.Championships.Select(x => (ChampionshipResponse)x).ToListAsync();
+    }
+    [HttpGet("{id}")]
+    public async Task<ChampionshipResponse> GetOne(ApplicationDbContext context, Guid id)
+    {
+        var teams = context.Teams;
+        return (ChampionshipResponse) await context.Championships
+                                                   .Include(e => e.Teams)
+                                                   .ThenInclude(team => team.Players)
+                                                   .Include(e => e.Matches)
+                                                   .ThenInclude(match => match.Teams)
+                                                   .Where(c => c.Id == id)
+                                                   .FirstAsync();
     }
 
     [HttpGet("{id}/stats")]
