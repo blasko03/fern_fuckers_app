@@ -23,14 +23,20 @@ public class CreateTeamService
     private static async Task<List<string>> ValidateData(ApplicationDbContext context, TeamParams team)
     {
         List<string> errors = [];
+        var nPlatyers = await context.Players.Where(player => team.Players.Distinct().Contains(player.Id)).CountAsync();
         if (team.Name.Length < 3)
         {
             errors.Add("Name too short");
         }
 
-        if (await context.Players.Where(player => team.Players.Distinct().Contains(player.Id)).CountAsync() < 2)
+        if (nPlatyers < 2)
         {
             errors.Add("Not enought players");
+        }
+
+        if (nPlatyers > 6)
+        {
+            errors.Add("Too many players");
         }
 
         if (await context.Teams.Where(t => t.Name == team.Name).AnyAsync())

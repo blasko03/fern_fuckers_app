@@ -40,14 +40,25 @@ public class CreateChampionshipService
     private static async Task<List<string>> ValidateData(ApplicationDbContext context, ChampionshipParams championship)
     {
         List<string> errors = [];
+        var teamsCount = await context.Teams.Where(team => championship.Teams.Distinct().Contains(team.Id)).CountAsync();
+        if (await context.Championships.Where(c => c.Name == championship.Name).AnyAsync())
+        {
+            errors.Add("Championship already exists");
+        }
+
         if (championship.Name.Length < 3)
         {
             errors.Add("Name too short");
         }
 
-        if (await context.Teams.Where(team => championship.Teams.Distinct().Contains(team.Id)).CountAsync() < 2)
+        if (teamsCount < 2)
         {
             errors.Add("Not enought teams");
+        }
+
+        if (teamsCount > 20)
+        {
+            errors.Add("Too many teams");
         }
 
         return errors;
