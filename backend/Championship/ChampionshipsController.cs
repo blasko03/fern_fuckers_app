@@ -23,7 +23,7 @@ public class ChampionshipsController : ControllerBase
     public async Task<ChampionshipResponse> GetOne(ApplicationDbContext context, Guid id)
     {
         var teams = context.Teams;
-        return (ChampionshipResponse) await context.Championships
+        return (ChampionshipResponse)await context.Championships
                                                    .Include(e => e.Teams)
                                                    .ThenInclude(team => team.Players)
                                                    .Include(e => e.Matches)

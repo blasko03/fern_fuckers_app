@@ -46,7 +46,8 @@ public class SetPlayersService
         return matchPlayers.SelectMany(mp => ValidateSetPlayers(match, mp)).ToList();
     }
 
-    private static List<string> ValidateSetPlayers(Match match, SetPlayersParams setPlayers) {
+    private static List<string> ValidateSetPlayers(Match match, SetPlayersParams setPlayers)
+    {
         List<string> errors = [];
         var team = match.Teams.Where(team => team.Id == setPlayers.TeamId).FirstOrDefault();
         var set = match.Sets.Where(set => set.Id == setPlayers.SetId).FirstOrDefault();
