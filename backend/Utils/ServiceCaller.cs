@@ -5,7 +5,7 @@ namespace FernFuckersAppBackend.Controllers;
 
 public class ServiceCaller
 {
-    public static async Task<Results<BadRequest, Ok<ResponseType>>> Call<ResponseType>(Func<Task<IServiceResult>> service)
+    public static async Task<Results<BadRequest<List<string>>, Ok<ResponseType>>> Call<ResponseType>(Func<Task<IServiceResult>> service)
     {
         var operation = await service();
         if (operation.IsSuccess())
@@ -13,6 +13,6 @@ public class ServiceCaller
             return TypedResults.Ok(((Success<ResponseType>)operation).GetResult());
         }
 
-        return TypedResults.BadRequest();
+        return TypedResults.BadRequest(((Error)operation).GetErrors());
     }
 }

@@ -33,6 +33,16 @@ public class CreateTeamService
             errors.Add("Not enought players");
         }
 
+        if (await context.Teams.Where(t => t.Name == team.Name).AnyAsync())
+        {
+            errors.Add("Team already exists");
+        }
+
+        if (await context.Players.Where(player => team.Players.Contains(player.Id)).CountAsync() < 2)
+        {
+            errors.Add("Must select at least 2 players");
+        }
+
         return errors;
     }
 }

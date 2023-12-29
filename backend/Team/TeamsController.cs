@@ -19,7 +19,7 @@ public class TeamsController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<Results<BadRequest, Ok<TeamResponse>>> Create([FromBody] TeamParams team, ApplicationDbContext context)
+    public async Task<Results<BadRequest<List<string>>, Ok<TeamResponse>>> Create([FromBody] TeamParams team, ApplicationDbContext context)
     {
         return await ServiceCaller.Call<TeamResponse>(() => CreateTeamService.Call(context, team));
     }

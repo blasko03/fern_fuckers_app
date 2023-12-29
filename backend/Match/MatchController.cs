@@ -31,7 +31,7 @@ public class MatchController : ControllerBase
     }
 
     [HttpPatch("{id}/setPlayers")]
-    public async Task<Results<BadRequest, Ok<SetPlayersResponse>>> SetPlayers([FromBody] List<SetPlayersParams> matchPlayers, Guid id, ApplicationDbContext context)
+    public async Task<Results<BadRequest<List<string>>, Ok<SetPlayersResponse>>> SetPlayers([FromBody] List<SetPlayersParams> matchPlayers, Guid id, ApplicationDbContext context)
     {
         return await ServiceCaller.Call<SetPlayersResponse>(() => SetPlayersService.Call(context, matchPlayers, id));
     }

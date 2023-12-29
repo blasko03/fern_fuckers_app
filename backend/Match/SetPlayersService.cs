@@ -9,7 +9,7 @@ public class SetPlayersService
 {
     public static async Task<IServiceResult> Call(ApplicationDbContext context, List<SetPlayersParams> matchPlayers, Guid id)
     {
-        return await ValidateAndSave.Call(() => Task.Run(() => ValidateData()), () => SaveData(context, matchPlayers, id));
+        return await ValidateAndSave.Call(() => ValidateData(context, matchPlayers, id), () => SaveData(context, matchPlayers, id));
     }
 
     private static async Task<SetPlayersResponse> SaveData(ApplicationDbContext context, List<SetPlayersParams> matchPlayers, Guid id)
@@ -40,9 +40,11 @@ public class SetPlayersService
         return new SetPlayersResponse { };
     }
 
-    private static List<string> ValidateData()
+    private static async Task<List<string>> ValidateData(ApplicationDbContext context, List<SetPlayersParams> matchPlayers, Guid id)
     {
-
+        var match = await context.Matches.FindAsync(id);
+        Console.WriteLine(match!.Sets.Count(s => matchPlayers.Select(mp => mp.SetId).Contains(s.Id)) == matchPlayers.Select(mp => mp.SetId).Count());
+        //matchPlayers.Select(async tp => await context.Teams.Include(t => t.Players).AnyAsync(team => team.Id == tp.TeamId && tp.Players.Contains(team.Players.))));
         return [];
     }
 }

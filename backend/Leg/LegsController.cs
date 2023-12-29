@@ -12,7 +12,7 @@ namespace FernFuckersAppBackend.Controllers;
 public class LegsController : ControllerBase
 {
     [HttpPost("sets/{id}/wonLeg")]
-    public async Task<Results<BadRequest, Ok<WonLegResponse>>> WonLeg([FromBody] WonLegParams param, Guid id, ApplicationDbContext context)
+    public async Task<Results<BadRequest<List<string>>, Ok<WonLegResponse>>> WonLeg([FromBody] WonLegParams param, Guid id, ApplicationDbContext context)
     {
         return await ServiceCaller.Call<WonLegResponse>(() => WonLegService.Call(context, id, param));
     }
