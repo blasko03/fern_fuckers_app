@@ -20,16 +20,22 @@ public class ChampionshipsController : ControllerBase
         return await context.Championships.Select(x => (ChampionshipResponse)x).ToListAsync();
     }
     [HttpGet("{id}")]
-    public async Task<ChampionshipResponse> GetOne(ApplicationDbContext context, Guid id)
+    public async Task<Results<NotFound, Ok<ChampionshipResponse>>> GetOne(ApplicationDbContext context, Guid id)
     {
         var teams = context.Teams;
-        return (ChampionshipResponse)await context.Championships
+        var championship = await context.Championships
                                                    .Include(e => e.Teams)
                                                    .ThenInclude(team => team.Players)
                                                    .Include(e => e.Matches)
                                                    .ThenInclude(match => match.Teams)
                                                    .Where(c => c.Id == id)
-                                                   .FirstAsync();
+                                                   .FirstOrDefaultAsync();
+        if (championship == null)
+        {
+            return TypedResults.NotFound();
+        }
+
+        return TypedResults.Ok((ChampionshipResponse)championship);
     }
 
     [HttpGet("{id}/stats")]
