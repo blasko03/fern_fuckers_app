@@ -1,4 +1,5 @@
-﻿using FernFuckersAppBackend.Controllers.Params;
+﻿using System.Text.Json;
+using FernFuckersAppBackend.Controllers.Params;
 using FernFuckersAppBackend.Controllers.Responses;
 using FernFuckersAppBackend.Events;
 using FernFuckersAppBackend.Models;
@@ -25,14 +26,13 @@ public class WonLegService
     private static async Task<List<string>> ValidateData(ApplicationDbContext context, Guid id, WonLegParams wonLeg)
     {
         List<string> errors = [];
-        var set = await context.Sets.FindAsync(id);
-
+        var set = await context.Sets.Include(set => set.Legs).Where(set => set.Id == id).FirstAsync();
         if (set!.Legs.Count >= set.NumberLegs)
         {
             errors.Add("Reached maximum number of legs");
         }
 
-        if (await context.Matches.Include(m => m.Teams).Where(m => m.Id == set.MatchId).AnyAsync(m => m.Teams.Select(t => t.Id).Contains(wonLeg.TeamId)))
+        if (!await context.Matches.Include(m => m.Teams).Where(m => m.Id == set.MatchId).AnyAsync(m => m.Teams.Select(t => t.Id).Contains(wonLeg.TeamId)))
         {
             errors.Add("Wrong teamId");
         }
