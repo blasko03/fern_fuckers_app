@@ -33,13 +33,14 @@
  }
 
 :root {
-    --main-color: #7D55DB;
-    --main-color-light: #b89cff;
-    --main-color-invers: white;
+    --color-1: #D7CFEA;
+    --color-2: #BFADE9;
+    --color-3: #9676DE;
+    --color-4: #794DDF;
+    --color-5: #743FEF;
     --border-radius: 5px;
     --element-height: 80px;
     --button-width: 130px;
-    --light-color: #D1BDFE;
   }
 
 body {
@@ -78,7 +79,7 @@ form {
     }
 }
 input, select {
-    border: 1px solid var(--light-color);
+    border: 1px solid var(--color-2);
     border-radius: var(--border-radius);
     height: var(--element-height);
     width: 100%;
@@ -91,13 +92,13 @@ input, select {
 }
 
 input:focus {
-    outline: 1px solid var(--main-color);
+    outline: 1px solid var(--color-4);
 }
 
 button, .button {
-    background-color: var(--main-color);
+    background-color: var(--color-4);
     border-radius: var(--border-radius);
-    color: var(--main-color-invers);
+    color: var(--color-1);
     border: 0px;
     height: var(--element-height);
     width: var(--button-width);
@@ -116,7 +117,7 @@ button, .button {
 
 .heading_secton {
     width: 100%;
-    background-color: var(--main-color);
+    background-color: var(--color-4);
     color: white;
     height: 20vh;
     border-radius: 0px 0px 20px 20px;
@@ -125,7 +126,7 @@ button, .button {
 }
 
 .check_box_group {
-    border: 1px solid var(--main-color);
+    border: 1px solid var(--color-4);
     border-radius: var(--border-radius);
     max-height: calc(var(--element-height)*4 + 10px);
     overflow: hidden;
@@ -135,12 +136,12 @@ button, .button {
     }
     div {
         height: var(--element-height);
-        border-bottom: 1px solid var(--light-color);
+        border-bottom: 1px solid var(--color-2);
         display: flex;
 	    align-items: center;
         cursor: pointer;
         &.checked {
-            background-color: var(--main-color);
+            background-color: var(--color-4);
             color: white;
         }
     }
@@ -153,19 +154,19 @@ button, .button {
     > a, div {
         height: var(--element-height);
         display: flex;
-        border-bottom: 1px solid var(--main-color);
+        border-bottom: 1px solid var(--color-4);
         align-items: center;
         text-decoration: none;
-        color: var(--main-color);
+        color: var(--color-4);
         font-size: 32px;
     }
 }
 
 .matchSet {
-    background-color: var(--main-color-light);
+    background-color: var(--color-3);
     margin-bottom: 40px;
     > div {
-        border-bottom: 1px solid var(--light-color);
+        border-bottom: 1px solid var(--color-2);
         .information {
             display: flex;
             padding: 16px;
@@ -182,14 +183,14 @@ button, .button {
                 padding: 0;
             }
             .wonLegsBox {
-                background-color: var(--light-color);
+                background-color: var(--color-2);
                 border-radius: var(--border-radius);
                 > h5 {
                     margin: 8px;
                 }
                 > .numberOfLegs{
                     font-size: 32px;
-                    background-color: var(--main-color);
+                    background-color: var(--color-4);
                     border-radius: var(--border-radius);
                     color: #ff2929;
                 }
@@ -201,11 +202,11 @@ button, .button {
 }
 
 .pulse {
-    background-color: var(--light-color);
+    background-color: var(--color-2);
     animation: pulse 2s infinite;
 }
 
 .bounce {
-    background-color: var(--light-color);
+    background-color: var(--color-2);
     animation: bounce 1s infinite;
 }

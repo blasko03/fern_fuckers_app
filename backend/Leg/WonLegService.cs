@@ -1,5 +1,4 @@
-﻿using System.Text.Json;
-using FernFuckersAppBackend.Controllers.Params;
+﻿using FernFuckersAppBackend.Controllers.Params;
 using FernFuckersAppBackend.Controllers.Responses;
 using FernFuckersAppBackend.Events;
 using FernFuckersAppBackend.Models;
