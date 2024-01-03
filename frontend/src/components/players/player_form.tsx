@@ -24,7 +24,8 @@ export default function PlayerForm (): ReactElement {
   }
   return (
     <StdLayout title = {'Create Player'}
-               bottom = {<button className="full-width" onClick={() => { void submit() }}>{isSubmtting ? 'sending' : ''} Crea</button>}>
+               bottom = {<button className={['full-width', isSubmtting ? 'pulse' : ''].join(' ')}
+                                 onClick={() => { void submit() }}>{isSubmtting ? 'sending' : ''} Crea</button>}>
       <Form onSubmit={ () => { void submit() }}>
         <div>
             <div>Name {formState?.name?.touched === true && formValidations?.name?.[0]}</div>

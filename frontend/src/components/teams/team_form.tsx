@@ -39,7 +39,8 @@ export default function TeamsForm (): ReactElement {
 
   return (
     <StdLayout title = {'Create team'}
-               bottom = {<button className="full-width" onClick={() => { void submit() }}>Crea</button>}>
+               bottom = {<button className={['full-width', isSubmtting ? 'pulse' : ''].join(' ')}
+                                 onClick={() => { void submit() }}>Crea</button>}>
       <Form onSubmit={ () => {
         void submit()
       }}>

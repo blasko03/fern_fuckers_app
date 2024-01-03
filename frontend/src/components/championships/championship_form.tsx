@@ -36,10 +36,9 @@ export default function ChampionshipForm (): ReactElement {
       succesUrl: '/championships'
     })
   }
-
   return (
     <StdLayout title = {'Create Championship'}
-               bottom = {<button className="full-width" onClick={() => { void submit() }}>Crea</button>}>
+               bottom = {<button className={['full-width', isSubmtting ? 'pulse' : ''].join(' ')} onClick={() => { void submit() }}>Crea</button>}>
       <Form onSubmit={ () => {
         void submit()
       }}>

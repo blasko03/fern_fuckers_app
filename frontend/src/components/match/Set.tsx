@@ -1,5 +1,5 @@
 'use client'
-import { type ReactElement } from 'react'
+import { useState, type ReactElement } from 'react'
 import { type Team } from '@/interfaces/Team'
 import { FETCH_METHODS, serverRequest } from '@/utils/serverData'
 import { type WHO_WINS, type Set } from '@/interfaces/Set'
@@ -53,8 +53,16 @@ interface Props {
 }
 
 export default function SetComponent ({ set: { id, numberPlayers, playedLegs, players, whoWins }, matchNumber, matchId, teams, updateSetPlayers }: Props): ReactElement {
+  const [isSubmitting, setIsSubmitting] = useState(false)
   const wonLeg = async (teamId: string): Promise<void> => {
-    await serverRequest<unknown>(`/api/sets/${id}/wonLeg`, FETCH_METHODS.POST, { teamId })
+    try {
+      setIsSubmitting(true)
+      await serverRequest<unknown>(`/api/sets/${id}/wonLeg`, FETCH_METHODS.POST, { teamId })
+    } catch (error) {
+      console.error(error)
+    } finally {
+      setIsSubmitting(false)
+    }
   }
 
   return (
@@ -69,7 +77,8 @@ export default function SetComponent ({ set: { id, numberPlayers, playedLegs, pl
             <h5>wonLegs</h5>
             <div className='numberOfLegs'>{playedLegs.filter(leg => leg.teamId === team.id).length}</div>
           </div>
-          <div><button onClick={() => { void wonLeg(team.id) }}>+</button></div>
+          <div><button className={isSubmitting ? 'bounce' : ''}
+                       onClick={() => { void wonLeg(team.id) }}>+</button></div>
           <div style={{ flexBasis: '100%' }}><PlayersSelection team={team}
                                 numberOfPlayers={numberPlayers}
                                 setId={id}
