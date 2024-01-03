@@ -15,7 +15,9 @@ public class TeamsController : ControllerBase
     [HttpGet]
     public async Task<List<TeamResponse>> Get(ApplicationDbContext context)
     {
-        return await context.Teams.Include(e => e.Players).Select(x => (TeamResponse)x).ToListAsync();
+        return await context.Teams.OrderBy(t => t.Name.ToLower())
+                                  .Include(e => e.Players)
+                                  .Select(x => (TeamResponse)x).ToListAsync();
     }
 
     [HttpPost]

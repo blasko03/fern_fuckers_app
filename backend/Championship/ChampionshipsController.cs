@@ -17,7 +17,8 @@ public class ChampionshipsController : ControllerBase
     public async Task<List<ChampionshipResponse>> Get(ApplicationDbContext context)
     {
         var teams = context.Teams;
-        return await context.Championships.Select(x => (ChampionshipResponse)x).ToListAsync();
+        return await context.Championships.OrderBy(c => c.Name.ToLower())
+                                          .Select(x => (ChampionshipResponse)x).ToListAsync();
     }
     [HttpGet("{id}")]
     public async Task<Results<NotFound, Ok<ChampionshipResponse>>> GetOne(ApplicationDbContext context, Guid id)

@@ -15,7 +15,9 @@ public class PlayersController : ControllerBase
     [HttpGet]
     public async Task<List<PlayerResponse>> Get(ApplicationDbContext context)
     {
-        return await context.Players.Select(x => (PlayerResponse)x).ToListAsync();
+        return await context.Players.OrderBy(p => p.Name.ToLower())
+                                    .ThenBy(p => p.Surname.ToLower())
+                                    .Select(x => (PlayerResponse)x).ToListAsync();
     }
 
     [HttpPost]
