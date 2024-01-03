@@ -1,3 +1,5 @@
+import { toast } from 'react-toastify'
+
 export const SERVER_ADDRESS: string = 'http://localhost:5002'
 
 export enum FETCH_METHODS {
@@ -16,5 +18,11 @@ export async function serverRequest<T> (url: string, method: FETCH_METHODS = FET
       'Content-type': 'application/json; charset=UTF-8'
     }
   })
-  return await response.json()
+
+  const res = await response.json()
+  if (response.status === 400 && Array.isArray(res)) {
+    res.map(error => toast(error, { theme: 'light' }))
+  }
+
+  return res
 }
