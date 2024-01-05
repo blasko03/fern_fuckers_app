@@ -9,20 +9,18 @@ interface Props {
   team: Team
   numberOfPlayers: number
   setId: string
-  matchId: string
   players: PlayerOrUndefined[]
   updateSetPlayers: (setId: string, teamId: string, players: PlayerOrUndefined[]) => void
 }
 
-export function PlayersSelection ({ team, numberOfPlayers, setId, matchId, players, updateSetPlayers }: Props): ReactElement {
+export function PlayersSelection ({ team, numberOfPlayers, setId, players, updateSetPlayers }: Props): ReactElement {
   const savePlayers = async (id: string, index: number): Promise<void> => {
     const newPlayers = [...Array(numberOfPlayers)].map((_, i) => index === i ? id : players[i])
     updateSetPlayers(setId, team.id, newPlayers)
-    await serverRequest<unknown>(`/api/match/${matchId}/setPlayers`, FETCH_METHODS.PATCH, [{
+    await serverRequest<unknown>(`/api/sets/${setId}/setPlayers`, FETCH_METHODS.PATCH, {
       players: newPlayers.filter(x => x != null),
-      teamId: team.id,
-      setId
-    }])
+      teamId: team.id
+    })
   }
 
   const onChange = async (event: ChangeEvent<HTMLSelectElement>, index: number): Promise<void> => {

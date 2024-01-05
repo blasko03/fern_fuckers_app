@@ -82,7 +82,6 @@ export default function SetComponent ({ set: { id, numberPlayers, playedLegs, pl
           <div style={{ flexBasis: '100%' }}><PlayersSelection team={team}
                                 numberOfPlayers={numberPlayers}
                                 setId={id}
-                                matchId={matchId}
                                 updateSetPlayers={updateSetPlayers}
                                 players={players.filter(p => p.teamId === team.id).map(x => x.playerId)}/>
           </div>

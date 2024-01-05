@@ -1,16 +1,46 @@
 'use client'
-import { useState, type ReactElement, useEffect, useRef } from 'react'
+import { useState, type ReactElement, useEffect, useRef, type Dispatch, type SetStateAction } from 'react'
 import Set from '../../../components/match/Set'
-import { type Set as MatchSet, type SetPlayers } from '@/interfaces/Set'
+import { type UpdatedPlayersEvent, type Set as MatchSet, type SetPlayers } from '@/interfaces/Set'
 import { type Match } from '@/interfaces/Match'
 import { serverRequest } from '@/utils/serverData'
 import { type Leg } from '@/interfaces/Leg'
 import { filteredData } from '@/utils/array'
 import { EventSourceListner } from '@/utils/EventSourceListner'
+import { type EventTypes, type MatchEvents } from '@/interfaces/MatchEvents'
 
 interface Props {
   params: {
     id: string
+  }
+}
+
+const EventHandlers: Record<EventTypes, any> = {
+  WON_LEG: (wonLeg: Leg, setMatch: Dispatch<SetStateAction<Match | undefined>>) => {
+    setMatch(match => {
+      if (match !== undefined) {
+        return {
+          ...match,
+          sets: match.sets.map(set => ({
+            ...set,
+            playedLegs: filteredData(wonLeg.setId === set.id ? [...set.playedLegs, wonLeg] : set.playedLegs)
+          }))
+        }
+      }
+    })
+  },
+  CHANGED_PLAYERS: (event: UpdatedPlayersEvent, setMatch: Dispatch<SetStateAction<Match | undefined>>) => {
+    setMatch(match => {
+      if (match !== undefined) {
+        return {
+          ...match,
+          sets: match.sets.map(set => ({
+            ...set,
+            players: event.setId === set.id ? event.players : set.players
+          }))
+        }
+      }
+    })
   }
 }
 
@@ -21,18 +51,8 @@ export default function Home ({ params: { id } }: Props): ReactElement {
     const matchRes = await serverRequest<Match>(`/api/match/${id}`)
     setMatch(matchRes)
   }
-  function addEventsToMatch (events: Leg[]): void {
-    setMatch(match => {
-      if (match !== undefined) {
-        return {
-          ...match,
-          sets: match.sets.map(set => ({
-            ...set,
-            playedLegs: filteredData([...set.playedLegs, ...events.filter(e => e.setId === set.id)])
-          }))
-        }
-      }
-    })
+  function addEventsToMatch (events: MatchEvents): void {
+    EventHandlers[events.type](events.message, setMatch)
   }
 
   type PlayerOrUndefined = string | undefined

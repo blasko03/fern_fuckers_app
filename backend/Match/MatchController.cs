@@ -1,11 +1,8 @@
 ﻿using System.Text.Json;
-using FernFuckersAppBackend.Controllers.Params;
 using FernFuckersAppBackend.Controllers.Responses;
 using FernFuckersAppBackend.Events;
 using FernFuckersAppBackend.Models;
-using FernFuckersAppBackend.Services;
 using FernFuckersAppBackend.Utils;
-using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -30,12 +27,6 @@ public class MatchController : ControllerBase
                                     .FirstAsync();
     }
 
-    [HttpPatch("{id}/setPlayers")]
-    public async Task<Results<BadRequest<List<string>>, Ok<SetPlayersResponse>>> SetPlayers([FromBody] List<SetPlayersParams> matchPlayers, Guid id, ApplicationDbContext context)
-    {
-        return await ServiceCaller.Call<SetPlayersResponse>(() => SetPlayersService.Call(context, matchPlayers, id));
-    }
-
     [HttpGet("{id}/matchEvents")]
     public async Task Events([FromQuery] DateTime? lastEvent, Guid id)
     {
@@ -45,9 +36,12 @@ public class MatchController : ControllerBase
         var listner = new MatchEvents(lastEvent);
         while (!HttpContext.RequestAborted.IsCancellationRequested)
         {
-            var events = await listner.WaitMessages();
-            await Response.WriteAsync($"data: {JsonSerializer.Serialize(events, CamelCaseJsonSerializer.Options())}\r\r");
-            await Response.Body.FlushAsync();
+            var events = await listner.WaitEvents();
+            foreach (var e in events)
+            {
+                await Response.WriteAsync($"data: {JsonSerializer.Serialize((MatchEventResponse<object>)e, CamelCaseJsonSerializer.Options())}\r\r");
+                await Response.Body.FlushAsync();
+            }
         }
     }
 }

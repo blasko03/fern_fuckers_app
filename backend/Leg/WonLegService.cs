@@ -18,7 +18,7 @@ public class WonLegService
         set!.Legs.Add(leg);
         await context.SaveChangesAsync();
         var wl = (WonLegResponse)leg;
-        MatchEvents.AddElement(wl);
+        MatchEvents.NewEvent(wl, EventTypes.WON_LEG, wl.CreatedDate);
         return wl;
     }
 

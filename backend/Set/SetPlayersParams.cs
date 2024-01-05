@@ -4,5 +4,4 @@ public class SetPlayersParams
 {
     public List<Guid> Players { get; set; } = [];
     public Guid TeamId { get; set; }
-    public Guid SetId { get; set; }
 }

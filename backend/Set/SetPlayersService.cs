@@ -1,5 +1,6 @@
 ﻿using FernFuckersAppBackend.Controllers.Params;
 using FernFuckersAppBackend.Controllers.Responses;
+using FernFuckersAppBackend.Events;
 using FernFuckersAppBackend.Models;
 using Microsoft.EntityFrameworkCore;
 
@@ -7,25 +8,14 @@ namespace FernFuckersAppBackend.Services;
 
 public class SetPlayersService
 {
-    public static async Task<IServiceResult> Call(ApplicationDbContext context, List<SetPlayersParams> matchPlayers, Guid id)
+    public static async Task<IServiceResult> Call(ApplicationDbContext context, SetPlayersParams matchPlayers, Guid id)
     {
         return await ValidateAndSave.Call(() => ValidateData(context, matchPlayers, id), () => SaveData(context, matchPlayers, id));
     }
 
-    private static async Task<SetPlayersResponse> SaveData(ApplicationDbContext context, List<SetPlayersParams> matchPlayers, Guid id)
+    private static async Task<SetTeamPlayersResponse> SaveData(ApplicationDbContext context, SetPlayersParams legPlayers, Guid id)
     {
-        foreach (var matchPlayer in matchPlayers)
-        {
-            await SaveForSet(context, matchPlayer, id);
-        }
-
-        return new SetPlayersResponse { };
-    }
-
-    private static async Task<SetPlayersResponse> SaveForSet(ApplicationDbContext context, SetPlayersParams legPlayers, Guid id)
-    {
-        var set = await context.Sets.Where(set => set.Id == legPlayers.SetId)
-                                    .Where(set => set.MatchId == id)
+        var set = await context.Sets.Where(set => set.Id == id)
                                     .Include(set => set.SetPlayers)
                                     .FirstAsync();
         var team = await context.Teams.Include(team => team.Players)
@@ -37,20 +27,21 @@ public class SetPlayersService
         set!.SetPlayers.RemoveAll(x => x.Team == team);
         set!.SetPlayers.AddRange(setTeamPlayers);
         await context.SaveChangesAsync();
-        return new SetPlayersResponse { };
+        var res = (SetTeamPlayersResponse)set;
+        MatchEvents.NewEvent(res, EventTypes.CHANGED_PLAYERS, DateTime.Now);
+        return res;
     }
 
-    private static async Task<List<string>> ValidateData(ApplicationDbContext context, List<SetPlayersParams> matchPlayers, Guid id)
-    {
-        var match = await context.Matches.Include(x => x.Sets).Include(x => x.Teams).ThenInclude(t => t.Players).Where(match => match.Id == id).FirstAsync();
-        return matchPlayers.SelectMany(mp => ValidateSetPlayers(match, mp)).ToList();
-    }
-
-    private static List<string> ValidateSetPlayers(Match match, SetPlayersParams setPlayers)
+    private static async Task<List<string>> ValidateData(ApplicationDbContext context, SetPlayersParams setPlayers, Guid id)
     {
         List<string> errors = [];
-        var team = match.Teams.Where(team => team.Id == setPlayers.TeamId).FirstOrDefault();
-        var set = match.Sets.Where(set => set.Id == setPlayers.SetId).FirstOrDefault();
+
+        var set = await context.Sets.Include(s => s.Match)
+                                    .ThenInclude(m => m!.Teams)
+                                    .ThenInclude(t => t.Players)
+                                    .Where(set => set.Id == id)
+                                    .FirstOrDefaultAsync();
+        var team = set!.Match!.Teams.Where(t => t.Id == setPlayers.TeamId).FirstOrDefault();
 
         if (set == null)
         {

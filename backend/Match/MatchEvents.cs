@@ -1,13 +1,13 @@
 ﻿using System.Collections.Concurrent;
-using FernFuckersAppBackend.Controllers.Responses;
 
 namespace FernFuckersAppBackend.Events;
+
 public class MatchEvents
 {
-    private static readonly ConcurrentQueue<MatchEvent<WonLegResponse>> s_messages = [];
+    private static readonly ConcurrentQueue<MatchEvent<object>> s_events = [];
     private static readonly ConcurrentQueue<Task> s_listners = new();
     private DateTime _lastMessage;
-    private const int MAX_MESSAGES = 10;
+    private const int MAX_EVENTS = 10;
 
     public MatchEvents(DateTime? lastMessage)
     {
@@ -16,43 +16,43 @@ public class MatchEvents
             _lastMessage = (DateTime)lastMessage;
         }
     }
-    public static void AddElement(WonLegResponse message)
+    public static void NewEvent<T>(T message, EventTypes type, DateTime createdDate)
     {
-        s_messages.Enqueue(new MatchEvent<WonLegResponse>(message, message.CreatedDate));
+        s_events.Enqueue(new MatchEvent<object>(message!, createdDate, type));
         Task lisnter;
         while (s_listners.TryDequeue(out lisnter!))
         {
             lisnter.Start();
         }
 
-        for (var i = 0; i <= s_messages.Count - MAX_MESSAGES; i++)
+        for (var i = 0; i <= s_events.Count - MAX_EVENTS; i++)
         {
-            s_messages.TryDequeue(out _);
+            s_events.TryDequeue(out _);
         }
     }
 
-    public async Task<List<WonLegResponse>> WaitMessages()
+    public async Task<List<MatchEvent<object>>> WaitEvents()
     {
         var t = new Task(() => { });
         s_listners.Enqueue(t);
-        var messages = GetMessages();
-        if (messages.Count > 0)
+        var events = GetEvents();
+        if (events.Count > 0)
         {
-            return messages;
+            return events;
         }
 
         await t;
-        return GetMessages();
+        return GetEvents();
     }
 
-    private List<WonLegResponse> GetMessages()
+    private List<MatchEvent<object>> GetEvents()
     {
-        var messages = s_messages.Where(x => x.CreatedDate > _lastMessage).ToList();
-        if (messages.Count != 0)
+        var events = s_events.Where(x => x.CreatedDate > _lastMessage).ToList();
+        if (events.Count != 0)
         {
-            _lastMessage = messages.Max(x => x.CreatedDate);
+            _lastMessage = events.Max(x => x.CreatedDate);
         }
 
-        return messages.Select(m => m.Message).ToList();
+        return events;
     }
 }

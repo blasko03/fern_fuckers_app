@@ -1,8 +1,9 @@
 'use client'
 
 import { type Team } from '@/interfaces/Team'
+import { EventSourceListner } from '@/utils/EventSourceListner'
 import { serverRequest } from '@/utils/serverData'
-import { useEffect, type ReactElement, useState } from 'react'
+import { useEffect, type ReactElement, useState, useRef } from 'react'
 
 interface Props {
   params: {
@@ -17,9 +18,18 @@ interface TeamPoints {
 
 export default function Stats ({ params: { id } }: Props): ReactElement {
   const [ranking, setRanking] = useState<TeamPoints[]>()
+  const matchEventSource = useRef<EventSourceListner>()
   const getData = async (id: string): Promise<void> => {
     setRanking(((await serverRequest<TeamPoints[]>(`/api/championships/${id}/stats`))))
   }
+
+  useEffect(() => {
+    if (matchEventSource.current === undefined) {
+      matchEventSource.current = new EventSourceListner(id,
+        (new Date()).toISOString(),
+        async () => { await getData(id) })
+    }
+  }, [id])
 
   useEffect(() => {
     getData(id).catch(error => { console.log(error) })
