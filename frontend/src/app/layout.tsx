@@ -9,7 +9,8 @@ const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
   title: 'FernFuckersApp',
-  description: ''
+  description: '',
+  manifest: '/fern_fuckers.webmanifest'
 }
 
 export default function RootLayout ({

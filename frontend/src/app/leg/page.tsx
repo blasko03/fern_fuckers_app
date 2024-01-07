@@ -1,25 +1,6 @@
 'use client'
 import { useState, type ReactElement } from 'react'
-
-function NumberKeyBoard ({ onSubmit }: { onSubmit: (currentScore: number) => void }): ReactElement {
-  const [insertedNumber, setInsertedNumber] = useState<number>(0)
-  return (
-    <>
-      {insertedNumber}
-      <div className='number_keyboard'>
-        {[...Array(9)].map((x, i) => <div key={i + 1} onClick={() => { setInsertedNumber(n => n * 10 + i + 1) }}>{i + 1}</div>)}
-        <div onClick={() => {
-          setInsertedNumber(Math.floor(insertedNumber / 10))
-        }}>canc</div>
-        <div onClick={() => { setInsertedNumber(n => n * 10) }}>0</div>
-        <div onClick={() => {
-          onSubmit(insertedNumber)
-          setInsertedNumber(0)
-        }}>submit</div>
-      </div>
-    </>
-  )
-}
+import NumberKeyBoard from './NumberKeyBoard'
 
 interface GameScore { player: string, score: number }
 

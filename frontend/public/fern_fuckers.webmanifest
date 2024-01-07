@@ -1,0 +1,10 @@
+{
+    "name": "Fern fuckers App",
+    "short_name": "Fern fuckers App",
+    "description": "",
+    "start_url": "/",
+    "display": "fullscreen",
+    "theme_color": "#794DDF",
+    "background_color": "#794DDF",
+    "orientation": "portrait"
+  }

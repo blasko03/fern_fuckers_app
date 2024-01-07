@@ -53,23 +53,30 @@ h1 > small {
 }
 
 .number_keyboard {
-    display: flex;
-    flex-wrap: wrap;
     position: fixed;
     bottom: 0px;
     left: 0;
     right: 0;
-    div {
+    .insertedNumber {
+        border: 3px solid var(--color-4);
+        margin: 16px;
+        border-radius: var(--border-radius);
+        width: 100%;
+        max-width: 300px;
+        padding: 8px;
+    }
+
+    > div{
         display: flex;
-        flex: 0 0 33.333333%;
-        text-align: center;
-        height: 7vh;
-        font-size: 4vh;
-        border: 1px solid black;
-        box-sizing: border-box;
-        justify-content: center;
-        align-items: center;
-        overflow: hidden;
+        flex-wrap: wrap;
+        div {
+            flex: 0 0 33.333333%;
+            box-sizing: border-box;
+            padding: 3px;
+            > button {
+                width: 100%;
+            }
+        }
     }
 }
 
@@ -109,6 +116,9 @@ button, .button {
     text-decoration: none;
     font-size: 32px;
     cursor: pointer;
+    &:disabled {
+        background-color: var(--color-2);
+    }
 }
 
 .full-width {
@@ -209,4 +219,60 @@ button, .button {
 .bounce {
     background-color: var(--color-2);
     animation: bounce 1s infinite;
+}
+
+.pointsTable{
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 22px;
+    td {
+        &:first-child {
+            padding-right: 50px;
+        }
+        text-align: center;
+        border: 1px solid var(--color-3);
+        position: relative;
+        .currentPlayer {
+            color: red;
+            position: absolute;
+            right: 8px;;
+            top: 4px;
+        }
+    }
+    td:first-child {
+        text-align: left;
+    }
+}
+
+.cricket_keyboard {
+    display: flex;
+    flex-wrap: wrap;
+    padding-left: 0;
+    > div {
+        flex: 0 0 33.333333%;
+        box-sizing: border-box;
+        padding: 3px;
+        > button {
+            width: 100%;
+            position: relative;
+            > small {
+                position: absolute;
+                right: 8px;
+                bottom: 8px;
+                color: #ff2929;
+            }
+        }
+    }
+}
+
+.gameNavigation{
+    display: flex;
+    flex-wrap: nowrap;
+    div {
+        max-width: 30%;
+        button {
+            margin: 10px;
+            height: 40px
+        }
+    }
 }
