@@ -2,8 +2,6 @@ name: Docker Image for backend
 
 on:
   create:
-    branches:    
-      - main
     tags:
       - v.f*.*
 

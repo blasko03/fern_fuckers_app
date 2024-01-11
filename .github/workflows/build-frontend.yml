@@ -2,8 +2,6 @@ name: Docker Image for frontend
 
 on:
   create:
-    branches:    
-      - main
     tags:
       - v.b*.*
 
