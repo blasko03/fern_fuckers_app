@@ -5,6 +5,7 @@ WORKDIR /source
 FROM dev as build
 COPY . .
 RUN dotnet nuget locals all --clear
+RUN dotnet restore
 RUN dotnet publish -c Release -o /published
 
 FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS prod
