@@ -16,7 +16,7 @@ COPY --from=build /source/./node_modules/next/dist/ ./node_modules/next/dist
 COPY --from=build /source/.next .next
 COPY --from=build /source/package.json .
 COPY --from=build /source/package-lock.json .
-ENV PATH="${PATH}:/source/./node_modules/next/dist/bin/next"
+ENV PATH="${PATH}:/source/./node_modules/next/dist/bin"
 
 ENTRYPOINT [ "yarn" ] 
 CMD ["start"]
