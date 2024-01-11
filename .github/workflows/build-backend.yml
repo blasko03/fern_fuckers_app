@@ -16,7 +16,7 @@ jobs:
     steps:
     - name: Use Platform Env
       run: |
-        echo "Platform Info: ${{ env.PLATFORM_INFO }}"
+        echo "Platform Info: ${{ runner.arch }}"
     - uses: actions/checkout@v3
     - name: Set up QEMU
       uses: docker/setup-qemu-action@v3
