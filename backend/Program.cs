@@ -11,7 +11,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 builder.Services.AddDbContextPool<ApplicationDbContext>(
-        options => options.UseNpgsql(@"Host=localhost;Username=postgres;Password=postgres;Database=postgres"));
+        options => options.UseNpgsql($"Host={Environment.GetEnvironmentVariable("POSTGRES_HOSTNAME")};Username={Environment.GetEnvironmentVariable("POSTGRES_USER")};Password={Environment.GetEnvironmentVariable("POSTGRES_PASSWORD")};Database={Environment.GetEnvironmentVariable("POSTGRES_DB")}"));
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -19,6 +19,9 @@ if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
+    app.UseCors(builder => builder.AllowAnyMethod()
+                                  .AllowAnyOrigin()
+                                  .AllowAnyHeader());
 }
 
 app.UseHttpsRedirection();
@@ -28,7 +31,4 @@ app.UseAuthorization();
 app.UseStaticFiles();
 app.MapControllers();
 
-app.UseCors(builder => builder.AllowAnyMethod()
-                              .AllowAnyOrigin()
-                              .AllowAnyHeader());
 app.Run();

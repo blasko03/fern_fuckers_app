@@ -11,7 +11,6 @@ export default function Home (): ReactElement {
   const getData = async (): Promise<void> => {
     setChampionships(await serverRequest<Championship[]>('/api/championships'))
   }
-
   useEffect(() => {
     getData().catch(error => { console.log(error) })
   }, [])

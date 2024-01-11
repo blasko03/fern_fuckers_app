@@ -1,6 +1,6 @@
 import { toast } from 'react-toastify'
 
-export const SERVER_ADDRESS: string = 'http://localhost:5002'
+export const SERVER_ADDRESS: string = process.env.BACKEND_URL ?? 'http://localhost:8080' as string
 
 export enum FETCH_METHODS {
   GET = 'GET',
