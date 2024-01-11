@@ -24,15 +24,9 @@ jobs:
       with:
         username: ${{ secrets.DOCKER_USERNAME }}
         password: ${{ secrets.DOCKER_PASSWORD}}
-    - name: Set output
+    - name: Set tag
       id: vars
       run: echo ::set-output name=tag::${GITHUB_REF#refs/*/}
-    - name: Check output
-      env:
-       RELEASE_VERSION: ${{ steps.vars.outputs.tag }}
-      run: |
-        echo $RELEASE_VERSION
-        echo ${{ steps.vars.outputs.tag }}
     - name: Build and push
       uses: docker/build-push-action@v5
       with:
@@ -40,4 +34,4 @@ jobs:
         file: backend/.docker/Dockerfile
         platforms: linux/amd64
         push: true
-        tags: blasko/fern_fuckers_app_backend:${{ github.event.release.tag_name }}
+        tags: blasko/fern_fuckers_app_backend:${{ steps.vars.outputs.tag  }}
