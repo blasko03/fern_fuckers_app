@@ -1,12 +1,13 @@
-FROM mcr.microsoft.com/dotnet/sdk:8.0 as dev
+FROM --platform=$BUILDPLATFORM mcr.microsoft.com/dotnet/sdk:8.0 as dev
+ARG TARGETARCH
 RUN dotnet tool install --global dotnet-ef
 WORKDIR /source
 
 FROM dev as build
 COPY . .
 RUN dotnet nuget locals all --clear
-RUN dotnet restore
-RUN dotnet publish -c Release -o /published
+RUN dotnet restore -a $TARGETARCH
+RUN dotnet publish -c Release -o /published -a $TARGETARCH
 
 FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS prod
 WORKDIR /app
