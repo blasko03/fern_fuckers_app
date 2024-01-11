@@ -27,7 +27,7 @@ jobs:
     - name: Build and push
       uses: docker/build-push-action@v5
       with:
-        context: backend
+        context: "{{defaultContext}}:backend"
         platforms: linux/amd64,linux/arm64
         push: true
         tags: blasko/fern_fuckers_app_backend:1.0.0
