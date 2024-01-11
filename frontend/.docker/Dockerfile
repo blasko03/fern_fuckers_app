@@ -2,9 +2,19 @@ FROM node:20-slim as dev
 WORKDIR /source
 RUN npx next telemetry disable
 
-FROM dev as prod
-WORKDIR /app
+FROM dev as build
+WORKDIR /source
 COPY . .
 RUN yarn
 RUN yarn build
-ENTRYPOINT ["yarn", "start"]
+
+FROM  node:20-slim as prod
+WORKDIR /app
+RUN npm install next
+RUN npx next telemetry disable
+COPY --from=build /source/.next .next
+COPY --from=build /source/package.json .
+COPY --from=build /source/package-lock.json .
+
+ENTRYPOINT [ "yarn" ] 
+CMD ["start"]
