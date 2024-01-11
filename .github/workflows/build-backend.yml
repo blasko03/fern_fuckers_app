@@ -1,7 +1,7 @@
 name: Docker Image for backend
 
 on:
-  create:
+  push:
     tags:
       - backend.v.*.*
 

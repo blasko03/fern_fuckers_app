@@ -1,7 +1,7 @@
 name: Docker Image for frontend
 
 on:
-  create:
+  push:
     tags:
       - frontend.v.*.*
 
