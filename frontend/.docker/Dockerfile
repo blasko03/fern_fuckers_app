@@ -10,7 +10,6 @@ RUN yarn build
 
 FROM  node:20-slim as prod
 WORKDIR /app
-RUN npx next telemetry disable
 
 COPY --from=build /source/./node_modules/next/dist/ ./node_modules/next/dist
 COPY --from=build /source/.next .next
