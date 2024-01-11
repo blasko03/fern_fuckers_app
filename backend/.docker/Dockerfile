@@ -1,4 +1,5 @@
 FROM mcr.microsoft.com/dotnet/sdk:8.0 as dev
+RUN dotnet tool install --global dotnet-ef
 WORKDIR /source
 
 FROM dev as build

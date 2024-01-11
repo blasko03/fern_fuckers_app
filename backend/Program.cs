@@ -11,7 +11,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 builder.Services.AddDbContextPool<ApplicationDbContext>(
-        options => options.UseNpgsql($"Host={Environment.GetEnvironmentVariable("POSTGRES_HOSTNAME")};Username={Environment.GetEnvironmentVariable("POSTGRES_USER")};Password={Environment.GetEnvironmentVariable("POSTGRES_PASSWORD")};Database={Environment.GetEnvironmentVariable("POSTGRES_DB")}"));
+        options => options.UseNpgsql($"Host={Environment.GetEnvironmentVariable("POSTGRES_HOSTNAME")};Username={Environment.GetEnvironmentVariable("POSTGRES_USER")};Database={Environment.GetEnvironmentVariable("POSTGRES_DB")}"));
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

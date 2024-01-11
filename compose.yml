@@ -3,6 +3,7 @@ services:
   postgres:
     image: postgres:${POSTGRES_VERSION}-alpine
     volumes:
+      - /Users/daniel:/home/daniel
       - db:/var/lib/postgresql/data
     environment:
       - POSTGRES_PASSWORD
@@ -31,7 +32,7 @@ services:
     build:
       context: frontend
       dockerfile: .docker/Dockerfile
-      target: prod
+      target: $ENV
 volumes:
   db:
   bin:
