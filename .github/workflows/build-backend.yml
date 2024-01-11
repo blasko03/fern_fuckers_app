@@ -29,4 +29,4 @@ jobs:
       with:
         platforms: linux/amd64,linux/arm64
         push: true
-        tags: blasko/fern_fuckers_app_backend:$GITHUB_REF_NAME
+        tags: blasko/fern_fuckers_app_backend:1.0.0
