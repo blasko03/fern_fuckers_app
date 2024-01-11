@@ -4,7 +4,6 @@ WORKDIR /source
 
 FROM dev as build
 COPY . .
-RUN dotnet restore
 RUN dotnet nuget locals all --clear
 RUN dotnet publish -c Release -o /published
 
