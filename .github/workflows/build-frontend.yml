@@ -3,7 +3,7 @@ name: Docker Image for frontend
 on:
   push:
     tags:
-      - frontend.v.*.*
+      - f.v*.*
 
 jobs:
   build:
