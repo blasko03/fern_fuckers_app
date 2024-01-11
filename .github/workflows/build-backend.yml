@@ -15,5 +15,10 @@ jobs:
 
     steps:
     - uses: actions/checkout@v3
+    - name: Login to docker
+      run: docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
     - name: Build the Docker image
-      run: docker build . --file Dockerfile --tag my-image-name:$(date +%s)
+      run: buildx build . -f ./backend/.docker/Dockerfile \
+               -t blasko/fern_fuckers_app_backend:$GITHUB_REF_NAME \
+               --platform linux/amd64,linux/arm64 \
+               --push
