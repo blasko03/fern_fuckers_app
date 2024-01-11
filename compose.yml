@@ -32,6 +32,11 @@ services:
       context: frontend
       dockerfile: .docker/Dockerfile
       target: $ENV
+    volumes:
+      - ./frontend:/source
+    command: yarn dev
+    ports:
+      - "3000:3000"
 volumes:
   db:
   bin:
