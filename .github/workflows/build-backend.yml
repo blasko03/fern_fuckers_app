@@ -1,11 +1,11 @@
-name: Docker Image CI
+name: Docker Image for backend
 
 on:
   create:
     branches:    
       - main
     tags:
-      - v.b.*.*
+      - v*.*
 
 jobs:
   build:
