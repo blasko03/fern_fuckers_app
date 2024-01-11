@@ -10,9 +10,6 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        arch: [linux/arm64, linux/amd64]
     steps:
     - uses: actions/checkout@v3
     - name: Set up QEMU
@@ -32,6 +29,6 @@ jobs:
       with:
         context: frontend
         file: frontend/.docker/Dockerfile
-        platforms: ${{ matrix.arch }}
+        platforms: linux/arm64,linux/amd64
         push: true
         tags: blasko/fern_fuckers_app_frontend:${{ steps.vars.outputs.tag  }}
