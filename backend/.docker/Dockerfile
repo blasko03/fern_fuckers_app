@@ -13,6 +13,7 @@ RUN dotnet publish -c Release -o /published -a $TARGETARCH
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS prod
 RUN dotnet tool install --global dotnet-ef
 ENV PATH $PATH:/root/.dotnet/tools
-WORKDIR /app
-COPY --from=build /published ./
-ENTRYPOINT ["dotnet", "fern_fuckers_app_backend.dll"]
+WORKDIR /source
+COPY . .
+COPY --from=build /published /app
+ENTRYPOINT ["dotnet", "/app/fern_fuckers_app_backend.dll"]
