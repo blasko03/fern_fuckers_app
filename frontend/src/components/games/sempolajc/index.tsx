@@ -1,19 +1,22 @@
 import { type Player } from '@/interfaces/Player'
-import { type ReactElement, useEffect, useState } from 'react'
+import { type ReactElement, useEffect, useState, type Dispatch, type SetStateAction } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faDeleteLeft, faRightFromBracket, faRotateLeft, faRotateRight, faPlayCircle, faSlash, faXmark, faCircleXmark } from '@fortawesome/free-solid-svg-icons'
 import NumberKeyBoard from '@/app/leg/NumberKeyBoard'
+import PlayersSelection from './players_selection'
 
 const POINTS = [20, 19, 18, 17, 16, 15, 25]
 
 interface SavedGame {
   throws: Throw[] | undefined
   currentPlayerId: string | undefined
+  players: Player[]
 }
 
-enum SavedValues {
+export enum SavedValues {
   THROWS = 'cricketThrows',
-  CURRENT_PLAYER_ID = 'cricketCurrentPlayerId'
+  CURRENT_PLAYER_ID = 'cricketCurrentPlayerId',
+  PLAYERS = 'cricketPlayers'
 }
 
 function saveGame ({ throws, currentPlayerId }: { throws: Throw[], currentPlayerId: string }): void {
@@ -21,20 +24,22 @@ function saveGame ({ throws, currentPlayerId }: { throws: Throw[], currentPlayer
   sessionStorage.setItem(SavedValues.CURRENT_PLAYER_ID, currentPlayerId)
 }
 
+export type StartGame = ({ reset }: { reset?: boolean }) => void
+
 function getSavedGame ({ reset }: { reset: boolean }): SavedGame {
   const throws = sessionStorage.getItem(SavedValues.THROWS)
   const currentPlayerId = sessionStorage.getItem(SavedValues.CURRENT_PLAYER_ID)
+  const playersStr = sessionStorage.getItem(SavedValues.PLAYERS)
+  console.log(playersStr)
+  const players = playersStr != null ? JSON.parse(playersStr) : []
   if (!reset && throws != null && currentPlayerId != null) {
-    return { throws: JSON.parse(throws), currentPlayerId }
+    return { throws: JSON.parse(throws), currentPlayerId, players }
   }
-  return { throws: undefined, currentPlayerId: undefined }
+  return { throws: undefined, currentPlayerId: undefined, players }
 }
 
 export default function Cricket (): ReactElement {
-  const players: Player[] = [
-    { id: 'b', name: 'Matija', surname: '' },
-    { id: 'c', name: 'Tomaz', surname: '' }
-  ]
+  const [players, setPlayers] = useState<Player[]>([])
   const [game, setGame] = useState<CricketGame>()
   const [points, setPoints] = useState<Record<string, number>>({})
   const [gameStatus, setSameStatus] = useState<CricketScoring>({})
@@ -51,8 +56,8 @@ export default function Cricket (): ReactElement {
     setWinner(game.winner())
   }
 
-  const startGame = ({ reset = false }: { reset?: boolean }): void => {
-    const { throws, currentPlayerId } = getSavedGame({ reset })
+  const startGame: StartGame = ({ reset = false }) => {
+    const { throws, currentPlayerId, players } = getSavedGame({ reset })
     const game = new CricketGame({ players, throws, currentPlayerId })
     setGame(game)
     setPoints(game.points())
@@ -60,6 +65,8 @@ export default function Cricket (): ReactElement {
     setCurrentPlayer(game.currentPlayer())
     setWinner(game.winner())
     setThrows(game.throws)
+    setPlayers(game.players)
+    console.log(game)
   }
 
   useEffect(() => {
@@ -73,13 +80,12 @@ export default function Cricket (): ReactElement {
     startGame({})
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
-
-  if (game === undefined) { return <div></div> }
-  if (currentPlayer === undefined) { return <div></div> }
+  if (game === undefined) { return <div>a</div> }
+  if (currentPlayer === undefined) { return <PlayersSelection setPlayers = {setPlayers} players = {players} startGame = {startGame}/> }
   return <div>
     <GameNavigation addScore = {addScore}
       throws={throws}
-      startGame={startGame}
+      setCurrentPlayer={setCurrentPlayer}
       removeLastThrow = {
         () => {
           const lastThrow = game.removeLastThrow()
@@ -176,7 +182,7 @@ function GameStatus ({ gameStatus, players, points, currentPlayer }: { gameStatu
   </table>
 }
 
-function GameNavigation ({ removeLastThrow, addScore, throws, startGame }: { throws: Throw[], removeLastThrow: () => Throw | undefined, addScore: (scores: number[]) => void, startGame: ({ reset }: { reset: boolean }) => void }): ReactElement {
+function GameNavigation ({ removeLastThrow, addScore, throws, setCurrentPlayer }: { throws: Throw[], removeLastThrow: () => Throw | undefined, addScore: (scores: number[]) => void, setCurrentPlayer: Dispatch<SetStateAction<Player | undefined>> }): ReactElement {
   const [removedThrows, setRemovedThrows] = useState<Throw[]>([])
   useEffect(() => {
     setRemovedThrows([])
@@ -197,7 +203,7 @@ function GameNavigation ({ removeLastThrow, addScore, throws, startGame }: { thr
         }}
       ><FontAwesomeIcon icon={faRotateRight} /></button></div>
   }
-  <div style={{ marginLeft: 'auto' }}><button onClick={() => { startGame({ reset: true }) }}>Restart</button></div>
+  <div style={{ marginLeft: 'auto' }}><button onClick={() => { setCurrentPlayer(undefined) }}>Restart</button></div>
   </div>
 }
 
