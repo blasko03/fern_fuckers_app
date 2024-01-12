@@ -11,6 +11,7 @@ RUN dotnet restore -a $TARGETARCH
 RUN dotnet publish -c Release -o /published -a $TARGETARCH
 
 FROM --platform=$BUILDPLATFORM mcr.microsoft.com/dotnet/sdk:8.0 AS prod
+RUN dotnet tool install --global dotnet-ef
 ENV PATH $PATH:/root/.dotnet/tools
 WORKDIR /app
 COPY --from=build /published ./
