@@ -10,7 +10,8 @@ RUN dotnet nuget locals all --clear
 RUN dotnet restore -a $TARGETARCH
 RUN dotnet publish -c Release -o /published -a $TARGETARCH
 
-FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS prod
+FROM --platform=$BUILDPLATFORM mcr.microsoft.com/dotnet/sdk:8.0 AS prod
+ENV PATH $PATH:/root/.dotnet/tools
 WORKDIR /app
 COPY --from=build /published ./
 ENTRYPOINT ["dotnet", "fern_fuckers_app_backend.dll"]

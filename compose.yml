@@ -14,7 +14,7 @@ services:
     build:
       context: backend
       dockerfile: .docker/Dockerfile
-      target: dev
+      target: $ENV
     volumes:
       - ./backend:/source
       - bin:/source/bin
