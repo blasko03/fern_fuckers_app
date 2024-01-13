@@ -13,6 +13,13 @@ export const metadata: Metadata = {
   manifest: '/fern_fuckers.webmanifest'
 }
 
+export const viewport = {
+  width: 'device-width',
+  initialScale: 1,
+  maximumScale: 1,
+  userScalable: 0
+}
+
 export default function RootLayout ({
   children
 }: {

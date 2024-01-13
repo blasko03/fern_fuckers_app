@@ -273,8 +273,8 @@ button, .button {
     display: flex;
     flex-wrap: nowrap;
     div {
-        max-width: 30%;
         button {
+            width: auto;
             margin: 10px;
             height: 40px
         }

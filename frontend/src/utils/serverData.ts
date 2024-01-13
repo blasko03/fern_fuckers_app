@@ -1,6 +1,6 @@
 import { toast } from 'react-toastify'
 
-export const SERVER_ADDRESS: string = process.env.BACKEND_URL as string
+export const SERVER_ADDRESS: string = process.env.BACKEND_URL ?? '' as string
 
 export enum FETCH_METHODS {
   GET = 'GET',
