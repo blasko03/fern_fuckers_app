@@ -30,7 +30,6 @@ function getSavedGame ({ reset }: { reset: boolean }): SavedGame {
   const throws = sessionStorage.getItem(SavedValues.THROWS)
   const currentPlayerId = sessionStorage.getItem(SavedValues.CURRENT_PLAYER_ID)
   const playersStr = sessionStorage.getItem(SavedValues.PLAYERS)
-  console.log(playersStr)
   const players = playersStr != null ? JSON.parse(playersStr) : []
   if (!reset && throws != null && currentPlayerId != null) {
     return { throws: JSON.parse(throws), currentPlayerId, players }
@@ -66,7 +65,6 @@ export default function Cricket (): ReactElement {
     setWinner(game.winner())
     setThrows(game.throws)
     setPlayers(game.players)
-    console.log(game)
   }
 
   useEffect(() => {

@@ -26,11 +26,13 @@ export default function PlayersSelection ({ setPlayers, players, startGame }: { 
   return <StdLayout title = {'Select players'} bottom = {<button className='full-width' disabled={players.length < 2} onClick={() => { startGame({ reset: true }) }}>Start game</button>}>
     <div className='playersSelection'>
       <div className='input'>
-        <TextField state = { input } setState = { setInput } isValid={isValidInput(input.value) || !input.touched} name = "name" />
-          <button disabled = {!isValidInput(input.value) || players.length > 6} onClick={() => {
-            setPlayers(p => [...p, { id: uuidv4(), name: input.value, surname: '' }])
-            setInput({ value: '', touched: false })
-          }}><FontAwesomeIcon icon={faSquarePlus} /></button>
+        <form>
+          <TextField state = { input } setState = { setInput } isValid={isValidInput(input.value) || !input.touched} name = "name" />
+            <button disabled = {!isValidInput(input.value) || players.length > 6} onClick={() => {
+              setPlayers(p => [...p, { id: uuidv4(), name: input.value, surname: '' }])
+              setInput({ value: '', touched: false })
+            }}><FontAwesomeIcon icon={faSquarePlus} /></button>
+          </form>
       </div>
       <div className='players'>
         <ReactSortable list={players} setList={(newState) => { setPlayers(newState) }}>
