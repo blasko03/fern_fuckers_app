@@ -28,7 +28,7 @@ export default function PlayersSelection ({ setPlayers, players, startGame }: { 
       <div className='input'>
         <form>
           <TextField state = { input } setState = { setInput } isValid={isValidInput(input.value) || !input.touched} name = "name" />
-            <button disabled = {!isValidInput(input.value) || players.length > 6} onClick={() => {
+            <button disabled = {!isValidInput(input.value) || players.length >= 6} onClick={() => {
               setPlayers(p => [...p, { id: uuidv4(), name: input.value, surname: '' }])
               setInput({ value: '', touched: false })
             }}><FontAwesomeIcon icon={faSquarePlus} /></button>
