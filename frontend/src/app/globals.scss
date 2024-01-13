@@ -43,6 +43,10 @@
     --button-width: 130px;
   }
 
+html, body {
+  overscroll-behavior: none;
+}
+
 body {
     color: #001530;
     margin: 0;
