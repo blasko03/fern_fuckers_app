@@ -78,7 +78,7 @@ export default function Cricket (): ReactElement {
     startGame({})
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
-  if (game === undefined) { return <div>a</div> }
+  if (game === undefined) { return <div></div> }
   if (currentPlayer === undefined) { return <PlayersSelection setPlayers = {setPlayers} players = {players} startGame = {startGame}/> }
   return <div>
     <GameNavigation addScore = {addScore}
