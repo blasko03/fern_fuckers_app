@@ -17,7 +17,8 @@ export const viewport = {
   width: 'device-width',
   initialScale: 1,
   maximumScale: 1,
-  userScalable: 0
+  userScalable: 0,
+  interactiveWidget: 'overlays-content'
 }
 
 export default function RootLayout ({
