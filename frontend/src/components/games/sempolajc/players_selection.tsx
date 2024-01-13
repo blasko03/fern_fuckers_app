@@ -35,7 +35,7 @@ export default function PlayersSelection ({ setPlayers, players, startGame }: { 
           </form>
       </div>
       <div className='players'>
-        <ReactSortable list={players} setList={(newState) => { setPlayers(newState) }}>
+        <ReactSortable list={players} filter={'button'} setList={(newState) => { setPlayers(newState) }}>
           {players.map((player) => (
             <div key={player.id} className='player'>
               <div><FontAwesomeIcon icon={faArrowsUpDown} /> {player.name}</div>
