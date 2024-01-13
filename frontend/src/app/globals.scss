@@ -281,10 +281,8 @@ button, .button {
     button {
         width: 100px;
         box-sizing: border-box;
-    };
-    > div {
     }
-    > form > .input {
+    > .input > form {
         padding: 8px;
         display: flex;
         input {
