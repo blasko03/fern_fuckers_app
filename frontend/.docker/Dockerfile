@@ -15,6 +15,7 @@ RUN yarn add next
 COPY --from=build /source/.next .next
 COPY --from=build /source/package.json .
 COPY --from=build /source/package-lock.json .
+COPY --from=build /source/public ./public
 
 ENTRYPOINT [ "yarn" ] 
 CMD ["start"]
