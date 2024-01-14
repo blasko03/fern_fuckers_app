@@ -2,6 +2,7 @@ import { type Dispatch, type SetStateAction, type FormEventHandler, type ReactEl
 import { type ValidatedFields, type Validators, validate } from './validation'
 import { type FormProps, type FormValues } from './utils'
 import { fieldInputParams } from './parameters'
+import { type NavigateFunction } from 'react-router-dom'
 
 export default function Form ({ onSubmit, children }: { onSubmit: FormEventHandler<HTMLFormElement>, children: ReactElement | ReactElement[] }): ReactElement {
   const handleSubmit: FormEventHandler<HTMLFormElement> | undefined = (event): void => {
@@ -52,4 +53,5 @@ export interface HandleSubmitParams<T> {
   formValidations?: ValidatedFields<T>
   serverUrl: string
   succesUrl: string
+  navigate: NavigateFunction
 }

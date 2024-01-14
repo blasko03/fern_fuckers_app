@@ -8,6 +8,7 @@ import { handleSubmit } from '../form/handle_submit'
 import { StdLayout } from '../layouts/std_layout'
 import TextField from '../form/text_field'
 import { CheckboxGroup } from '../form/checkbox_group'
+import { useNavigate } from 'react-router-dom'
 
 export interface TeamsFields extends Omit<Team, 'id' | 'players'> {
   players: string[]
@@ -24,6 +25,7 @@ export default function TeamsForm (): ReactElement {
   }, [])
 
   const { isSubmtting, setIsSubmtting, formValidations, formState, field } = CreateForm<TeamsFields>({ validations: teamValidations })
+  const navigate = useNavigate()
   const submit = async (): Promise<void> => {
     await handleSubmit({
       isSubmtting,
@@ -31,7 +33,8 @@ export default function TeamsForm (): ReactElement {
       setIsSubmtting,
       formValidations,
       serverUrl: '/api/teams',
-      succesUrl: '/teams'
+      succesUrl: '/teams',
+      navigate
     })
   }
 

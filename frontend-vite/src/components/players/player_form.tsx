@@ -5,11 +5,13 @@ import Form, { CreateForm } from '../form/form'
 import { handleSubmit } from '../form/handle_submit'
 import { StdLayout } from '../layouts/std_layout'
 import TextField from '../form/text_field'
+import { useNavigate } from 'react-router-dom'
 
 type PlayerFields = Omit<Player, 'id'>
 
 export default function PlayerForm (): ReactElement {
   const { isSubmtting, setIsSubmtting, formValidations, formState, field } = CreateForm<PlayerFields>({ validations: playerValidations })
+  const navigate = useNavigate()
   const submit = async (): Promise<void> => {
     await handleSubmit({
       isSubmtting,
@@ -17,7 +19,8 @@ export default function PlayerForm (): ReactElement {
       setIsSubmtting,
       formValidations,
       serverUrl: '/api/players',
-      succesUrl: '/players'
+      succesUrl: '/players',
+      navigate
     })
   }
   return (

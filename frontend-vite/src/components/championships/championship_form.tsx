@@ -1,5 +1,5 @@
 import { useState, type ReactElement, useEffect } from 'react'
-import { Form } from 'react-router-dom'
+import { Form, useNavigate } from 'react-router-dom'
 import { type Championship } from '../../interfaces/Championship'
 import { type Team } from '../../interfaces/Team'
 import { serverRequest } from '../../utils/serverData'
@@ -25,6 +25,7 @@ export default function ChampionshipForm (): ReactElement {
   }, [])
 
   const { isSubmtting, setIsSubmtting, formValidations, formState, field } = CreateForm<ChampionshipFields>({ validations: championshipValidations })
+  const navigate = useNavigate()
   const submit = async (): Promise<void> => {
     await handleSubmit({
       isSubmtting,
@@ -32,7 +33,8 @@ export default function ChampionshipForm (): ReactElement {
       setIsSubmtting,
       formValidations,
       serverUrl: '/api/championships',
-      succesUrl: '/championships'
+      succesUrl: '/championships',
+      navigate
     })
   }
   return (
