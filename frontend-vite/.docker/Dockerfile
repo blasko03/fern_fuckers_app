@@ -14,4 +14,4 @@ FROM  nginx:alpine as prod
 WORKDIR /usr/share/nginx/html
 
 COPY --from=build /source/dist .
-COPY .docker/nginx.conf /etc/nginx/nginx.conf
+COPY .docker/nginx.conf /etc/nginx/conf.d/default.conf
