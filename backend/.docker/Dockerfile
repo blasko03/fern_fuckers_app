@@ -3,6 +3,8 @@ ARG TARGETARCH
 ENV PATH $PATH:/root/.dotnet/tools
 RUN dotnet tool install --global dotnet-ef
 WORKDIR /source
+ENTRYPOINT ["dotnet"]
+CMD ["watch", "run"]
 
 FROM dev as build
 COPY . .
@@ -16,4 +18,5 @@ ENV PATH $PATH:/root/.dotnet/tools
 WORKDIR /source
 COPY . .
 COPY --from=build /published /app
-ENTRYPOINT ["dotnet", "/app/fern_fuckers_app_backend.dll"]
+ENTRYPOINT ["dotnet"]
+CMD ["/app/fern_fuckers_app_backend.dll"]
