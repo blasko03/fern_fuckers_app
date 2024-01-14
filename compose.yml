@@ -28,11 +28,11 @@ services:
       - POSTGRES_HOSTNAME
   frontend:
     build:
-      context: frontend-vite
+      context: frontend
       dockerfile: .docker/Dockerfile
       target: $ENV
     volumes:
-      - ./frontend-vite:/source
+      - ./frontend:/source
     environment:
       - FRONTEND_PORT
       - VITE_BACKEND_URL
