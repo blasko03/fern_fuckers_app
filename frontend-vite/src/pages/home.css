@@ -1,0 +1,7 @@
+.main{
+    box-sizing: border-box;
+    padding: 16px;
+    > a {
+        margin-bottom: 16px;
+    }
+}
