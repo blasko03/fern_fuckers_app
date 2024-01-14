@@ -1,8 +1,8 @@
-import { type ValidatedFields } from './validation';
+import { type ValidatedFields } from './validation'
 
-
-export function isFormValid<T>(formValidations: ValidatedFields<T>): boolean {
+export function isFormValid<T> (formValidations: ValidatedFields<T>): boolean {
   return Object.keys(formValidations)
-    .flatMap((key) => (formValidations[key as keyof ValidatedFields<T>] as string[]))
-    .length === 0;
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    .flatMap((key) => (formValidations[key as keyof ValidatedFields<T>]!))
+    .length === 0
 }

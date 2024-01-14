@@ -1,4 +1,4 @@
-import { MatchEvents } from '../interfaces/MatchEvents'
+import { type MatchEvents } from '../interfaces/MatchEvents'
 import { SERVER_ADDRESS } from './serverData'
 
 type OnMessageAction = (events: MatchEvents) => void
@@ -24,7 +24,8 @@ export class EventSourceListner {
   onMessage = (event: MessageEvent<string>): void => {
     const data = event.data
     if (data !== '') {
-      this.onMessageAction(JSON.parse(event.data))
+      const data: MatchEvents = JSON.parse(event.data)
+      this.onMessageAction(data)
     }
   }
 

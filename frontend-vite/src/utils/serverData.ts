@@ -21,7 +21,7 @@ export async function serverRequest<T> (url: string, method: FETCH_METHODS = FET
 
   const res = await response.json()
   if (response.status === 400 && Array.isArray(res)) {
-    res.map(error => toast(error, { theme: 'light' }))
+    res.map((error: string) => toast(error, { theme: 'light' }))
   }
 
   return res

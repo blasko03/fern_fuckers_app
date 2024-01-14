@@ -1,5 +1,5 @@
 import { type Team } from './Team'
-import { MatchSet } from './Set'
+import { type MatchSet } from './Set'
 
 export interface Match {
   id: string

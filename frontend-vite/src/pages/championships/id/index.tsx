@@ -1,10 +1,9 @@
 import { useState, type ReactElement, useEffect } from 'react'
-import { Championship } from '../../../interfaces/Championship'
+import { type Championship } from '../../../interfaces/Championship'
 import { serverRequest } from '../../../utils/serverData'
 import { Link, useParams } from 'react-router-dom'
 import { StdLayout } from '../../../components/layouts/std_layout'
 import { LinkList } from '../../../components/link_list'
-
 
 export default function ChampionshipGet (): ReactElement {
   const { id } = useParams()
@@ -13,8 +12,7 @@ export default function ChampionshipGet (): ReactElement {
     setChampionship(((await serverRequest<Championship>(`/api/championships/${id}`))))
   }
   useEffect(() => {
-    if(id === undefined)
-      return
+    if (id === undefined) { return }
     getData(id).catch(error => { console.log(error) })
   }, [id])
 

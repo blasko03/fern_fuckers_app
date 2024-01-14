@@ -1,4 +1,3 @@
-
 import { useState, type ReactElement } from 'react'
 import NumberKeyBoard from './NumberKeyBoard'
 

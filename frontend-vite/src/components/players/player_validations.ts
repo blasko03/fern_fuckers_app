@@ -1,5 +1,4 @@
-
-import { Player } from '../../interfaces/Player'
+import { type Player } from '../../interfaces/Player'
 import { type Validators, validateLenhth, validatePresence } from '../form/validation'
 
 export const playerValidations: Validators<Omit<Player, 'id'>> = {

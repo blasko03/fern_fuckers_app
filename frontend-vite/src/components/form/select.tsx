@@ -1,4 +1,4 @@
-import { ChangeEventHandler, type ReactElement } from 'react'
+import { type ChangeEventHandler, type ReactElement } from 'react'
 
 interface Option {
   title: string

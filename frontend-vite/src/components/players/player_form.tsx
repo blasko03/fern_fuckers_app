@@ -1,6 +1,6 @@
 import { type ReactElement } from 'react'
 import { playerValidations } from './player_validations'
-import { Player } from '../../interfaces/Player'
+import { type Player } from '../../interfaces/Player'
 import Form, { CreateForm } from '../form/form'
 import { handleSubmit } from '../form/handle_submit'
 import { StdLayout } from '../layouts/std_layout'

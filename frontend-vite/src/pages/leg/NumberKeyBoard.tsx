@@ -1,4 +1,3 @@
-
 import { faDeleteLeft, faRightFromBracket } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { useState, type ReactElement } from 'react'

@@ -1,6 +1,6 @@
 import { useEffect, type ReactElement, useState, useRef } from 'react'
 import { EventSourceListner } from '../../../utils/EventSourceListner'
-import { Team } from '../../../interfaces/Team'
+import { type Team } from '../../../interfaces/Team'
 import { serverRequest } from '../../../utils/serverData'
 import { useParams } from 'react-router-dom'
 
@@ -27,7 +27,7 @@ export default function ChampionshipStats (): ReactElement {
     }
     matchEventSource.current = new EventSourceListner(id,
       (new Date()).toISOString(),
-      async () => { await getData(id) })
+      () => { void getData(id) })
   }, [id])
 
   useEffect(() => {

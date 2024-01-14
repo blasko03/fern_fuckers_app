@@ -1,5 +1,5 @@
-import { Leg } from "./Leg"
-import { UpdatedPlayersEvent } from "./Set"
+import { type Leg } from './Leg'
+import { type UpdatedPlayersEvent } from './Set'
 
 export interface MatchEvents {
   message: Leg | UpdatedPlayersEvent

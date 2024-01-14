@@ -1,17 +1,14 @@
-
 import { useState, type ReactElement, useEffect, useRef, type Dispatch, type SetStateAction } from 'react'
 import Set from '../../../components/match/Set'
-import { Leg } from '../../../interfaces/Leg'
-import { MatchSet as MatchSet } from '../../../interfaces/Set'
-import { Match } from '../../../interfaces/Match'
-import { EventTypes, MatchEvents } from '../../../interfaces/MatchEvents'
-import { UpdatedPlayersEvent, SetPlayers } from '../../../interfaces/Set'
+import { type Leg } from '../../../interfaces/Leg'
+import { type MatchSet, type UpdatedPlayersEvent, type SetPlayers } from '../../../interfaces/Set'
+import { type Match } from '../../../interfaces/Match'
+import { type EventTypes, type MatchEvents } from '../../../interfaces/MatchEvents'
+
 import { EventSourceListner } from '../../../utils/EventSourceListner'
 import { filteredData } from '../../../utils/array'
 import { serverRequest } from '../../../utils/serverData'
 import { useParams } from 'react-router-dom'
-
-
 
 type EventTypesActions<T> = (event: T, setMatch: Dispatch<SetStateAction<Match | undefined>>) => void
 

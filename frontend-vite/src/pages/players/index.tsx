@@ -1,8 +1,6 @@
-
-
 import { useEffect, type ReactElement, useState } from 'react'
 import { serverRequest } from '../../utils/serverData'
-import { Player } from '../../interfaces/Player'
+import { type Player } from '../../interfaces/Player'
 import { StdLayout } from '../../components/layouts/std_layout'
 import { LinkList } from '../../components/link_list'
 import { Link } from 'react-router-dom'

@@ -2,7 +2,7 @@ import { type ReactElement, useEffect, useState, type Dispatch, type SetStateAct
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faDeleteLeft, faRightFromBracket, faRotateLeft, faRotateRight, faPlayCircle, faSlash, faXmark, faCircleXmark } from '@fortawesome/free-solid-svg-icons'
 import PlayersSelection from './players_selection'
-import { Player } from '../../../interfaces/Player'
+import { type Player } from '../../../interfaces/Player'
 import NumberKeyBoard from '../../../pages/leg/NumberKeyBoard'
 import { SavedValues } from './SavedValues'
 

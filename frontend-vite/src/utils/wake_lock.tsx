@@ -1,5 +1,3 @@
-
-
 import { useEffect } from 'react'
 
 export default function ScreenWakeLock ({ children }: { children: React.ReactNode }): React.ReactNode {

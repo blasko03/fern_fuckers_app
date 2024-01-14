@@ -2,67 +2,67 @@ import { ToastContainer } from 'react-toastify'
 import './App.css'
 import 'react-toastify/dist/ReactToastify.css'
 import Home from './pages/Home'
-import { RouterProvider, createBrowserRouter } from 'react-router-dom';
-import Players from './pages/players';
-import PlayerCreate from './pages/players/create/page';
-import ChampionshipCreate from './pages/championships/create';
-import Teams from './pages/teams';
-import TeamCreate from './pages/teams/create';
-import Championships from './pages/championships';
-import ChampionshipGet from './pages/championships/id';
-import ChampionshipStats from './pages/championships/stats/page';
-import MatchGet from './pages/match/id';
-import SempolajcPage from './pages/games/sempolajc';
+import { RouterProvider, createBrowserRouter } from 'react-router-dom'
+import Players from './pages/players'
+import PlayerCreate from './pages/players/create/page'
+import ChampionshipCreate from './pages/championships/create'
+import Teams from './pages/teams'
+import TeamCreate from './pages/teams/create'
+import Championships from './pages/championships'
+import ChampionshipGet from './pages/championships/id'
+import ChampionshipStats from './pages/championships/stats'
+import MatchGet from './pages/match/id'
+import SempolajcPage from './pages/games/sempolajc'
+import { type ReactElement } from 'react'
 
 const router = createBrowserRouter([
   {
-    path: "/",
+    path: '/',
     element: <Home />
   },
   {
-    path: "/championships",
-    element: <Championships />,
+    path: '/championships',
+    element: <Championships />
   },
   {
-    path: "/championships/create",
+    path: '/championships/create',
     element: <ChampionshipCreate />
   },
   {
-    path: "/championships/:id",
+    path: '/championships/:id',
     element: <ChampionshipGet />
   },
   {
-    path: "/championships/:id/stats",
+    path: '/championships/:id/stats',
     element: <ChampionshipStats />
   },
   {
-    path: "/match/:id",
+    path: '/match/:id',
     element: <MatchGet />
   },
   {
-    path: "/teams",
-    element: <Teams />,
+    path: '/teams',
+    element: <Teams />
   },
   {
-    path: "/teams/create",
+    path: '/teams/create',
     element: <TeamCreate />
   },
   {
-    path: "/players",
+    path: '/players',
     element: <Players />
   },
   {
-    path: "/players/create",
+    path: '/players/create',
     element: <PlayerCreate />
   },
   {
-    path: "/games/sempolajc",
+    path: '/games/sempolajc',
     element: <SempolajcPage />
   }
-]);
+])
 
-
-function App() {
+function App (): ReactElement {
   return (
     <>
       <RouterProvider router={router} />

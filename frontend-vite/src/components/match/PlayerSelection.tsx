@@ -1,7 +1,7 @@
 import { type ChangeEvent, type ReactElement } from 'react'
 import Select from '../form/select'
 import { FETCH_METHODS, serverRequest } from '../../utils/serverData'
-import { Team } from '../../interfaces/Team'
+import { type Team } from '../../interfaces/Team'
 
 type PlayerOrUndefined = string | undefined
 
@@ -29,7 +29,7 @@ export function PlayersSelection ({ team, numberOfPlayers, setId, players, updat
 
   return <>
       {Array.from(Array(numberOfPlayers).keys()).map((_a, index) => <div key={index}>
-          <Select selected={players[index]} options={team.players.map(p => ({ name: p.id, title: `${p.name} ${p.surname}` }))} onChange={async (event: ChangeEvent<HTMLSelectElement>) => { await onChange(event, index) }} />
+          <Select selected={players[index]} options={team.players.map(p => ({ name: p.id, title: `${p.name} ${p.surname}` }))} onChange={(event: ChangeEvent<HTMLSelectElement>) => { void onChange(event, index) }} />
         </div>)}
     </>
 }

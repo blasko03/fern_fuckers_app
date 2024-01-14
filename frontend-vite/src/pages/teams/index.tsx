@@ -1,6 +1,6 @@
 import { useState, type ReactElement, useEffect } from 'react'
 import { serverRequest } from '../../utils/serverData'
-import { Team } from '../../interfaces/Team'
+import { type Team } from '../../interfaces/Team'
 import { StdLayout } from '../../components/layouts/std_layout'
 import { LinkList } from '../../components/link_list'
 import { Link } from 'react-router-dom'

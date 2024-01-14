@@ -5,9 +5,9 @@ import { SavedValues } from './SavedValues'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faSquareMinus, faSquarePlus, faArrowsUpDown } from '@fortawesome/free-solid-svg-icons'
 import { ReactSortable } from 'react-sortablejs'
-import { Player } from '../../../interfaces/Player'
+import { type Player } from '../../../interfaces/Player'
 import TextField from '../../form/text_field'
-import { FormValue } from '../../form/utils'
+import { type FormValue } from '../../form/utils'
 import { StdLayout } from '../../layouts/std_layout'
 
 function removePlayer ({ player, setPlayers }: { player: Player, setPlayers: Dispatch<SetStateAction<Player[]>> }): void {

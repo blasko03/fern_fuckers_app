@@ -53,4 +53,3 @@ export interface HandleSubmitParams<T> {
   serverUrl: string
   succesUrl: string
 }
-

@@ -1,8 +1,7 @@
-
 import { useState, type ReactElement } from 'react'
-import { Leg } from '../../interfaces/Leg'
-import { MatchSet, WHO_WINS } from '../../interfaces/Set'
-import { Team } from '../../interfaces/Team'
+import { type Leg } from '../../interfaces/Leg'
+import { type MatchSet, type WHO_WINS } from '../../interfaces/Set'
+import { type Team } from '../../interfaces/Team'
 import { serverRequest, FETCH_METHODS } from '../../utils/serverData'
 import { PlayersSelection } from './PlayerSelection'
 
