@@ -50,6 +50,7 @@ html, body {
 body {
     color: #001530;
     margin: 0;
+    font-family: 'Roboto', serif;
 }
 
 h1 > small {
