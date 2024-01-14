@@ -1,13 +1,14 @@
 import { type ReactElement } from 'react'
 import './home.css'
+import { Link } from 'react-router-dom'
 
 export default function Home (): ReactElement {
   return (
     <main className='main'>
-      <a className='button full-width' href="/championships">Campionati</a>
-      <a className='button full-width' href="/teams">Team</a>
-      <a className='button full-width' href="/players">Players</a>
-      <a className='button full-width' href="/games/sempolajc">Kdu je šempolajc</a>
+      <Link className='button full-width' to="/championships">Campionati</Link>
+      <Link className='button full-width' to="/teams">Team</Link>
+      <Link className='button full-width' to="/players">Players</Link>
+      <Link className='button full-width' to="/games/sempolajc">Kdu je šempolajc</Link>
     </main>
   )
 }
