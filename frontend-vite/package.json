@@ -1,5 +1,5 @@
 {
-  "name": "frontend-vite",
+  "name": "fern-fuckers-frontend",
   "private": true,
   "version": "0.0.0",
   "type": "module",
@@ -7,6 +7,7 @@
     "dev": "vite",
     "build": "tsc && vite build",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
+    "type-check": "npx tsc --noemit",
     "preview": "vite preview"
   },
   "dependencies": {
