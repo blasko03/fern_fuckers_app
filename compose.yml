@@ -29,14 +29,13 @@ services:
     command: dotnet watch run
   frontend:
     build:
-      context: frontend
+      context: frontend-vite
       dockerfile: .docker/Dockerfile
       target: $ENV
     volumes:
-      - ./frontend:/source
-    command: yarn dev
+      - ./frontend-vite:/source
     ports:
-      - "3000:3000"
+      - "3000:80"
 volumes:
   db:
   bin:
