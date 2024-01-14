@@ -19,11 +19,14 @@ jobs:
       with:
         username: ${{ secrets.DOCKER_USERNAME }}
         password: ${{ secrets.DOCKER_PASSWORD }}
+    - name: Set tag
+      id: vars
+      run: echo ::set-output name=tag::${GITHUB_REF#refs/*/}
     - name: Build and push
       uses: docker/build-push-action@v5
       with:
-        context: frontend
-        file: frontend/.docker/Dockerfile
+        context: frontend-vite
+        file: frontend-vite/.docker/Dockerfile
         platforms: linux/arm64,linux/amd64
         push: true
         tags: blasko/fern_fuckers_app_frontend:${{ steps.vars.outputs.tag  }}
