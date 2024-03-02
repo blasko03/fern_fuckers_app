@@ -1,7 +1,7 @@
 import { ToastContainer } from 'react-toastify'
 import './App.css'
 import 'react-toastify/dist/ReactToastify.css'
-import Home from './pages/Home'
+// import Home from './pages/Home'
 import { RouterProvider, createBrowserRouter } from 'react-router-dom'
 import Players from './pages/players'
 import PlayerCreate from './pages/players/create/page'
@@ -18,7 +18,7 @@ import { type ReactElement } from 'react'
 const router = createBrowserRouter([
   {
     path: '/',
-    element: <Home />
+    element: <SempolajcPage />
   },
   {
     path: '/championships',

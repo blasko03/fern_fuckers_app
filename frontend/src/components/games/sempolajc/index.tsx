@@ -294,7 +294,7 @@ class CricketGame {
           acc1[t.playerId] = newPoints === 0 || newPoints < -1 ? newPoints : acc1[t.playerId]
         } else {
           closings[t.playerId][t.points] = (closings[t.playerId][t.points] ?? 0) + 1
-          acc1[t.playerId] += Math.max((closings[t.playerId][t.points] ?? 0) - 3, 0) * t.points * -1
+          acc1[t.playerId] += Math.min(Math.max((closings[t.playerId][t.points] ?? 0) - 3, 0), 1) * t.points * -1
         }
         return acc1
       }, {})
