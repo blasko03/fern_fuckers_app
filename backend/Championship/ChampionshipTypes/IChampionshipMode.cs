@@ -1,4 +1,4 @@
-using FernFuckersAppBackend.Models;
+﻿using FernFuckersAppBackend.Models;
 using FernFuckersAppBackend.Services;
 
 namespace FernFuckersAppBackend.Championships;
