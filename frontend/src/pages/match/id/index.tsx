@@ -92,6 +92,12 @@ export default function MatchGet (): ReactElement {
   }, [match])
 
   useEffect(() => {
+    return () => {
+      matchEventSource.current?.close()
+    }
+  }, [])
+
+  useEffect(() => {
     if (match != null && matchEventSource.current !== undefined) {
       matchEventSource.current?.updateLastEvent(match.sets.flatMap(set => set.playedLegs).map(x => x.createdDate).sort().reverse()[0])
     }
