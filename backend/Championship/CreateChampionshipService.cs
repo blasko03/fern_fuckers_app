@@ -1,4 +1,5 @@
-﻿using FernFuckersAppBackend.Controllers.Params;
+﻿using FernFuckersAppBackend.Championships;
+using FernFuckersAppBackend.Controllers.Params;
 using FernFuckersAppBackend.Controllers.Responses;
 using FernFuckersAppBackend.Models;
 using Microsoft.EntityFrameworkCore;
@@ -7,30 +8,18 @@ namespace FernFuckersAppBackend.Services;
 
 public class CreateChampionshipService
 {
-    public static async Task<IServiceResult> Call(ApplicationDbContext context, ChampionshipParams championship)
+    public static async Task<IServiceResult> Call(ApplicationDbContext context, ChampionshipParams championship, IChampionshipMode matchMode)
     {
-        return await ValidateAndSave.Call(() => ValidateData(context, championship), () => SaveData(context, championship));
+        return await ValidateAndSave.Call(() => ValidateData(context, championship), () => SaveData(context, championship, matchMode));
 
     }
-    private static async Task<ChampionshipResponse> SaveData(ApplicationDbContext context, ChampionshipParams championship)
+    private static async Task<ChampionshipResponse> SaveData(ApplicationDbContext context, ChampionshipParams championship, IChampionshipMode matchMode)
     {
         var c = (await context.Championships.AddAsync((Championship)championship)).Entity;
         var teams = await context.Teams.Where(team => championship.Teams.Contains(team.Id)).ToListAsync();
         c.Teams.AddRange(teams);
 
-        var matches = teams.Select((team1, i) =>
-        {
-            return teams.Skip(i + 1).Where(team2 => team1.Id != team2.Id).Select(team2 =>
-            {
-                var match = new Match { };
-                match.Teams.AddRange([team1, team2]);
-                match.Sets.Add(new Set { NumberLegs = 5, NumberPlayers = 1, WhoWins = SetWinningRule.WHO_WINS_FIRST });
-                match.Sets.Add(new Set { NumberLegs = 5, NumberPlayers = 1, WhoWins = SetWinningRule.WHO_WINS_FIRST });
-                match.Sets.Add(new Set { NumberLegs = 2, NumberPlayers = 2, WhoWins = SetWinningRule.ALL_LEGS });
-                match.Sets.Add(new Set { NumberLegs = 2, NumberPlayers = 2, WhoWins = SetWinningRule.ALL_LEGS });
-                return match;
-            });
-        }).SelectMany(x => x).ToList();
+        var matches = matchMode.GetMatches(teams);
 
         c.Matches.AddRange(matches);
         await context.SaveChangesAsync();
