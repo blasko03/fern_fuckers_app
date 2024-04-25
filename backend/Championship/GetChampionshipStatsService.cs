@@ -5,7 +5,6 @@ using Microsoft.EntityFrameworkCore;
 
 namespace FernFuckersAppBackend.Services;
 
-
 public class ChampionshipStats
 {
     public TeamPoints[] TeamRanking { get; set; } = [];
