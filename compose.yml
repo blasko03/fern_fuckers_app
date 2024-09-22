@@ -16,7 +16,7 @@ services:
       dockerfile: .docker/Dockerfile
       target: $ENV
     volumes:
-      - ./backend:/source
+      - ./backend:/source:z
       - bin:/source/bin
       - obj:/source/obj
     ports:
@@ -32,7 +32,7 @@ services:
       dockerfile: .docker/Dockerfile
       target: $ENV
     volumes:
-      - ./frontend:/source
+      - ./frontend:/source:z
     environment:
       - FRONTEND_PORT
       - VITE_BACKEND_URL
